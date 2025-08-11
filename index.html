@@ -27,7 +27,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -53,9 +52,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Home Page Content -->
         <div id="home-page" class="page-content">
             <section id="home" class="hero-gradient py-20 md:py-32">
                 <div class="container mx-auto px-6 text-center">
@@ -85,180 +82,70 @@
             <section id="faq" class="py-20 bg-gray-50"><div class="container mx-auto px-6 max-w-4xl"><div class="text-center mb-16"><h2 class="text-3xl md:text-4xl font-bold text-gray-900">Imate Pitanja?</h2><p class="mt-4 text-lg text-gray-600">Ovdje su odgovori na najčešća pitanja.</p></div><div class="space-y-6"><details class="bg-white p-6 rounded-lg shadow-md group"><summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">Da li su ugovori sa platforme ugovor24.com pravno validni?<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></summary><p class="mt-4 text-gray-600">Apsolutno. Svaki dokument je zasnovan na važećim zakonima Crne Gore, a finalnu verziju pregleda i odobrava licencirani advokat Dejan Radinović, što garantuje njegovu potpunu pravnu ispravnost i validnost.</p></details><details class="bg-white p-6 rounded-lg shadow-md group"><summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">Koliko brzo ću dobiti ugovor?<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></summary><p class="mt-4 text-gray-600">Naša garancija je isporuka ugovora u roku od 24 časa od trenutka kada vaša uplata bude evidentirana na našem računu. U praksi, to je često i znatno brže.</p></details><details class="bg-white p-6 rounded-lg shadow-md group"><summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">Šta ako mi je potreban ugovor koji nije na listi?<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></summary><p class="mt-4 text-gray-600">Naša biblioteka pokriva najčešće tipove ugovora. Ukoliko vam je potreban kompleksniji ili visoko specijalizovani ugovor, molimo vas da nas kontaktirate direktno. Takve usluge su dostupne na upit i podliježu posebnom ugovaranju.</p></details><details class="bg-white p-6 rounded-lg shadow-md group"><summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">Da li su moji podaci sigurni?<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></summary><p class="mt-4 text-gray-600">Da. Koristimo najmodernije sigurnosne standarde, uključujući enkripciju podataka. Svi vaši podaci se tretiraju kao advokatska tajna, sa najvišim stepenom povjerljivosti i u skladu sa Zakonom o zaštiti podataka o ličnosti i GDPR regulativom.</p></details></div></div></section>
         </div>
 
-        <!-- Uslovi Koriscenja Page -->
-        <div id="uslovi-page" class="page-content hidden">
-            <div class="container mx-auto px-6 py-16 max-w-4xl page-container legal-page">
-                <!-- Sadržaj se ubacuje putem JavaScripta -->
-            </div>
-        </div>
-
-        <!-- Politika Privatnosti Page -->
-        <div id="privatnost-page" class="page-content hidden">
-            <div class="container mx-auto px-6 py-16 max-w-4xl page-container legal-page">
-                 <!-- Sadržaj se ubacuje putem JavaScripta -->
-            </div>
-        </div>
-
-        <!-- Kontakt Page -->
-        <div id="kontakt-page" class="page-content hidden">
-            <div class="container mx-auto px-6 py-16 max-w-4xl text-center page-container">
-                <!-- Sadržaj se ubacuje putem JavaScripta -->
-            </div>
-        </div>
+        <div id="uslovi-page" class="page-content hidden"><div class="container mx-auto px-6 py-16 max-w-4xl page-container legal-page"></div></div>
+        <div id="privatnost-page" class="page-content hidden"><div class="container mx-auto px-6 py-16 max-w-4xl page-container legal-page"></div></div>
+        <div id="kontakt-page" class="page-content hidden"><div class="container mx-auto px-6 py-16 max-w-4xl text-center page-container"></div></div>
         
-        <!-- NDA Upitnik Page -->
         <div id="nda-upitnik-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl page-container">
                 <h2 class="text-center">Upitnik za Ugovor o Povjerljivosti (NDA)</h2>
                 <form id="nda-form">
-                    <!-- Sekcija 1 -->
                     <div class="form-section">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 1: Tip Ugovora</h4>
                         <p class="text-gray-600 mb-4">Ovo je najvažnije pitanje koje određuje strukturu ugovora.</p>
                         <div class="space-y-4">
-                            <label class="form-radio-label">
-                                <input type="radio" name="nda_type" value="jednostrani" checked>
-                                <span><strong>Jednostrani (One-Way):</strong> Jedna strana otkriva povjerljive informacije, a druga se obavezuje da ih čuva.</span>
-                            </label>
-                            <label class="form-radio-label">
-                                <input type="radio" name="nda_type" value="obostrani">
-                                <span><strong>Obostrani (Mutual):</strong> Obje strane međusobno razmjenjuju povjerljive informacije.</span>
-                            </label>
+                            <label class="form-radio-label"><input type="radio" name="nda_type" value="jednostrani" checked><span><strong>Jednostrani (One-Way):</strong> Jedna strana otkriva povjerljive informacije, a druga se obavezuje da ih čuva.</span></label>
+                            <label class="form-radio-label"><input type="radio" name="nda_type" value="obostrani"><span><strong>Obostrani (Mutual):</strong> Obje strane međusobno razmjenjuju povjerljive informacije.</span></label>
                         </div>
                     </div>
-                    
-                    <!-- Sekcija 2 -->
                     <div class="form-section">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 2: Podaci o Ugovornim Stranama</h4>
-                        
-                        <!-- Jednostrani Fields -->
                         <div id="jednostrani-fields" class="space-y-6">
-                            <div>
-                                <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana koja OTKRIVA informacije</h5>
-                                <div class="space-y-4">
-                                    <div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="jednostrani_otkriva_naziv" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="jednostrani_otkriva_adresa" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="jednostrani_otkriva_id" type="text" class="form-input"></div>
-                                </div>
-                            </div>
-                             <div>
-                                <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana koja PRIMA informacije</h5>
-                                <div class="space-y-4">
-                                    <div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="jednostrani_prima_naziv" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="jednostrani_prima_adresa" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="jednostrani_prima_id" type="text" class="form-input"></div>
-                                </div>
-                            </div>
+                            <div><h5 class="font-semibold text-lg mb-4 text-gray-700">Strana koja OTKRIVA informacije</h5><div class="space-y-4"><div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="jednostrani_otkriva_naziv" type="text" class="form-input"></div><div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="jednostrani_otkriva_adresa" type="text" class="form-input"></div><div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="jednostrani_otkriva_id" type="text" class="form-input"></div></div></div>
+                            <div><h5 class="font-semibold text-lg mb-4 text-gray-700">Strana koja PRIMA informacije</h5><div class="space-y-4"><div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="jednostrani_prima_naziv" type="text" class="form-input"></div><div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="jednostrani_prima_adresa" type="text" class="form-input"></div><div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="jednostrani_prima_id" type="text" class="form-input"></div></div></div>
                         </div>
-
-                        <!-- Obostrani Fields -->
                         <div id="obostrani-fields" class="hidden space-y-6">
-                            <div>
-                                <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana A</h5>
-                                <div class="space-y-4">
-                                    <div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="obostrani_a_naziv" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="obostrani_a_adresa" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="obostrani_a_id" type="text" class="form-input"></div>
-                                </div>
-                            </div>
-                             <div>
-                                <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana B</h5>
-                                <div class="space-y-4">
-                                    <div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="obostrani_b_naziv" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="obostrani_b_adresa" type="text" class="form-input"></div>
-                                    <div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="obostrani_b_id" type="text" class="form-input"></div>
-                                </div>
-                            </div>
+                            <div><h5 class="font-semibold text-lg mb-4 text-gray-700">Strana A</h5><div class="space-y-4"><div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="obostrani_a_naziv" type="text" class="form-input"></div><div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="obostrani_a_adresa" type="text" class="form-input"></div><div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="obostrani_a_id" type="text" class="form-input"></div></div></div>
+                            <div><h5 class="font-semibold text-lg mb-4 text-gray-700">Strana B</h5><div class="space-y-4"><div><label class="form-label">Puni naziv / Ime i prezime:</label><input name="obostrani_b_naziv" type="text" class="form-input"></div><div><label class="form-label">Adresa sjedišta / prebivališta:</label><input name="obostrani_b_adresa" type="text" class="form-input"></div><div><label class="form-label">Identifikacioni broj (PIB ili JMBG):</label><input name="obostrani_b_id" type="text" class="form-input"></div></div></div>
                         </div>
                     </div>
-
-                    <!-- Sekcija 3 -->
                     <div class="form-section">
                          <h4 class="text-xl font-semibold mb-4">SEKCIJA 3: Svrha i Uslovi Ugovora</h4>
                          <div class="space-y-4">
-                            <div>
-                                <label class="form-label">U kom gradu se zaključuje ugovor?</label>
-                                <input name="mjesto_zakljucenja" type="text" class="form-input" placeholder="Npr. Podgorica">
-                            </div>
-                            <div>
-                               <label class="form-label">Vaš email za dostavu dokumenata:</label>
-                               <input name="email_klijenta" type="email" class="form-input" placeholder="npr. email@vasadomena.com">
-                           </div>
-                             <div>
-                                <label class="form-label">Koja je svrha razmjene povjerljivih informacija?</label>
-                                <textarea name="svrha_otkrivanja" class="form-textarea" rows="3" placeholder="Npr. Pregovori o potencijalnoj poslovnoj saradnji na projektu X"></textarea>
-                            </div>
-                             <div>
-                                <label class="form-label">Koliko dugo (u godinama) traje obaveza čuvanja povjerljivosti?</label>
-                                <input name="period_trajanja_godine" type="number" class="form-input" value="3">
-                            </div>
+                            <div><label class="form-label">U kom gradu se zaključuje ugovor?</label><input name="mjesto_zakljucenja" type="text" class="form-input" placeholder="Npr. Podgorica"></div>
+                            <div><label class="form-label">Vaš email za dostavu dokumenata:</label><input name="email_klijenta" type="email" class="form-input" placeholder="npr. email@vasadomena.com"></div>
+                            <div><label class="form-label">Koja je svrha razmjene povjerljivih informacija?</label><textarea name="svrha_otkrivanja" class="form-textarea" rows="3" placeholder="Npr. Pregovori o potencijalnoj poslovnoj saradnji na projektu X"></textarea></div>
+                            <div><label class="form-label">Koliko dugo (u godinama) traje obaveza čuvanja povjerljivosti?</label><input name="period_trajanja_godine" type="number" class="form-input" value="3"></div>
                          </div>
                     </div>
-
-                     <!-- Sekcija 4 -->
-                    <div class="form-section">
+                     <div class="form-section">
                          <h4 class="text-xl font-semibold mb-4">SEKCIJA 4: Dodatne Zaštitne Klauzule</h4>
                          <div class="space-y-4">
-                            <div>
-                                <label class="form-label">Da li želite da ugovor sadrži klauzulu o ugovornoj kazni?</label>
-                                <select id="ugovorna-kazna-select" name="ima_ugovornu_kaznu" class="form-select">
-                                    <option value="ne">Ne</option>
-                                    <option value="da">Da</option>
-                                </select>
-                            </div>
-                            <div id="ugovorna-kazna-iznos" class="hidden">
-                                <label class="form-label">Iznos ugovorne kazne (u eurima):</label>
-                                <input name="iznos_kazne" type="number" class="form-input" placeholder="Npr. 5000">
-                            </div>
+                            <div><label class="form-label">Da li želite da ugovor sadrži klauzulu o ugovornoj kazni?</label><select id="ugovorna-kazna-select" name="ima_ugovornu_kaznu" class="form-select"><option value="ne">Ne</option><option value="da">Da</option></select></div>
+                            <div id="ugovorna-kazna-iznos" class="hidden"><label class="form-label">Iznos ugovorne kazne (u eurima):</label><input name="iznos_kazne" type="number" class="form-input" placeholder="Npr. 5000"></div>
                          </div>
                     </div>
-
                     <div class="mt-10 text-center">
-                        <button type="submit" class="bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                            Nastavi na Plaćanje
-                        </button>
+                        <button type="submit" class="bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">Nastavi na Plaćanje</button>
                     </div>
                 </form>
             </div>
         </div>
-
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white">
         <div class="container mx-auto px-6 py-12">
             <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold">Ugovor<span class="text-blue-400">24</span>.com</h3>
-                    <p class="mt-4 text-gray-400">Pametni ugovori, odobreni od advokata.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold">Brzi Linkovi</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#usluge" class="nav-link text-gray-400 hover:text-white">Usluge i Cijene</a></li>
-                        <li><a href="#o-nama" class="nav-link text-gray-400 hover:text-white">O Nama</a></li>
-                        <li><a href="#faq" class="nav-link text-gray-400 hover:text-white">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold">Pravne Informacije</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#uslovi-page" class="nav-link text-gray-400 hover:text-white">Uslovi Korišćenja</a></li>
-                        <li><a href="#privatnost-page" class="nav-link text-gray-400 hover:text-white">Politika Privatnosti</a></li>
-                        <li><a href="#kontakt-page" class="nav-link text-gray-400 hover:text-white">Kontakt</a></li>
-                    </ul>
-                </div>
+                <div><h3 class="text-xl font-bold">Ugovor<span class="text-blue-400">24</span>.com</h3><p class="mt-4 text-gray-400">Pametni ugovori, odobreni od advokata.</p></div>
+                <div><h3 class="text-lg font-semibold">Brzi Linkovi</h3><ul class="mt-4 space-y-2"><li><a href="#usluge" class="nav-link text-gray-400 hover:text-white">Usluge i Cijene</a></li><li><a href="#o-nama" class="nav-link text-gray-400 hover:text-white">O Nama</a></li><li><a href="#faq" class="nav-link text-gray-400 hover:text-white">FAQ</a></li></ul></div>
+                <div><h3 class="text-lg font-semibold">Pravne Informacije</h3><ul class="mt-4 space-y-2"><li><a href="#uslovi-page" class="nav-link text-gray-400 hover:text-white">Uslovi Korišćenja</a></li><li><a href="#privatnost-page" class="nav-link text-gray-400 hover:text-white">Politika Privatnosti</a></li><li><a href="#kontakt-page" class="nav-link text-gray-400 hover:text-white">Kontakt</a></li></ul></div>
             </div>
-            <div class="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500">
-                <p>&copy; 2025 Advokatska kancelarija Dejan Radinović. Sva prava zadržana.</p>
-                <p class="text-sm mt-1">Platforma ugovor24.com je digitalni servis advokatske kancelarije.</p>
-            </div>
+            <div class="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500"><p>&copy; 2025 Advokatska kancelarija Dejan Radinović. Sva prava zadržana.</p><p class="text-sm mt-1">Platforma ugovor24.com je digitalni servis advokatske kancelarije.</p></div>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- PAGE CONTENT INJECTION ---
             const content = {
                 uslovi: `<h2>USLOVI KORIŠĆENJA PLATFORME UGOVOR24.COM</h2><p><strong>Datum stupanja na snagu: 11. avgust 2025. godine</strong></p><h4>Član 1: Opšte Odredbe</h4><p>Dobrodošli na ugovor24.com. Ovi Uslovi Korišćenja (u daljem tekstu: Uslovi) predstavljaju pravno obavezujući ugovor (Ugovor o pružanju pravne pomoći) između Vas (u daljem tekstu: Klijent) i Advokatske kancelarije Dejan Radinović (u daljem tekstu: Kancelarija), koja pruža usluge putem platforme ugovor24.com (u daljem tekstu: Platforma).</p><p>Pristupanjem i korišćenjem usluga na Platformi, potvrđujete da ste pročitali, razumjeli i da u cjelosti prihvatate ove Uslove. Ukoliko se ne slažete sa bilo kojim dijelom ovih Uslova, molimo vas da ne koristite Platformu.</p><h4>Član 2: Status Platforme</h4><p>Platforma ugovor24.com nije zasebno pravno lice niti tehnološka kompanija koja pruža pravne savjete. Platforma je isključivo digitalni alat i moderni kanal komunikacije u vlasništvu i pod upravom Advokatske kancelarije Dejan Radinović, osmišljen radi efikasnijeg pružanja advokatskih usluga u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.</p><h4>Član 3: Opis i Obim Usluga</h4><p>Platforma je osmišljena da pruži efikasnu i pouzdanu pravnu pomoć koja se odnosi isključivo na izradu nacrta i finalizaciju specifičnih pravnih dokumenata (u daljem tekstu: Usluga).</p><p><strong>Šta Usluga uključuje:</strong></p><ul><li>Korišćenje interaktivnog upitnika za unos podataka.</li><li>Generisanje prvog nacrta dokumenta uz pomoć napredne tehnologije.</li><li>Obaveznu i detaljnu provjeru, eventualnu korekciju i finalno odobrenje nacrta od strane licenciranog advokata.</li><li>Dostavu finalnog, odobrenog dokumenta u PDF formatu.</li></ul><p><strong>Šta Usluga NE uključuje (Ograničenje Obima):</strong></p><p>Platforma je osmišljena da standardizuje i ubrza proces izrade dokumenata za uobičajene i česte pravne situacije. Shodno tome, Usluga pružena putem Platforme ne obuhvata:</p><ul><li>Uspostavljanje trajnog odnosa zastupanja između Klijenta i Kancelarije.</li><li>Zastupanje pred sudovima ili drugim državnim organima, pregovaranje sa trećim licima, davanje usmenih ili pisanih pravnih savjeta izvan konteksta izrade konkretnog dokumenta.</li><li>Izradu visoko specijalizovanih ili kompleksnih ugovora koji zahtijevaju dubinsku analizu specifičnog poslovnog slučaja, poresku optimizaciju ili usklađivanje sa stranim pravom. Takve usluge su dostupne na direktan upit Kancelariji i podliježu posebnom ugovaranju i cjenovniku.</li></ul><h4>Član 4: Sukob Interesa</h4><p>1. Klijent potvrđuje i garantuje da u trenutku traženja Usluge nije upoznat sa bilo kakvim okolnostima koje bi mogle predstavljati sukob interesa u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.</p><p>2. Kancelarija zadržava pravo da, i nakon izvršene uplate, odbije pružanje Usluge ukoliko naknadno utvrdi postojanje sukoba interesa. U tom slučaju, Kancelarija će o tome bez odlaganja obavijestiti Klijenta i izvršiti potpuni povrat uplaćenih sredstava.</p><h4>Član 5: Proces Pružanja Usluge</h4><p>Korišćenjem Platforme, Klijent je saglasan sa sljedećim procesom:</p><ul><li>Klijent samostalno bira željeni tip dokumenta i popunjava upitnik, unoseći tačne i potpune podatke.</li><li>Prije plaćanja, Klijent je dužan da pročita i prihvati ove Uslove i Politiku Privatnosti.</li><li>Nakon prihvatanja Uslova, Platforma prikazuje Klijentu instrukcije za plaćanje ugovorene cijene.</li><li>Po evidentiranju uplate, Kancelarija pristupa finalizaciji dokumenta.</li><li>Kancelarija se obavezuje da će finalni, odobreni dokument dostaviti Klijentu elektronskim putem u roku od 24 časa od momenta evidentiranja uplate.</li></ul><h4>Član 6: Korišćenje Tehnologije, Vještačke Inteligencije (AI) i Saglasnost Klijenta</h4><p><strong>Uloga Tehnologije:</strong> Platforma koristi napredne softverske alate, uključujući modele vještačke inteligencije (AI), kao pomoćno sredstvo za analizu unijetih podataka i generisanje prvog nacrta dokumenta. Svrha tehnologije je isključivo da poveća efikasnost i preciznost u pripremi nacrta.</p><p><strong>Advokatska Kontrola:</strong> Upotreba tehnologije ne zamjenjuje stručnost advokata. Finalnu verziju svakog dokumenta obavezno pregleda, po potrebi koriguje i odobrava licencirani advokat, čime se garantuje kvalitet i pravna ispravnost.</p><p><strong>IZRIČITA SAGLASNOST ZA OBRADU PODATAKA PUTEM AI:</strong> Korišćenje Usluge je uslovljeno vašom izričitom saglasnošću. Prihvatanjem ovih Uslova i štikliranjem posebnog polja za potvrdu (checkbox) prije plaćanja, vi se nedvosmisleno slažete i dajete saglasnost da se svi podaci koje ste unijeli u upitnik, uključujući lične i povjerljive podatke, mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta dokumenta za vaše potrebe. Ukoliko ne date ovu saglasnost, Kancelarija tehnički nije u mogućnosti da vam pruži Uslugu putem Platforme.</p><h4>Član 7: Obaveze Klijenta</h4><p>Klijent je odgovoran za:</p><ul><li>Tačnost, potpunost i istinitost svih podataka unijetih u upitnik.</li><li>Pravovremeno plaćanje naknade u skladu sa istaknutim cjenovnikom.</li><li>Čuvanje povjerljivosti svojih pristupnih podataka.</li></ul><p>Kancelarija ne snosi odgovornost za bilo kakvu štetu koja može nastati kao posljedica unosa netačnih ili nepotpunih podataka od strane Klijenta.</p><h4>Član 8: Cijene i Plaćanje</h4><p>Cijene za svaku pojedinačnu Uslugu su jasno istaknute na Platformi. Plaćanje se vrši isključivo bankovnim transferom na poslovni račun Kancelarije, prema instrukcijama dobijenim na Platformi.</p><h4>Član 9: Intelektualna Svojina</h4><p>Sav sadržaj na Platformi, uključujući tekst, grafiku, logo, templejte i softver, isključivo je vlasništvo Kancelarije i zaštićen je zakonima o autorskom pravu i intelektualnoj svojini.</p><h4>Član 10: Ograničenje Odgovornosti</h4><p>Kancelarija garantuje da će Usluga biti pružena stručno i savjesno, u skladu sa Zakonom o advokaturi. Odgovornost Kancelarije za eventualnu štetu nastalu pružanjem Usluge ograničena je u skladu sa zakonom i polisom osiguranja od profesionalne odgovornosti.</p><h4>Član 11: Privatnost i Advokatska Tajna</h4><p>Svi podaci koje Klijent unese na Platformu tretiraju se kao advokatska tajna u smislu Zakona o advokaturi. Način prikupljanja, obrade i čuvanja podataka detaljno je opisan u našoj Politici Privatnosti, koja čini sastavni dio ovih Uslova.</p><h4>Član 12: Mjerodavno Pravo i Rješavanje Sporova</h4><p>Na ove Uslove primjenjuje se pravo Crne Gore. Svi eventualni sporovi rješavaće se mirnim putem, a ukoliko to nije moguće, nadležan je stvarno nadležni sud u Podgorici.</p><h4>Član 13: Izmjene Uslova</h4><p>Kancelarija zadržava pravo da izmijeni ove Uslove u bilo kom trenutku. O svim bitnim izmjenama Klijenti će biti obaviješteni putem emaila ili obavještenja na Platformi. Nastavak korišćenja Platforme nakon izmjena podrazumijeva prihvatanje novih Uslova.</p><h4>Član 14: Kontakt</h4><p>Za sva pitanja u vezi sa ovim Uslovima, možete nas kontaktirati na email: advokat@ugovor24.com.</p>`,
                 privatnost: `<h2>POLITIKA PRIVATNOSTI PLATFORME UGOVOR24.COM</h2><p><strong>Datum stupanja na snagu: 11. avgust 2025. godine</strong></p><h4>1. Uvod</h4><p>Dobrodošli na ugovor24.com. Vaša privatnost i zaštita podataka o ličnosti su nam od najveće važnosti. Ova Politika Privatnosti objašnjava koje podatke prikupljamo, kako ih koristimo, na kom pravnom osnovu, i koja su vaša prava u vezi sa vašim podacima.</p><p>Korišćenjem usluga na platformi ugovor24.com (u daljem tekstu: Platforma), povjeravate nam svoje podatke. Mi smo svjesni ove odgovornosti i posvećeni smo zaštiti vaših podataka u skladu sa najvišim profesionalnim i zakonskim standardima.</p><p><strong>Rukovalac Podataka:</strong><br>Rukovalac vaših podataka o ličnosti je:<br>Advokatska kancelarija Dejan Radinović<br>Email: advokat@ugovor24.com<br>(u daljem tekstu: "mi", "nas", "naš")</p><h4>2. Podaci koje Prikupljamo</h4><p>Da bismo vam pružili uslugu izrade pravnih dokumenata, prikupljamo podatke koje nam direktno dostavite popunjavanjem upitnika na Platformi. Ovi podaci mogu uključivati:</p><ul><li>Identifikacione podatke ugovornih strana: Ime i prezime, naziv pravnog lica, adresa prebivališta/sjedišta, jedinstveni matični broj (JMBG) ili poreski identifikacioni broj (PIB).</li><li>Kontakt podatke: Email adresa.</li><li>Podatke neophodne za izradu ugovora: Informacije koje čine predmet i suštinu ugovora (npr. opis posla, iznos naknade, rokovi, podaci o nekretnini, itd.).</li><li>Finansijske podatke: Broj žiro računa (kada je to neophodno za izvršenje ugovora).</li></ul><p>Svi podaci koje prikupljamo tretiraju se kao advokatska tajna u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.</p><h4>3. Svrha i Pravni Osnov Obrade Podataka</h4><p>Vaše podatke o ličnosti obrađujemo isključivo u svrhe pružanja ugovorene pravne pomoći. Pravni osnov za obradu vaših podataka je:</p><ul><li><strong>Izvršenje ugovora</strong> (Član 10, stav 2 Zakona o zaštiti podataka o ličnosti): Obrada je neophodna za izvršenje Ugovora o pružanju pravne pomoći koji zaključujete sa nama prihvatanjem naših Uslova korišćenja.</li><li><strong>Poštovanje pravnih obaveza rukovaoca:</strong> Obrada je neophodna radi ispunjenja naših zakonskih obaveza kao advokatske kancelarije (npr. obaveza čuvanja arhive predmeta).</li></ul><h4>4. Korišćenje Vještačke Inteligencije (AI) i Vaša Saglasnost</h4><p>Naša Platforma koristi napredne tehnologije, uključujući modele vještačke inteligencije (AI), kako bi se proces izrade prvog nacrta dokumenta učinio efikasnijim. Važno je da razumijete kako i kada se AI koristi:</p><ul><li><strong>Uloga AI:</strong> Vještačka inteligencija se koristi kao pomoćno sredstvo za generisanje prvog nacrta ugovora na osnovu podataka koje unesete i naših internih pravnih templejta. AI analizira unijete podatke i predlaže najadekvatnije formulacije.</li><li><strong>Ljudska Kontrola:</strong> Finalnu verziju svakog dokumenta obavezno pregleda, po potrebi koriguje i odobrava licencirani advokat. AI nikada ne donosi konačnu odluku niti pruža pravni savjet.</li><li><strong>IZRIČITA SAGLASNOST:</strong> Prije nego što vaši podaci budu poslati na obradu AI modelu, Platforma će od vas tražiti izričitu saglasnost putem posebnog polja za potvrdu (checkbox). Prihvatanjem Uslova korišćenja i štikliranjem polja za saglasnost, vi se izričito slažete da se podaci koje ste unijeli u upitnik mogu obraditi od strane trećeg lica (pružaoca AI usluge, npr. Google) isključivo u svrhu generisanja nacrta dokumenta. Ukoliko ne date saglasnost, nećemo moći da vam pružimo uslugu.</li></ul><h4>5. Dijeljenje Podataka sa Trećim Licima</h4><p>Vaše podatke ne prodajemo niti iznajmljujemo trećim licima. Dijelimo ih isključivo sa našim pouzdanim partnerima ("obrađivačima") koji nam omogućavaju funkcionisanje Platforme, i to samo u mjeri u kojoj je to neophodno. To uključuje:</p><ul><li>Pružaoce hosting i cloud usluga (Vercel, Supabase): Za smještaj aplikacije i bezbjedno skladištenje podataka.</li><li>Pružaoce AI usluga (npr. Google): U skladu sa vašom izričitom saglasnošću, za potrebe generisanja nacrta.</li><li>Pružaoce email usluga (Google Workspace): Za slanje sistemskih obavještenja i finalnih dokumenata.</li></ul><p>Sa svim našim partnerima imamo zaključene ugovore koji ih obavezuju na postupanje sa podacima u skladu sa zakonom i našim uputstvima.</p><h4>6. Period Čuvanja Podataka</h4><p>Podatke o ličnosti prikupljene u svrhu izrade pravnog akta čuvamo u našoj arhivi predmeta u skladu sa rokovima propisanim Zakonom o advokaturi i drugim relevantnim propisima, a najmanje u periodu od 10 godina.</p><h4>7. Vaša Prava</h4><p>U skladu sa Zakonom o zaštiti podataka o ličnosti, imate sljedeća prava:</p><ul><li><strong>Pravo na pristup:</strong> Možete tražiti informaciju o tome da li obrađujemo vaše podatke i pristup tim podacima.</li><li><strong>Pravo na ispravku:</strong> Možete tražiti ispravku netačnih ili dopunu nepotpunih podataka.</li><li><strong>Pravo na brisanje ("pravo na zaborav"):</strong> Možete tražiti brisanje vaših podataka, pod uslovima propisanim zakonom.</li><li><strong>Pravo na ograničenje obrade:</strong> Možete tražiti da se obrada vaših podataka privremeno ograniči.</li><li><strong>Pravo na prigovor:</strong> Imate pravo da uložite prigovor na obradu vaših podataka.</li></ul><p>Za ostvarivanje ovih prava, možete nas kontaktirati putem email adrese: advokat@ugovor24.com. Takođe, imate pravo da podnesete pritužbu Agenciji za zaštitu ličnih podataka i slobodan pristup informacijama.</p><h4>8. Sigurnost Podataka</h4><p>Preduzimamo sve neophodne tehničke i organizacione mjere kako bismo zaštitili vaše podatke od neovlašćenog pristupa, izmjene, objavljivanja ili uništenja. Mjere uključuju:</p><ul><li><strong>Enkripciju podataka:</strong> Svi podaci se kriptuju prilikom prenosa (SSL/TLS) i prilikom skladištenja.</li><li><strong>Kontrolu pristupa:</strong> Pristup vašim podacima je strogo ograničen na ovlašćena lica.</li><li><strong>Redovne sigurnosne provjere:</strong> Naša infrastruktura se redovno ažurira i provjerava.</li></ul><h4>9. Izmjene Politike Privatnosti</h4><p>Zadržavamo pravo da ažuriramo ovu Politiku Privatnosti s vremena na vrijeme. O svim bitnim izmjenama bićete obaviješteni putem emaila ili putem obavještenja na našoj Platformi.</p><h4>10. Kontakt</h4><p>Ako imate bilo kakvih pitanja u vezi sa ovom Politikom Privatnosti ili načinom na koji postupamo sa vašim podacima, molimo vas da nas kontaktirate na:</p><p><strong>Advokatska kancelarija Dejan Radinović</strong><br>Email: advokat@ugovor24.com</p>`,
