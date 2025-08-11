@@ -78,7 +78,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -96,8 +95,7 @@
                     </svg>
                 </button>
             </div>
-             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4">
+             <div id="mobile-menu" class="hidden md:hidden mt-4">
                 <a href="#usluge" class="nav-link block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Usluge i Cijene</a>
                 <a href="#kako-radi" class="nav-link block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Kako Radi</a>
                 <a href="#o-nama" class="nav-link block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">O Nama</a>
@@ -107,11 +105,8 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Home Page Content -->
         <div id="home-page" class="page-content">
-            <!-- Hero Section -->
             <section id="home" class="hero-gradient py-20 md:py-32">
                 <div class="container mx-auto px-6 text-center">
                     <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
@@ -130,7 +125,6 @@
                 </div>
             </section>
 
-            <!-- Kako Radi Section -->
             <section id="kako-radi" class="py-20 bg-white">
                 <div class="container mx-auto px-6">
                     <div class="text-center mb-16">
@@ -163,7 +157,6 @@
                 </div>
             </section>
 
-            <!-- Usluge i Cijene Section -->
             <section id="usluge" class="py-20 bg-gray-50">
                 <div class="container mx-auto px-6">
                     <div class="text-center mb-16">
@@ -171,7 +164,6 @@
                         <p class="mt-4 text-lg text-gray-600">Pristupite širokom spektru pravnih dokumenata po transparentnim cijenama.</p>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <!-- Service Card: NDA -->
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Povjerljivosti (NDA)</h3>
                             <p class="text-gray-600 flex-grow">Osigurajte povjerljivost vaših poslovnih informacija prilikom pregovora i saradnje.</p>
@@ -180,8 +172,7 @@
                                 <button data-service="nda-upitnik-page" class="service-btn mt-4 w-full bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-all">Započni</button>
                             </div>
                         </div>
-                         <!-- Service Card: Ugovor o Djelu -->
-                        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
+                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Djelu</h3>
                             <p class="text-gray-600 flex-grow">Za freelancere i projektne angažmane. Definišite obim posla, rokove i naknadu.</p>
                              <div class="mt-6">
@@ -189,7 +180,6 @@
                                 <button class="service-btn-disabled mt-4 w-full bg-gray-300 text-gray-500 font-semibold px-6 py-3 rounded-lg cursor-not-allowed">Uskoro</button>
                             </div>
                         </div>
-                        <!-- Service Card: Ugovor o Zakupu -->
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Zakupu</h3>
                             <p class="text-gray-600 flex-grow">Zaštitite svoja prava prilikom iznajmljivanja stana ili poslovnog prostora.</p>
@@ -198,7 +188,6 @@
                                 <button class="service-btn-disabled mt-4 w-full bg-gray-300 text-gray-500 font-semibold px-6 py-3 rounded-lg cursor-not-allowed">Uskoro</button>
                             </div>
                         </div>
-                        <!-- Service Card: Ugovor o Radu -->
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Radu</h3>
                             <p class="text-gray-600 flex-grow">Zasnivanje radnog odnosa u skladu sa Zakonom o radu Crne Gore.</p>
@@ -211,7 +200,6 @@
                 </div>
             </section>
 
-            <!-- Poslovni Paket Section -->
             <section id="paket" class="py-20">
                 <div class="container mx-auto px-6">
                     <div class="paket-gradient text-white p-10 md:p-16 rounded-2xl shadow-2xl text-center">
@@ -229,7 +217,6 @@
                 </div>
             </section>
 
-            <!-- O Nama Section -->
             <section id="o-nama" class="py-20 bg-white">
                 <div class="container mx-auto px-6 max-w-4xl text-center">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Vaš Advokat</h2>
@@ -248,7 +235,6 @@
                 </div>
             </section>
             
-            <!-- FAQ Section -->
             <section id="faq" class="py-20 bg-gray-50">
                 <div class="container mx-auto px-6 max-w-4xl">
                     <div class="text-center mb-16">
@@ -256,15 +242,13 @@
                         <p class="mt-4 text-lg text-gray-600">Ovdje su odgovori na najčešća pitanja.</p>
                     </div>
                     <div class="space-y-6">
-                         <!-- FAQ Item -->
-                        <details class="bg-white p-6 rounded-lg shadow-md group">
+                         <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Da li su ugovori sa platforme ugovor24.com pravno validni?
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                             </summary>
                             <p class="mt-4 text-gray-600">Apsolutno. Svaki dokument je zasnovan na važećim zakonima Crne Gore, a finalnu verziju pregleda i odobrava licencirani advokat Dejan Radinović, što garantuje njegovu potpunu pravnu ispravnost i validnost.</p>
                         </details>
-                        <!-- FAQ Item -->
                         <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Koliko brzo ću dobiti ugovor?
@@ -272,15 +256,13 @@
                             </summary>
                             <p class="mt-4 text-gray-600">Naša garancija je isporuka ugovora u roku od 24 časa od trenutka kada vaša uplata bude evidentirana na našem računu. U praksi, to je često i znatno brže.</p>
                         </details>
-                        <!-- FAQ Item -->
-                         <details class="bg-white p-6 rounded-lg shadow-md group">
+                        <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Šta ako mi je potreban ugovor koji nije na listi?
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                             </summary>
                             <p class="mt-4 text-gray-600">Naša biblioteka pokriva najčešće tipove ugovora. Ukoliko vam je potreban kompleksniji ili visoko specijalizovani ugovor, molimo vas da nas kontaktirate direktno. Takve usluge su dostupne na upit i podliježu posebnom ugovaranju.</p>
                         </details>
-                        <!-- FAQ Item -->
                         <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Da li su moji podaci sigurni?
@@ -293,33 +275,25 @@
             </section>
         </div>
 
-        <!-- Uslovi Koriscenja Page -->
         <div id="uslovi-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl page-container legal-page">
-                <!-- Sadržaj će biti ubačen ovdje -->
-            </div>
+                </div>
         </div>
 
-        <!-- Politika Privatnosti Page -->
         <div id="privatnost-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl page-container legal-page">
-                <!-- Sadržaj će biti ubačen ovdje -->
-            </div>
+                </div>
         </div>
 
-        <!-- Kontakt Page -->
         <div id="kontakt-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl text-center page-container">
-                <!-- Sadržaj će biti ubačen ovdje -->
-            </div>
+                </div>
         </div>
         
-        <!-- NDA Upitnik Page -->
         <div id="nda-upitnik-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl page-container">
                 <h2 class="text-center">Upitnik za Ugovor o Povjerljivosti (NDA)</h2>
                 <form id="nda-form">
-                    <!-- Sekcija 1 -->
                     <div class="form-section">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 1: Tip Ugovora</h4>
                         <p class="text-gray-600 mb-4">Ovo je najvažnije pitanje koje određuje strukturu ugovora.</p>
@@ -335,11 +309,9 @@
                         </div>
                     </div>
                     
-                    <!-- Sekcija 2 -->
                     <div class="form-section">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 2: Podaci o Ugovornim Stranama</h4>
                         
-                        <!-- Jednostrani Fields -->
                         <div id="jednostrani-fields" class="space-y-6">
                             <div>
                                 <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana koja OTKRIVA informacije</h5>
@@ -359,7 +331,6 @@
                             </div>
                         </div>
 
-                        <!-- Obostrani Fields -->
                         <div id="obostrani-fields" class="hidden space-y-6">
                             <div>
                                 <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana A</h5>
@@ -380,7 +351,6 @@
                         </div>
                     </div>
 
-                    <!-- Sekcija 3 -->
                     <div class="form-section">
                          <h4 class="text-xl font-semibold mb-4">SEKCIJA 3: Svrha i Uslovi Ugovora</h4>
                          <div class="space-y-4">
@@ -399,8 +369,7 @@
                          </div>
                     </div>
 
-                     <!-- Sekcija 4 -->
-                    <div class="form-section">
+                     <div class="form-section">
                          <h4 class="text-xl font-semibold mb-4">SEKCIJA 4: Dodatne Zaštitne Klauzule</h4>
                          <div class="space-y-4">
                             <div>
@@ -428,7 +397,6 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white">
         <div class="container mx-auto px-6 py-12">
             <div class="grid md:grid-cols-3 gap-8">
@@ -508,7 +476,7 @@
                 <p>Za sva pitanja u vezi sa ovim Uslovima, možete nas kontaktirati na email: advokat@ugovor24.com.</p>
             `;
             const privatnostContent = `
-                <h2>POLITIKA PRIVATNOSTI PLATFORME UGOVOR24.COM</h2>
+                 <h2>POLITIKA PRIVATNOSTI PLATFORME UGOVOR24.COM</h2>
                 <p><strong>Datum stupanja na snagu: 11. avgust 2025. godine</strong></p>
                 <h4>1. Uvod</h4>
                 <p>Dobrodošli na ugovor24.com. Vaša privatnost i zaštita podataka o ličnosti su nam od najveće važnosti. Ova Politika Privatnosti objašnjava koje podatke prikupljamo, kako ih koristimo, na kom pravnom osnovu, i koja su vaša prava u vezi sa vašim podacima.</p>
@@ -625,7 +593,7 @@
                     }
                 });
             });
-
+            
             // Handle service buttons
             document.querySelectorAll('.service-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -635,31 +603,70 @@
             });
             
             // --- NDA FORM LOGIC ---
-            const ndaTypeRadios = document.querySelectorAll('input[name="nda_type"]');
-            const jednostraniFields = document.getElementById('jednostrani-fields');
-            const obostraniFields = document.getElementById('obostrani-fields');
+            const ndaForm = document.getElementById('nda-form');
+            if(ndaForm) {
+                const ndaTypeRadios = document.querySelectorAll('input[name="nda_type"]');
+                const jednostraniFields = document.getElementById('jednostrani-fields');
+                const obostraniFields = document.getElementById('obostrani-fields');
 
-            ndaTypeRadios.forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    if (e.target.value === 'jednostrani') {
-                        jednostraniFields.classList.remove('hidden');
-                        obostraniFields.classList.add('hidden');
+                ndaTypeRadios.forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        if (e.target.value === 'jednostrani') {
+                            jednostraniFields.classList.remove('hidden');
+                            obostraniFields.classList.add('hidden');
+                        } else {
+                            jednostraniFields.classList.add('hidden');
+                            obostraniFields.classList.remove('hidden');
+                        }
+                    });
+                });
+                
+                const ugovornaKaznaSelect = document.getElementById('ugovorna-kazna-select');
+                const ugovornaKaznaIznos = document.getElementById('ugovorna-kazna-iznos');
+                ugovornaKaznaSelect.addEventListener('change', (e) => {
+                    if(e.target.value === 'da') {
+                        ugovornaKaznaIznos.classList.remove('hidden');
                     } else {
-                        jednostraniFields.classList.add('hidden');
-                        obostraniFields.classList.remove('hidden');
+                        ugovornaKaznaIznos.classList.add('hidden');
                     }
                 });
-            });
-            
-            const ugovornaKaznaSelect = document.getElementById('ugovorna-kazna-select');
-            const ugovornaKaznaIznos = document.getElementById('ugovorna-kazna-iznos');
-            ugovornaKaznaSelect.addEventListener('change', (e) => {
-                if(e.target.value === 'da') {
-                    ugovornaKaznaIznos.classList.remove('hidden');
-                } else {
-                    ugovornaKaznaIznos.classList.add('hidden');
-                }
-            });
+
+                // Handle Form Submission
+                ndaForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const button = e.target.querySelector('button[type="submit"]');
+                    button.disabled = true;
+                    button.textContent = 'Šaljem...';
+
+                    // Prikupiti podatke iz forme
+                    // ... (logika za prikupljanje podataka iz svih polja)
+
+                    try {
+                        // Ovdje ide poziv našem "robotu"
+                        // const response = await fetch('/api/kreiraj-nda', {
+                        //     method: 'POST',
+                        //     headers: { 'Content-Type': 'application/json' },
+                        //     body: JSON.stringify(formData),
+                        // });
+
+                        // if (!response.ok) {
+                        //     throw new Error('Došlo je do greške.');
+                        // }
+
+                        // const result = await response.json();
+                        
+                        // Privremeno: samo pokaži uspjeh
+                        alert('Uspješno poslato! Uskoro ćete biti preusmjereni na stranicu za plaćanje.');
+                        // window.location.href = `/placanje?id=${result.porudzbina_uid}`;
+
+                    } catch (error) {
+                        alert('Došlo je do greške prilikom slanja. Molimo pokušajte ponovo.');
+                    } finally {
+                        button.disabled = false;
+                        button.textContent = 'Nastavi na Plaćanje';
+                    }
+                });
+            }
 
 
             // Show home page on initial load
