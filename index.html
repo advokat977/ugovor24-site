@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hr" class="scroll-smooth">
+<html lang="me" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +45,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -63,8 +62,7 @@
                     </svg>
                 </button>
             </div>
-             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4">
+             <div id="mobile-menu" class="hidden md:hidden mt-4">
                 <a href="#usluge" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Usluge i Cijene</a>
                 <a href="#kako-radi" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Kako Radi</a>
                 <a href="#o-nama" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">O Nama</a>
@@ -74,11 +72,8 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Home Page Content -->
         <div id="home-page" class="page-content">
-            <!-- Hero Section -->
             <section class="hero-gradient py-20 md:py-32">
                 <div class="container mx-auto px-6 text-center">
                     <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
@@ -97,7 +92,6 @@
                 </div>
             </section>
 
-            <!-- Kako Radi Section -->
             <section id="kako-radi" class="py-20 bg-white">
                 <div class="container mx-auto px-6">
                     <div class="text-center mb-16">
@@ -130,7 +124,6 @@
                 </div>
             </section>
 
-            <!-- Usluge i Cijene Section -->
             <section id="usluge" class="py-20 bg-gray-50">
                 <div class="container mx-auto px-6">
                     <div class="text-center mb-16">
@@ -138,25 +131,21 @@
                         <p class="mt-4 text-lg text-gray-600">Pristupite širokom spektru pravnih dokumenata po transparentnim cijenama.</p>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <!-- Service Card: NDA -->
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Povjerljivosti (NDA)</h3>
                             <p class="text-gray-600 flex-grow">Osigurajte povjerljivost vaših poslovnih informacija prilikom pregovora i saradnje.</p>
                             <p class="text-4xl font-bold text-gray-900 mt-6">29€</p>
                         </div>
-                         <!-- Service Card: Ugovor o Djelu -->
-                        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
+                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Djelu</h3>
                             <p class="text-gray-600 flex-grow">Za freelancere i projektne angažmane. Definišite obim posla, rokove i naknadu.</p>
                             <p class="text-4xl font-bold text-gray-900 mt-6">59€</p>
                         </div>
-                        <!-- Service Card: Ugovor o Zakupu -->
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Zakupu</h3>
                             <p class="text-gray-600 flex-grow">Zaštitite svoja prava prilikom iznajmljivanja stana ili poslovnog prostora.</p>
                             <p class="text-4xl font-bold text-gray-900 mt-6">79€</p>
                         </div>
-                        <!-- Service Card: Ugovor o Radu -->
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Radu</h3>
                             <p class="text-gray-600 flex-grow">Zasnivanje radnog odnosa u skladu sa Zakonom o radu Crne Gore.</p>
@@ -166,25 +155,23 @@
                 </div>
             </section>
 
-            <!-- Poslovni Paket Section -->
             <section id="paket" class="py-20">
                 <div class="container mx-auto px-6">
                     <div class="paket-gradient text-white p-10 md:p-16 rounded-2xl shadow-2xl text-center">
-                         <h2 class="text-3xl md:text-4xl font-bold">Poslovni Paket</h2>
-                         <p class="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">Za klijente sa redovnim potrebama. Kontinuitet, predvidivi troškovi i viši nivo podrške.</p>
-                         <div class="mt-10">
-                            <p class="text-5xl font-bold">149€<span class="text-2xl font-medium text-blue-200">/mjesečno</span></p>
-                            <ul class="mt-8 space-y-3 text-blue-50 inline-block text-left">
-                                <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Do 5 standardnih ugovora mjesečno</li>
-                                <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>30 minuta pravnih konsultacija</li>
-                                <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Standardni rok isporuke od 24h</li>
-                            </ul>
-                         </div>
+                           <h2 class="text-3xl md:text-4xl font-bold">Poslovni Paket</h2>
+                           <p class="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">Za klijente sa redovnim potrebama. Kontinuitet, predvidivi troškovi i viši nivo podrške.</p>
+                           <div class="mt-10">
+                                <p class="text-5xl font-bold">149€<span class="text-2xl font-medium text-blue-200">/mjesečno</span></p>
+                                <ul class="mt-8 space-y-3 text-blue-50 inline-block text-left">
+                                    <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Do 5 standardnih ugovora mjesečno</li>
+                                    <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>30 minuta pravnih konsultacija</li>
+                                    <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Standardni rok isporuke od 24h</li>
+                                </ul>
+                           </div>
                     </div>
                 </div>
             </section>
 
-            <!-- O Nama Section -->
             <section id="o-nama" class="py-20 bg-white">
                 <div class="container mx-auto px-6 max-w-4xl text-center">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Vaš Advokat</h2>
@@ -197,13 +184,12 @@
                             Kao pravni savjetnik Vlade Crne Gore i vodećih međunarodnih korporacija u ključnim investicionim projektima, stekao je neprocjenjivo iskustvo u izradi najkompleksnijih ugovora. Sada, tu ekspertizu čini dostupnom svima kroz platformu koja spaja tehnološku efikasnost i nezaobilaznu profesionalnu odgovornost.
                         </p>
                         <p>
-                            Njegova licenca i magistarska diploma sa Univerziteta u Sarajevu i Bolonji su vaša garancija da iza svakog dokumenta stoji znanje, integritet i posvećenost najvišim standardima.
+                            Njegova licenca Advokatske komore Crne Gore, uz magistarsku diplomu stečenu na Univerzitetu u Sarajevu i dodatno usavršavanje na Univerzitetu u Bolonji, vaša su garancija da iza svakog dokumenta stoji znanje, integritet i posvećenost najvišim standardima.
                         </p>
                     </div>
                 </div>
             </section>
-            
-            <!-- FAQ Section -->
+                      
             <section id="faq" class="py-20 bg-gray-50">
                 <div class="container mx-auto px-6 max-w-4xl">
                     <div class="text-center mb-16">
@@ -211,15 +197,13 @@
                         <p class="mt-4 text-lg text-gray-600">Ovdje su odgovori na najčešća pitanja.</p>
                     </div>
                     <div class="space-y-6">
-                         <!-- FAQ Item -->
-                        <details class="bg-white p-6 rounded-lg shadow-md group">
+                         <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Da li su ugovori sa platforme ugovor24.com pravno validni?
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                             </summary>
                             <p class="mt-4 text-gray-600">Apsolutno. Svaki dokument je zasnovan na važećim zakonima Crne Gore, a finalnu verziju pregleda i odobrava licencirani advokat Dejan Radinović, što garantuje njegovu potpunu pravnu ispravnost i validnost.</p>
                         </details>
-                        <!-- FAQ Item -->
                         <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Koliko brzo ću dobiti ugovor?
@@ -227,15 +211,13 @@
                             </summary>
                             <p class="mt-4 text-gray-600">Naša garancija je isporuka ugovora u roku od 24 časa od trenutka kada vaša uplata bude evidentirana na našem računu. U praksi, to je često i znatno brže.</p>
                         </details>
-                        <!-- FAQ Item -->
-                         <details class="bg-white p-6 rounded-lg shadow-md group">
+                        <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Šta ako mi je potreban ugovor koji nije na listi?
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                             </summary>
                             <p class="mt-4 text-gray-600">Naša biblioteka pokriva najčešće tipove ugovora. Ukoliko vam je potreban kompleksniji ili visoko specijalizovani ugovor, molimo vas da nas kontaktirate direktno. Takve usluge su dostupne na upit i podliježu posebnom ugovaranju.</p>
                         </details>
-                        <!-- FAQ Item -->
                         <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Da li su moji podaci sigurni?
@@ -248,7 +230,6 @@
             </section>
         </div>
 
-        <!-- Uslovi Koriscenja Page -->
         <div id="uslovi-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl legal-page">
                 <h2>USLOVI KORIŠĆENJA PLATFORME UGOVOR24.COM</h2>
@@ -329,7 +310,6 @@
             </div>
         </div>
 
-        <!-- Politika Privatnosti Page -->
         <div id="privatnost-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl legal-page">
                 <h2>POLITIKA PRIVATNOSTI PLATFORME UGOVOR24.COM</h2>
@@ -337,19 +317,79 @@
                 
                 <h4>1. Uvod</h4>
                 <p>Dobrodošli na ugovor24.com. Vaša privatnost i zaštita podataka o ličnosti su nam od najveće važnosti. Ova Politika Privatnosti objašnjava koje podatke prikupljamo, kako ih koristimo, na kom pravnom osnovu, i koja su vaša prava u vezi sa vašim podacima.</p>
-                <p>Rukovalac vaših podataka o ličnosti je: <strong>Advokatska kancelarija Dejan Radinović</strong>, Email: advokat@ugovor24.com.</p>
+                <p>Korišćenjem usluga na platformi ugovor24.com (u daljem tekstu: Platforma), povjeravate nam svoje podatke. Mi smo svjesni ove odgovornosti i posvećeni smo zaštiti vaših podataka u skladu sa najvišim profesionalnim i zakonskim standardima.</p>
+                <p><strong>Rukovalac Podataka:</strong></p>
+                <p>Rukovalac vaših podataka o ličnosti je:<br>
+                <strong>Advokatska kancelarija Dejan Radinović</strong><br>
+                Email: advokat@ugovor24.com<br>
+                (u daljem tekstu: "mi", "nas", "naš")</p>
 
                 <h4>2. Podaci koje Prikupljamo</h4>
-                <p>Da bismo vam pružili uslugu izrade pravnih dokumenata, prikupljamo podatke koje nam direktno dostavite popunjavanjem upitnika na Platformi. Ovi podaci mogu uključivati identifikacione podatke, kontakt podatke, i druge informacije neophodne za izradu ugovora. Svi podaci se tretiraju kao advokatska tajna.</p>
+                <p>Da bismo vam pružili uslugu izrade pravnih dokumenata, prikupljamo podatke koje nam direktno dostavite popunjavanjem upitnika na Platformi. Ovi podaci mogu uključivati:</p>
+                <ul>
+                    <li>Identifikacione podatke ugovornih strana: Ime i prezime, naziv pravnog lica, adresa prebivališta/sjedišta, jedinstveni matični broj (JMBG) ili poreski identifikacioni broj (PIB).</li>
+                    <li>Kontakt podatke: Email adresa.</li>
+                    <li>Podatke neophodne za izradu ugovora: Informacije koje čine predmet i suštinu ugovora (npr. opis posla, iznos naknade, rokovi, podaci o nekretnini, itd.).</li>
+                    <li>Finansijske podatke: Broj žiro računa (kada je to neophodno za izvršenje ugovora).</li>
+                </ul>
+                <p>Svi podaci koje prikupljamo tretiraju se kao advokatska tajna u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.</p>
                 
-                <h4>3. Korišćenje Vještačke Inteligencije (AI) i Vaša Saglasnost</h4>
-                <p>Naša Platforma koristi modele vještačke inteligencije (AI) kao pomoćno sredstvo za generisanje prvog nacrta dokumenta. Finalnu verziju svakog dokumenta obavezno pregleda i odobrava licencirani advokat. Prihvatanjem Uslova korišćenja i štikliranjem polja za saglasnost, vi se izričito slažete da se podaci koje ste unijeli u upitnik mogu obraditi od strane trećeg lica (pružaoca AI usluge) isključivo u svrhu generisanja nacrta dokumenta.</p>
+                <h4>3. Svrha i Pravni Osnov Obrade Podataka</h4>
+                <p>Vaše podatke o ličnosti obrađujemo isključivo u svrhe pružanja ugovorene pravne pomoći. Pravni osnov za obradu vaših podataka je:</p>
+                <ul>
+                    <li><strong>Izvršenje ugovora</strong> (Član 10, stav 2 Zakona o zaštiti podataka o ličnosti): Obrada je neophodna za izvršenje Ugovora o pružanju pravne pomoći koji zaključujete sa nama prihvatanjem naših Uslova korišćenja.</li>
+                    <li><strong>Poštovanje pravnih obaveza rukovaoca:</strong> Obrada je neophodna radi ispunjenja naših zakonskih obaveza kao advokatske kancelarije (npr. obaveza čuvanja arhive predmeta).</li>
+                </ul>
+
+                <h4>4. Korišćenje Vještačke Inteligencije (AI) i Vaša Saglasnost</h4>
+                <p>Naša Platforma koristi napredne tehnologije, uključujući modele vještačke inteligencije (AI), kako bi se proces izrade prvog nacrta dokumenta učinio efikasnijim. Važno je da razumijete kako i kada se AI koristi:</p>
+                <ul>
+                    <li><strong>Uloga AI:</strong> Vještačka inteligencija se koristi kao pomoćno sredstvo za generisanje prvog nacrta ugovora na osnovu podataka koje unesete i naših internih pravnih templejta. AI analizira unijete podatke i predlaže najadekvatnije formulacije.</li>
+                    <li><strong>Ljudska Kontrola:</strong> Finalnu verziju svakog dokumenta obavezno pregleda, po potrebi koriguje i odobrava licencirani advokat. AI nikada ne donosi konačnu odluku niti pruža pravni savjet.</li>
+                </ul>
+                <p><strong>IZRIČITA SAGLASNOST:</strong> Prije nego što vaši podaci budu poslati na obradu AI modelu, Platforma će od vas tražiti izričitu saglasnost putem posebnog polja za potvrdu (checkbox). Prihvatanjem Uslova korišćenja i štikliranjem polja za saglasnost, vi se izričito slažete da se podaci koje ste unijeli u upitnik mogu obraditi od strane trećeg lica (pružaoca AI usluge, npr. Google) isključivo u svrhu generisanja nacrta dokumenta. Ukoliko ne date saglasnost, nećemo moći da vam pružimo uslugu.</p>
+
+                <h4>5. Dijeljenje Podataka sa Trećim Licima</h4>
+                <p>Vaše podatke ne prodajemo niti iznajmljujemo trećim licima. Dijelimo ih isključivo sa našim pouzdanim partnerima ("obrađivačima") koji nam omogućavaju funkcionisanje Platforme, i to samo u mjeri u kojoj je to neophodno. To uključuje:</p>
+                <ul>
+                    <li>Pružaoce hosting i cloud usluga (Vercel, Supabase): Za smještaj aplikacije i bezbjedno skladištenje podataka.</li>
+                    <li>Pružaoce AI usluga (npr. Google): U skladu sa vašom izričitom saglasnošću, za potrebe generisanja nacrta.</li>
+                    <li>Pružaoce email usluga (Google Workspace): Za slanje sistemskih obavještenja i finalnih dokumenata.</li>
+                </ul>
+                <p>Sa svim našim partnerima imamo zaključene ugovore koji ih obavezuju na postupanje sa podacima u skladu sa zakonom i našim uputstvima.</p>
+
+                <h4>6. Period Čuvanja Podataka</h4>
+                <p>Podatke o ličnosti prikupljene u svrhu izrade pravnog akta čuvamo u našoj arhivi predmeta u skladu sa rokovima propisanim Zakonom o advokaturi i drugim relevantnim propisima, a najmanje u periodu od 10 godina.</p>
+
+                <h4>7. Vaša Prava</h4>
+                <p>U skladu sa Zakonom o zaštiti podataka o ličnosti, imate sljedeća prava:</p>
+                <ul>
+                    <li><strong>Pravo na pristup:</strong> Možete tražiti informaciju o tome da li obrađujemo vaše podatke i pristup tim podacima.</li>
+                    <li><strong>Pravo na ispravku:</strong> Možete tražiti ispravku netačnih ili dopunu nepotpunih podataka.</li>
+                    <li><strong>Pravo na brisanje ("pravo na zaborav"):</strong> Možete tražiti brisanje vaših podataka, pod uslovima propisanim zakonom.</li>
+                    <li><strong>Pravo na ograničenje obrade:</strong> Možete tražiti da se obrada vaših podataka privremeno ograniči.</li>
+                    <li><strong>Pravo na prigovor:</strong> Imate pravo da uložite prigovor na obradu vaših podataka.</li>
+                </ul>
+                <p>Za ostvarivanje ovih prava, možete nas kontaktirati putem email adrese: advokat@ugovor24.com. Takođe, imate pravo da podnesete pritužbu Agenciji za zaštitu ličnih podataka i slobodan pristup informacijama.</p>
+
+                <h4>8. Sigurnost Podataka</h4>
+                <p>Preduzimamo sve neophodne tehničke i organizacione mjere kako bismo zaštitili vaše podatke od neovlašćenog pristupa, izmjene, objavljivanja ili uništenja. Mjere uključuju:</p>
+                <ul>
+                    <li><strong>Enkripciju podataka:</strong> Svi podaci se kriptuju prilikom prenosa (SSL/TLS) i prilikom skladištenja.</li>
+                    <li><strong>Kontrolu pristupa:</strong> Pristup vašim podacima je strogo ograničen na ovlašćena lica.</li>
+                    <li><strong>Redovne sigurnosne provjere:</strong> Naša infrastruktura se redovno ažurira i provjerava.</li>
+                </ul>
+
+                <h4>9. Izmjene Politike Privatnosti</h4>
+                <p>Zadržavamo pravo da ažuriramo ovu Politiku Privatnosti s vremena na vrijeme. O svim bitnim izmjenama bićete obaviješteni putem emaila ili putem obavještenja na našoj Platformi.</p>
                 
-                <!-- ... Ostatak Politike Privatnosti ... -->
+                <h4>10. Kontakt</h4>
+                <p>Ako imate bilo kakvih pitanja u vezi sa ovom Politikom Privatnosti ili načinom na koji postupamo sa vašim podacima, molimo vas da nas kontaktirate na:<br>
+                <strong>Advokatska kancelarija Dejan Radinović</strong><br>
+                Email: advokat@ugovor24.com</p>
             </div>
         </div>
 
-        <!-- Kontakt Page -->
         <div id="kontakt-page" class="page-content hidden">
             <div class="container mx-auto px-6 py-16 max-w-4xl text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Kontaktirajte Nas</h2>
@@ -364,7 +404,6 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white">
         <div class="container mx-auto px-6 py-12">
             <div class="grid md:grid-cols-3 gap-8">
