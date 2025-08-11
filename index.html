@@ -1,278 +1,464 @@
-<!DOCTYPE html>
-<html lang="hr" class="scroll-smooth">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ugovor24.com | Pametni Ugovori, Odobreni od Advokata</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        .hero-gradient {
-            background: linear-gradient(180deg, #f3f4f6 0%, #ffffff 100%);
-        }
-        .paket-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        }
-    </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2681.2">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #0000e9; -webkit-text-stroke: #0000e9}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #0000e9; -webkit-text-stroke: #0000e9; min-height: 15.0px}
+    span.s1 {text-decoration: underline ; font-kerning: none}
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-
-    <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <a href="#" class="text-2xl font-bold text-gray-900">Ugovor<span class="text-blue-600">24</span>.com</a>
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#usluge" class="text-gray-600 hover:text-blue-600 transition-colors">Usluge i Cijene</a>
-                    <a href="#kako-radi" class="text-gray-600 hover:text-blue-600 transition-colors">Kako Radi</a>
-                    <a href="#o-nama" class="text-gray-600 hover:text-blue-600 transition-colors">O Nama</a>
-                    <a href="#faq" class="text-gray-600 hover:text-blue-600 transition-colors">FAQ</a>
-                </nav>
-                <a href="#usluge" class="hidden md:inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-all">Započni</a>
-                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
-                </button>
-            </div>
-             <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden mt-4">
-                <a href="#usluge" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Usluge i Cijene</a>
-                <a href="#kako-radi" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Kako Radi</a>
-                <a href="#o-nama" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">O Nama</a>
-                <a href="#faq" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">FAQ</a>
-                <a href="#usluge" class="block w-full mt-2 bg-blue-600 text-white text-center font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-all">Započni</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero-gradient py-20 md:py-32">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
-                    Pravni Dokumenti, Kreirani Pametno.
-                    <br class="hidden md:block">
-                    <span class="text-blue-600">Odobreni od Advokata.</span>
-                </h1>
-                <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                    Brz, pouzdan i transparentan način da dobijete pravno validne ugovore u Crnoj Gori. Kreirani uz pomoć tehnologije, verifikovani od strane licenciranog advokata.
-                </p>
-                <div class="mt-10">
-                    <a href="#usluge" class="bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                        Pogledajte Usluge i Cijene
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Kako Radi Section -->
-        <section id="kako-radi" class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Jednostavno i Jasno</h2>
-                    <p class="mt-4 text-lg text-gray-600">Tri laka koraka do vašeg pravnog dokumenta.</p>
-                </div>
-                <div class="grid md:grid-cols-3 gap-12 text-center">
-                    <div class="flex flex-col items-center">
-                        <div class="bg-blue-100 text-blue-600 rounded-full p-5 mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">1. Izaberite i Popunite</h3>
-                        <p class="text-gray-600">Odaberite tip ugovora iz naše biblioteke i odgovorite na jednostavna pitanja kroz intuitivni upitnik.</p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-blue-100 text-blue-600 rounded-full p-5 mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">2. Automatizacija i Verifikacija</h3>
-                        <p class="text-gray-600">Naš sistem generiše nacrt, koji zatim pregleda i odobrava licencirani advokat.</p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="bg-blue-100 text-blue-600 rounded-full p-5 mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">3. Preuzmite i Koristite</h3>
-                        <p class="text-gray-600">Gotov, pravno validan dokument stiže u vaš inbox u roku od 24h od potvrde uplate.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Usluge i Cijene Section -->
-        <section id="usluge" class="py-20 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Usluge i Cijene</h2>
-                    <p class="mt-4 text-lg text-gray-600">Pristupite širokom spektru pravnih dokumenata po transparentnim cijenama.</p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Service Card: NDA -->
-                    <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Povjerljivosti (NDA)</h3>
-                        <p class="text-gray-600 flex-grow">Osigurajte povjerljivost vaših poslovnih informacija prilikom pregovora i saradnje.</p>
-                        <p class="text-4xl font-bold text-gray-900 mt-6">29€</p>
-                    </div>
-                     <!-- Service Card: Ugovor o Djelu -->
-                    <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Djelu</h3>
-                        <p class="text-gray-600 flex-grow">Za freelancere i projektne angažmane. Definišite obim posla, rokove i naknadu.</p>
-                        <p class="text-4xl font-bold text-gray-900 mt-6">59€</p>
-                    </div>
-                    <!-- Service Card: Ugovor o Zakupu -->
-                    <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Zakupu</h3>
-                        <p class="text-gray-600 flex-grow">Zaštitite svoja prava prilikom iznajmljivanja stana ili poslovnog prostora.</p>
-                        <p class="text-4xl font-bold text-gray-900 mt-6">79€</p>
-                    </div>
-                    <!-- Service Card: Ugovor o Radu -->
-                    <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Radu</h3>
-                        <p class="text-gray-600 flex-grow">Zasnivanje radnog odnosa u skladu sa Zakonom o radu Crne Gore.</p>
-                        <p class="text-4xl font-bold text-gray-900 mt-6">99€</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Poslovni Paket Section -->
-        <section id="paket" class="py-20">
-            <div class="container mx-auto px-6">
-                <div class="paket-gradient text-white p-10 md:p-16 rounded-2xl shadow-2xl text-center">
-                     <h2 class="text-3xl md:text-4xl font-bold">Poslovni Paket</h2>
-                     <p class="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">Za klijente sa redovnim potrebama. Kontinuitet, predvidivi troškovi i viši nivo podrške.</p>
-                     <div class="mt-10">
-                        <p class="text-5xl font-bold">149€<span class="text-2xl font-medium text-blue-200">/mjesečno</span></p>
-                        <ul class="mt-8 space-y-3 text-blue-50 inline-block text-left">
-                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Do 5 standardnih ugovora mjesečno</li>
-                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>30 minuta pravnih konsultacija</li>
-                            <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Standardni rok isporuke od 24h</li>
-                        </ul>
-                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- O Nama Section -->
-        <section id="o-nama" class="py-20 bg-white">
-            <div class="container mx-auto px-6 max-w-4xl text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Vaš Advokat</h2>
-                <p class="mt-4 text-lg text-gray-600">Upoznajte advokata koji stoji iza ove inovativne usluge.</p>
-                <div class="mt-8 text-gray-700 space-y-4 leading-relaxed text-left md:text-center">
-                    <p>
-                        <span class="font-bold text-gray-900">ugovor24.com</span> je inicijativa advokata <span class="font-bold text-blue-600">Dejana Radinovića</span>, licenciranog člana Advokatske komore Crne Gore od 2004. godine. Sa preko <span class="font-bold">20 godina iskustva</span> u privrednom pravu, međunarodnoj arbitraži i zastupanju, on je posvećen pružanju vrhunske pravne pomoći prilagođene digitalnom dobu.
-                    </p>
-                    <p>
-                        Kao pravni savjetnik Vlade Crne Gore i vodećih međunarodnih korporacija u ključnim investicionim projektima, stekao je neprocjenjivo iskustvo u izradi najkompleksnijih ugovora. Sada, tu ekspertizu čini dostupnom svima kroz platformu koja spaja tehnološku efikasnost i nezaobilaznu profesionalnu odgovornost.
-                    </p>
-                    <p>
-                        Njegova licenca i magistarska diploma sa Univerziteta u Sarajevu i Bolonji su vaša garancija da iza svakog dokumenta stoji znanje, integritet i posvećenost najvišim standardima.
-                    </p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- FAQ Section -->
-        <section id="faq" class="py-20 bg-gray-50">
-            <div class="container mx-auto px-6 max-w-4xl">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Imate Pitanja?</h2>
-                    <p class="mt-4 text-lg text-gray-600">Ovdje su odgovori na najčešća pitanja.</p>
-                </div>
-                <div class="space-y-6">
-                    <!-- FAQ Item -->
-                    <details class="bg-white p-6 rounded-lg shadow-md group">
-                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                            Da li su ovi ugovori pravno validni?
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </summary>
-                        <p class="mt-4 text-gray-600">Apsolutno. Svaki dokument je zasnovan na važećim zakonima Crne Gore, a finalnu verziju pregleda i odobrava licencirani advokat Dejan Radinović, što garantuje njegovu potpunu pravnu ispravnost i validnost.</p>
-                    </details>
-                    <!-- FAQ Item -->
-                    <details class="bg-white p-6 rounded-lg shadow-md group">
-                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                            Koliko brzo ću dobiti ugovor?
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </summary>
-                        <p class="mt-4 text-gray-600">Naša garancija je isporuka ugovora u roku od 24 časa od trenutka kada vaša uplata bude evidentirana na našem računu. U praksi, to je često i znatno brže.</p>
-                    </details>
-                    <!-- FAQ Item -->
-                     <details class="bg-white p-6 rounded-lg shadow-md group">
-                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                            Šta ako mi je potreban ugovor koji nije na listi?
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </summary>
-                        <p class="mt-4 text-gray-600">Naša biblioteka pokriva najčešće tipove ugovora. Ukoliko vam je potreban kompleksniji ili visoko specijalizovani ugovor, molimo vas da nas kontaktirate direktno. Takve usluge su dostupne na upit i podliježu posebnom ugovaranju.</p>
-                    </details>
-                    <!-- FAQ Item -->
-                    <details class="bg-white p-6 rounded-lg shadow-md group">
-                        <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
-                            Da li su moji podaci sigurni?
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </summary>
-                        <p class="mt-4 text-gray-600">Da. Koristimo najmodernije sigurnosne standarde, uključujući enkripciju podataka. Svi vaši podaci se tretiraju kao advokatska tajna, sa najvišim stepenom povjerljivosti i u skladu sa Zakonom o zaštiti podataka o ličnosti i GDPR regulativom.</p>
-                    </details>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold">Ugovor<span class="text-blue-400">24</span>.com</h3>
-                    <p class="mt-4 text-gray-400">Pametni ugovori, odobreni od advokata.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold">Brzi Linkovi</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#usluge" class="text-gray-400 hover:text-white">Usluge i Cijene</a></li>
-                        <li><a href="#o-nama" class="text-gray-400 hover:text-white">O Nama</a></li>
-                        <li><a href="#faq" class="text-gray-400 hover:text-white">FAQ</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold">Pravne Informacije</h3>
-                    <ul class="mt-4 space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Uslovi Korišćenja</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Politika Privatnosti</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Kontakt</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500">
-                <p>&copy; 2025 Advokatska kancelarija Dejan Radinović. Sva prava zadržana.</p>
-                <p class="text-sm mt-1">Platforma ugovor24.com je digitalni servis advokatske kancelarije.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Smooth scroll for anchor links in mobile menu
-        document.querySelectorAll('#mobile-menu a, header a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                if (this.id !== 'mobile-menu-button') {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
-        });
-    </script>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="hr" class="scroll-smooth"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Ugovor24.com | Pametni Ugovori, Odobreni od Advokata&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>-webkit-font-smoothing: antialiased;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>-moz-osx-font-smoothing: grayscale;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.hero-gradient {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(180deg, #f3f4f6 0%, #ffffff 100%);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.paket-gradient {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* Stilovi za pravne stranice */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.legal-page h2 {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 2.25rem; /* 36px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 700;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 1.5rem; /* 24px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.legal-page h4 {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-size: 1.25rem; /* 20px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: 600;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-top: 2rem; /* 32px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 1rem; /* 16px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.legal-page p, .legal-page li {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 1rem; /* 16px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>line-height: 1.75; /* 28px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.legal-page ul {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>list-style-type: disc;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-left: 1.5rem; /* 24px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>margin-bottom: 1rem; /* 16px */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body class="bg-gray-50 text-gray-800"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Header --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="container mx-auto px-6 py-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="flex items-center justify-between"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#home-page" class="nav-link text-2xl font-bold text-gray-900"&gt;Ugovor&lt;span class="text-blue-600"&gt;24&lt;/span&gt;.com&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;nav class="hidden md:flex items-center space-x-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;a href="#usluge" class="text-gray-600 hover:text-blue-600 transition-colors"&gt;Usluge i Cijene&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;a href="#kako-radi" class="text-gray-600 hover:text-blue-600 transition-colors"&gt;Kako Radi&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;a href="#o-nama" class="text-gray-600 hover:text-blue-600 transition-colors"&gt;O Nama&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;a href="#faq" class="text-gray-600 hover:text-blue-600 transition-colors"&gt;FAQ&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/nav&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#usluge" class="hidden md:inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-all"&gt;Započni&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>&lt;!-- Mobile Menu --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="mobile-menu" class="hidden md:hidden mt-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#usluge" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md"&gt;Usluge i Cijene&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#kako-radi" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md"&gt;Kako Radi&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#o-nama" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md"&gt;O Nama&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#faq" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md"&gt;FAQ&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a href="#usluge" class="block w-full mt-2 bg-blue-600 text-white text-center font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-all"&gt;Započni&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/header&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Main Content --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;main&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Home Page Content --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="home-page" class="page-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Hero Section --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;section class="hero-gradient py-20 md:py-32"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="container mx-auto px-6 text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Pravni Dokumenti, Kreirani Pametno.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;br class="hidden md:block"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;span class="text-blue-600"&gt;Odobreni od Advokata.&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>Brz, pouzdan i transparentan način da dobijete pravno validne ugovore u Crnoj Gori. Kreirani uz pomoć tehnologije, verifikovani od strane licenciranog advokata.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="mt-10"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;a href="#usluge" class="bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>Pogledajte Usluge i Cijene</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Kako Radi Section --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;section id="kako-radi" class="py-20 bg-white"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="container mx-auto px-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-center mb-16"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h2 class="text-3xl md:text-4xl font-bold text-gray-900"&gt;Jednostavno i Jasno&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-4 text-lg text-gray-600"&gt;Tri laka koraka do vašeg pravnog dokumenta.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="grid md:grid-cols-3 gap-12 text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex flex-col items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-blue-100 text-blue-600 rounded-full p-5 mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /&gt;&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-900 mb-2"&gt;1. Izaberite i Popunite&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Odaberite tip ugovora iz naše biblioteke i odgovorite na jednostavna pitanja kroz intuitivni upitnik.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex flex-col items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-blue-100 text-blue-600 rounded-full p-5 mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /&gt;&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-900 mb-2"&gt;2. Automatizacija i Verifikacija&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Naš sistem generiše nacrt, koji zatim pregleda i odobrava licencirani advokat.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="flex flex-col items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div class="bg-blue-100 text-blue-600 rounded-full p-5 mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /&gt;&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-900 mb-2"&gt;3. Preuzmite i Koristite&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600"&gt;Gotov, pravno validan dokument stiže u vaš inbox u roku od 24h od potvrde uplate.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Usluge i Cijene Section --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;section id="usluge" class="py-20 bg-gray-50"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="container mx-auto px-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-center mb-16"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h2 class="text-3xl md:text-4xl font-bold text-gray-900"&gt;Usluge i Cijene&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-4 text-lg text-gray-600"&gt;Pristupite širokom spektru pravnih dokumenata po transparentnim cijenama.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Service Card: NDA --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-900 mb-3"&gt;Ugovor o Povjerljivosti (NDA)&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600 flex-grow"&gt;Osigurajte povjerljivost vaših poslovnih informacija prilikom pregovora i saradnje.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-4xl font-bold text-gray-900 mt-6"&gt;29€&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;!-- Service Card: Ugovor o Djelu --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-900 mb-3"&gt;Ugovor o Djelu&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600 flex-grow"&gt;Za freelancere i projektne angažmane. Definišite obim posla, rokove i naknadu.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-4xl font-bold text-gray-900 mt-6"&gt;59€&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Service Card: Ugovor o Zakupu --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-900 mb-3"&gt;Ugovor o Zakupu&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600 flex-grow"&gt;Zaštitite svoja prava prilikom iznajmljivanja stana ili poslovnog prostora.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-4xl font-bold text-gray-900 mt-6"&gt;79€&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- Service Card: Ugovor o Radu --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h3 class="text-xl font-semibold text-gray-900 mb-3"&gt;Ugovor o Radu&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-gray-600 flex-grow"&gt;Zasnivanje radnog odnosa u skladu sa Zakonom o radu Crne Gore.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-4xl font-bold text-gray-900 mt-6"&gt;99€&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- Poslovni Paket Section --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;section id="paket" class="py-20"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="container mx-auto px-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="paket-gradient text-white p-10 md:p-16 rounded-2xl shadow-2xl text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;h2 class="text-3xl md:text-4xl font-bold"&gt;Poslovni Paket&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;p class="mt-4 text-lg text-blue-100 max-w-2xl mx-auto"&gt;Za klijente sa redovnim potrebama. Kontinuitet, predvidivi troškovi i viši nivo podrške.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;div class="mt-10"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="text-5xl font-bold"&gt;149€&lt;span class="text-2xl font-medium text-blue-200"&gt;/mjesečno&lt;/span&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;ul class="mt-8 space-y-3 text-blue-50 inline-block text-left"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;li class="flex items-center"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /&gt;&lt;/svg&gt;Do 5 standardnih ugovora mjesečno&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;li class="flex items-center"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /&gt;&lt;/svg&gt;30 minuta pravnih konsultacija&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;li class="flex items-center"&gt;&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /&gt;&lt;/svg&gt;Standardni rok isporuke od 24h&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- O Nama Section --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;section id="o-nama" class="py-20 bg-white"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="container mx-auto px-6 max-w-4xl text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h2 class="text-3xl md:text-4xl font-bold text-gray-900"&gt;Vaš Advokat&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="mt-4 text-lg text-gray-600"&gt;Upoznajte advokata koji stoji iza ove inovativne usluge.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="mt-8 text-gray-700 space-y-4 leading-relaxed text-left md:text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;span class="font-bold text-gray-900"&gt;ugovor24.com&lt;/span&gt; je inicijativa advokata &lt;span class="font-bold text-blue-600"&gt;Dejana Radinovića&lt;/span&gt;, licenciranog člana Advokatske komore Crne Gore od 2004. godine. Sa preko &lt;span class="font-bold"&gt;20 godina iskustva&lt;/span&gt; u privrednom pravu, međunarodnoj arbitraži i zastupanju, on je posvećen pružanju vrhunske pravne pomoći prilagođene digitalnom dobu.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>Kao pravni savjetnik Vlade Crne Gore i vodećih međunarodnih korporacija u ključnim investicionim projektima, stekao je neprocjenjivo iskustvo u izradi najkompleksnijih ugovora. Sada, tu ekspertizu čini dostupnom svima kroz platformu koja spaja tehnološku efikasnost i nezaobilaznu profesionalnu odgovornost.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>Njegova licenca i magistarska diploma sa Univerziteta u Sarajevu i Bolonji su vaša garancija da iza svakog dokumenta stoji znanje, integritet i posvećenost najvišim standardima.</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;!-- FAQ Section --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;section id="faq" class="py-20 bg-gray-50"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="container mx-auto px-6 max-w-4xl"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="text-center mb-16"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;h2 class="text-3xl md:text-4xl font-bold text-gray-900"&gt;Imate Pitanja?&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;p class="mt-4 text-lg text-gray-600"&gt;Ovdje su odgovori na najčešća pitanja.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div class="space-y-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;!-- FAQ Item --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;details class="bg-white p-6 rounded-lg shadow-md group"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Da li su ugovori sa platforme ugovor24.com pravno validni?</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /&gt;&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/summary&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="mt-4 text-gray-600"&gt;Apsolutno. Svaki dokument je zasnovan na važećim zakonima Crne Gore, a finalnu verziju pregleda i odobrava licencirani advokat Dejan Radinović, što garantuje njegovu potpunu pravnu ispravnost i validnost.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/details&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- FAQ Item --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;details class="bg-white p-6 rounded-lg shadow-md group"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Koliko brzo ću dobiti ugovor?</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /&gt;&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/summary&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="mt-4 text-gray-600"&gt;Naša garancija je isporuka ugovora u roku od 24 časa od trenutka kada vaša uplata bude evidentirana na našem računu. U praksi, to je često i znatno brže.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/details&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- FAQ Item --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                         </span>&lt;details class="bg-white p-6 rounded-lg shadow-md group"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Šta ako mi je potreban ugovor koji nije na listi?</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /&gt;&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/summary&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="mt-4 text-gray-600"&gt;Naša biblioteka pokriva najčešće tipove ugovora. Ukoliko vam je potreban kompleksniji ili visoko specijalizovani ugovor, molimo vas da nas kontaktirate direktno. Takve usluge su dostupne na upit i podliježu posebnom ugovaranju.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/details&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;!-- FAQ Item --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;details class="bg-white p-6 rounded-lg shadow-md group"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>Da li su moji podaci sigurni?</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /&gt;&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/summary&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;p class="mt-4 text-gray-600"&gt;Da. Koristimo najmodernije sigurnosne standarde, uključujući enkripciju podataka. Svi vaši podaci se tretiraju kao advokatska tajna, sa najvišim stepenom povjerljivosti i u skladu sa Zakonom o zaštiti podataka o ličnosti i GDPR regulativom.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/details&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Uslovi Koriscenja Page --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="uslovi-page" class="page-content hidden"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="container mx-auto px-6 py-16 max-w-4xl legal-page"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2&gt;USLOVI KORIŠĆENJA PLATFORME UGOVOR24.COM&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;Datum stupanja na snagu: 11. avgust 2025. godine&lt;/strong&gt;&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 1: Opšte Odredbe&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Dobrodošli na ugovor24.com. Ovi Uslovi Korišćenja (u daljem tekstu: Uslovi) predstavljaju pravno obavezujući ugovor (Ugovor o pružanju pravne pomoći) između Vas (u daljem tekstu: Klijent) i Advokatske kancelarije Dejan Radinović (u daljem tekstu: Kancelarija), koja pruža usluge putem platforme ugovor24.com (u daljem tekstu: Platforma).&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Pristupanjem i korišćenjem usluga na Platformi, potvrđujete da ste pročitali, razumjeli i da u cjelosti prihvatate ove Uslove. Ukoliko se ne slažete sa bilo kojim dijelom ovih Uslova, molimo vas da ne koristite Platformu.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 2: Status Platforme&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Platforma ugovor24.com nije zasebno pravno lice niti tehnološka kompanija koja pruža pravne savjete. Platforma je isključivo digitalni alat i moderni kanal komunikacije u vlasništvu i pod upravom Advokatske kancelarije Dejan Radinović, osmišljen radi efikasnijeg pružanja advokatskih usluga u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 3: Opis i Obim Usluga&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Platforma je osmišljena da pruži efikasnu i pouzdanu pravnu pomoć koja se odnosi isključivo na izradu nacrta i finalizaciju specifičnih pravnih dokumenata (u daljem tekstu: Usluga).&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;Šta Usluga uključuje:&lt;/strong&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Korišćenje interaktivnog upitnika za unos podataka.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Generisanje prvog nacrta dokumenta uz pomoć napredne tehnologije.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Obaveznu i detaljnu provjeru, eventualnu korekciju i finalno odobrenje nacrta od strane licenciranog advokata.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Dostavu finalnog, odobrenog dokumenta u PDF formatu.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;Šta Usluga NE uključuje (Ograničenje Obima):&lt;/strong&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Platforma je osmišljena da standardizuje i ubrza proces izrade dokumenata za uobičajene i česte pravne situacije. Shodno tome, Usluga pružena putem Platforme ne obuhvata:&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Uspostavljanje trajnog odnosa zastupanja između Klijenta i Kancelarije.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Zastupanje pred sudovima ili drugim državnim organima, pregovaranje sa trećim licima, davanje usmenih ili pisanih pravnih savjeta izvan konteksta izrade konkretnog dokumenta.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Izradu visoko specijalizovanih ili kompleksnih ugovora koji zahtijevaju dubinsku analizu specifičnog poslovnog slučaja, poresku optimizaciju ili usklađivanje sa stranim pravom. Takve usluge su dostupne na direktan upit Kancelariji i podliježu posebnom ugovaranju i cjenovniku.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 4: Sukob Interesa&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;1. Klijent potvrđuje i garantuje da u trenutku traženja Usluge nije upoznat sa bilo kakvim okolnostima koje bi mogle predstavljati sukob interesa u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;2. Kancelarija zadržava pravo da, i nakon izvršene uplate, odbije pružanje Usluge ukoliko naknadno utvrdi postojanje sukoba interesa. U tom slučaju, Kancelarija će o tome bez odlaganja obavijestiti Klijenta i izvršiti potpuni povrat uplaćenih sredstava.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 5: Proces Pružanja Usluge&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Korišćenjem Platforme, Klijent je saglasan sa sljedećim procesom:&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Klijent samostalno bira željeni tip dokumenta i popunjava upitnik, unoseći tačne i potpune podatke.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Prije plaćanja, Klijent je dužan da pročita i prihvati ove Uslove i Politiku Privatnosti.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Nakon prihvatanja Uslova, Platforma prikazuje Klijentu instrukcije za plaćanje ugovorene cijene.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Po evidentiranju uplate, Kancelarija pristupa finalizaciji dokumenta.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Kancelarija se obavezuje da će finalni, odobreni dokument dostaviti Klijentu elektronskim putem u roku od 24 časa od momenta evidentiranja uplate.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 6: Korišćenje Tehnologije, Vještačke Inteligencije (AI) i Saglasnost Klijenta&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;Uloga Tehnologije:&lt;/strong&gt; Platforma koristi napredne softverske alate, uključujući modele vještačke inteligencije (AI), kao pomoćno sredstvo za analizu unijetih podataka i generisanje prvog nacrta dokumenta. Svrha tehnologije je isključivo da poveća efikasnost i preciznost u pripremi nacrta.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;Advokatska Kontrola:&lt;/strong&gt; Upotreba tehnologije ne zamjenjuje stručnost advokata. Finalnu verziju svakog dokumenta obavezno pregleda, po potrebi koriguje i odobrava licencirani advokat, čime se garantuje kvalitet i pravna ispravnost.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;IZRIČITA SAGLASNOST ZA OBRADU PODATAKA PUTEM AI:&lt;/strong&gt; Korišćenje Usluge je uslovljeno vašom izričitom saglasnošću. Prihvatanjem ovih Uslova i štikliranjem posebnog polja za potvrdu (checkbox) prije plaćanja, vi se nedvosmisleno slažete i dajete saglasnost da se svi podaci koje ste unijeli u upitnik, uključujući lične i povjerljive podatke, mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta dokumenta za vaše potrebe. Ukoliko ne date ovu saglasnost, Kancelarija tehnički nije u mogućnosti da vam pruži Uslugu putem Platforme.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 7: Obaveze Klijenta&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Klijent je odgovoran za:&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Tačnost, potpunost i istinitost svih podataka unijetih u upitnik.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Pravovremeno plaćanje naknade u skladu sa istaknutim cjenovnikom.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;li&gt;Čuvanje povjerljivosti svojih pristupnih podataka.&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Kancelarija ne snosi odgovornost za bilo kakvu štetu koja može nastati kao posljedica unosa netačnih ili nepotpunih podataka od strane Klijenta.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 8: Cijene i Plaćanje&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Cijene za svaku pojedinačnu Uslugu su jasno istaknute na Platformi. Plaćanje se vrši isključivo bankovnim transferom na poslovni račun Kancelarije, prema instrukcijama dobijenim na Platformi.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 9: Intelektualna Svojina&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Sav sadržaj na Platformi, uključujući tekst, grafiku, logo, templejte i softver, isključivo je vlasništvo Kancelarije i zaštićen je zakonima o autorskom pravu i intelektualnoj svojini.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 10: Ograničenje Odgovornosti&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Kancelarija garantuje da će Usluga biti pružena stručno i savjesno, u skladu sa Zakonom o advokaturi. Odgovornost Kancelarije za eventualnu štetu nastalu pružanjem Usluge ograničena je u skladu sa zakonom i polisom osiguranja od profesionalne odgovornosti.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 11: Privatnost i Advokatska Tajna&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Svi podaci koje Klijent unese na Platformu tretiraju se kao advokatska tajna u smislu Zakona o advokaturi. Način prikupljanja, obrade i čuvanja podataka detaljno je opisan u našoj Politici Privatnosti, koja čini sastavni dio ovih Uslova.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 12: Mjerodavno Pravo i Rješavanje Sporova&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Na ove Uslove primjenjuje se pravo Crne Gore. Svi eventualni sporovi rješavaće se mirnim putem, a ukoliko to nije moguće, nadležan je stvarno nadležni sud u Podgorici.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 13: Izmjene Uslova&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Kancelarija zadržava pravo da izmijeni ove Uslove u bilo kom trenutku. O svim bitnim izmjenama Klijenti će biti obaviješteni putem emaila ili obavještenja na Platformi. Nastavak korišćenja Platforme nakon izmjena podrazumijeva prihvatanje novih Uslova.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Član 14: Kontakt&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Za sva pitanja u vezi sa ovim Uslovima, možete nas kontaktirati na email: advokat@ugovor24.com.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Politika Privatnosti Page --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="privatnost-page" class="page-content hidden"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="container mx-auto px-6 py-16 max-w-4xl legal-page"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2&gt;POLITIKA PRIVATNOSTI PLATFORME UGOVOR24.COM&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&lt;strong&gt;Datum stupanja na snagu: 11. avgust 2025. godine&lt;/strong&gt;&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;1. Uvod&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Dobrodošli na ugovor24.com. Vaša privatnost i zaštita podataka o ličnosti su nam od najveće važnosti. Ova Politika Privatnosti objašnjava koje podatke prikupljamo, kako ih koristimo, na kom pravnom osnovu, i koja su vaša prava u vezi sa vašim podacima.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Rukovalac vaših podataka o ličnosti je: &lt;strong&gt;Advokatska kancelarija Dejan Radinović&lt;/strong&gt;, Email: advokat@ugovor24.com.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;2. Podaci koje Prikupljamo&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Da bismo vam pružili uslugu izrade pravnih dokumenata, prikupljamo podatke koje nam direktno dostavite popunjavanjem upitnika na Platformi. Ovi podaci mogu uključivati identifikacione podatke, kontakt podatke, i druge informacije neophodne za izradu ugovora. Svi podaci se tretiraju kao advokatska tajna.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h4&gt;3. Korišćenje Vještačke Inteligencije (AI) i Vaša Saglasnost&lt;/h4&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;Naša Platforma koristi modele vještačke inteligencije (AI) kao pomoćno sredstvo za generisanje prvog nacrta dokumenta. Finalnu verziju svakog dokumenta obavezno pregleda i odobrava licencirani advokat. Prihvatanjem Uslova korišćenja i štikliranjem polja za saglasnost, vi se izričito slažete da se podaci koje ste unijeli u upitnik mogu obraditi od strane trećeg lica (pružaoca AI usluge) isključivo u svrhu generisanja nacrta dokumenta.&lt;/p&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- ... Ostatak Politike Privatnosti ... --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Kontakt Page --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="kontakt-page" class="page-content hidden"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="container mx-auto px-6 py-16 max-w-4xl text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 class="text-3xl md:text-4xl font-bold text-gray-900"&gt;Kontaktirajte Nas&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="mt-8 text-lg text-gray-700 space-y-4 leading-relaxed"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;Za sva pitanja, specifične zahtjeve ili informacije o kompleksnijim ugovorima, stojimo vam na raspolaganju.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="font-semibold text-gray-900"&gt;Advokatska kancelarija Dejan Radinović&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;Email: &lt;a href="mailto:advokat@ugovor24.com" class="text-blue-600 hover:underline"&gt;advokat@ugovor24.com&lt;/a&gt;&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p&gt;Radno vrijeme: Ponedjeljak - Petak: 10:00 - 14:00&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="text-sm text-gray-500 mt-6"&gt;*Molimo vas da imate u vidu da se putem emaila ne pružaju pravni savjeti. Za konkretnu pravnu pomoć, molimo koristite usluge na našoj platformi ili zakažite konsultacije.*&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/main&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- Footer --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;footer class="bg-gray-900 text-white"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="container mx-auto px-6 py-12"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="grid md:grid-cols-3 gap-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-xl font-bold"&gt;Ugovor&lt;span class="text-blue-400"&gt;24&lt;/span&gt;.com&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p class="mt-4 text-gray-400"&gt;Pametni ugovori, odobreni od advokata.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-semibold"&gt;Brzi Linkovi&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul class="mt-4 space-y-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#usluge" class="text-gray-400 hover:text-white"&gt;Usluge i Cijene&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#o-nama" class="text-gray-400 hover:text-white"&gt;O Nama&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#faq" class="text-gray-400 hover:text-white"&gt;FAQ&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 class="text-lg font-semibold"&gt;Pravne Informacije&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul class="mt-4 space-y-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#uslovi-page" class="nav-link text-gray-400 hover:text-white"&gt;Uslovi Korišćenja&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#privatnost-page" class="nav-link text-gray-400 hover:text-white"&gt;Politika Privatnosti&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#kontakt-page" class="nav-link text-gray-400 hover:text-white"&gt;Kontakt&lt;/a&gt;&lt;/li&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="mt-12 border-t border-gray-800 pt-8 text-center text-gray-500"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p&gt;&amp;copy; 2025 Advokatska kancelarija Dejan Radinović. Sva prava zadržana.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p class="text-sm mt-1"&gt;Platforma ugovor24.com je digitalni servis advokatske kancelarije.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/footer&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Simple single-page navigation</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const pageContents = document.querySelectorAll('.page-content');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const navLinks = document.querySelectorAll('.nav-link');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showPage(pageId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Hide all pages</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>pageContents.forEach(page =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>page.classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Show the target page</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const targetPage = document.getElementById(pageId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (targetPage) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>targetPage.classList.remove('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>window.scrollTo(0, 0); // Scroll to top</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Fallback to home if page not found</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('home-page').classList.remove('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>navLinks.forEach(link =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>link.addEventListener('click', (e) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>e.preventDefault();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const pageId = link.getAttribute('href').substring(1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>showPage(pageId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Show home page on initial load</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>showPage('home-page');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Mobile menu toggle</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const mobileMenuButton = document.getElementById('mobile-menu-button');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const mobileMenu = document.getElementById('mobile-menu');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>mobileMenuButton.addEventListener('click', () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>mobileMenu.classList.toggle('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Close mobile menu on link click</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.querySelectorAll('#mobile-menu a').forEach(anchor =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>anchor.addEventListener('click', function (e) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>mobileMenu.classList.add('hidden');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>
