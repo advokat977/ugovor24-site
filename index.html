@@ -190,7 +190,7 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     // ------ SPA NAVIGACIJA ------
     const pages = document.querySelectorAll('.page-content');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -299,7 +299,8 @@
 
     // SPA routing po hash-u
     function routeByHash() {
-        const hash = window.location.hash || '#home-page';
+        let hash = window.location.hash;
+        if (!hash || hash === "#") hash = "#home-page";
         showPage(hash.replace('#',''));
     }
     window.addEventListener('popstate', routeByHash);
