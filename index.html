@@ -191,7 +191,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    // SPA navigacija po anchorima
+    // ------ SPA NAVIGACIJA ------
     const pages = document.querySelectorAll('.page-content');
     const navLinks = document.querySelectorAll('.nav-link');
     const mobileMenuBtn = document.getElementById('mobile-menu-button');
@@ -200,6 +200,18 @@
     const ndaTypeRadios = document.querySelectorAll('input[name="nda_type"]');
     const ugovornaKaznaSelect = document.getElementById('ugovorna-kazna-select');
     const ugovornaKaznaIznos = document.getElementById('ugovorna-kazna-iznos');
+    const ndaForm = document.getElementById('nda-form');
+    const placanjePage = document.getElementById('placanje-page');
+    const placanjeLoader = document.getElementById('placanje-loader');
+    const placanjeContent = document.getElementById('placanje-content');
+    const placanjeError = document.getElementById('placanje-error');
+
+    // Pravne i kontakt stranice (popuni po želji)
+    const content = {
+        "uslovi-page": `<h2>Uslovi korišćenja</h2><p>Ovdje unesi svoje uslove korišćenja...</p>`,
+        "privatnost-page": `<h2>Politika privatnosti</h2><p>Ovdje unesi politiku privatnosti...</p>`,
+        "kontakt-page": `<h2>Kontakt</h2><p>Pošaljite upit na <a href="mailto:info@ugovor24.com" class="text-blue-600 underline">info@ugovor24.com</a></p>`
+    };
 
     // Helper: Sakrij sve stranice
     function hideAllPages() {
@@ -213,6 +225,12 @@
         page.classList.remove('hidden');
         window.scrollTo(0, 0);
         if (mobileMenu) mobileMenu.classList.add('hidden');
+
+        // Ako je pravna ili kontakt stranica, ubaci tekst
+        if (content[id]) {
+            const container = page.querySelector('.page-container');
+            if (container) container.innerHTML = content[id];
+        }
     }
 
     // Klik na meni linkove
@@ -223,7 +241,6 @@
                 e.preventDefault();
                 const pageId = href.replace('#', '');
                 showPage(pageId);
-                // Update hash in URL
                 history.pushState(null, '', href);
             }
             if (mobileMenu) mobileMenu.classList.add('hidden');
@@ -280,13 +297,118 @@
         });
     }
 
-    // Prikaz prave stranice ako je hash u URL-u
+    // SPA routing po hash-u
     function routeByHash() {
         const hash = window.location.hash || '#home-page';
         showPage(hash.replace('#',''));
     }
     window.addEventListener('popstate', routeByHash);
     routeByHash();
+
+    // ------ NDA FORMA - SLANJE NA BACKEND ------
+
+    if (ndaForm) {
+        ndaForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Pripremi podatke iz forme
+            const formData = new FormData(ndaForm);
+            const nda_type = formData.get('nda_type');
+
+            // Validacija klijentska
+            let valid = ndaForm.checkValidity();
+            if (!valid) {
+                ndaForm.reportValidity();
+                return;
+            }
+
+            // Pripremi podatke za API (backend)
+            let nda_podaci = {};
+            if (nda_type === 'jednostrani') {
+                nda_podaci = {
+                    tip_nda: 'jednostrani',
+                    strana_a_naziv: formData.get('jednostrani_otkriva_naziv'),
+                    strana_a_adresa: formData.get('jednostrani_otkriva_adresa'),
+                    strana_a_id_broj: formData.get('jednostrani_otkriva_id'),
+                    strana_b_naziv: formData.get('jednostrani_prima_naziv'),
+                    strana_b_adresa: formData.get('jednostrani_prima_adresa'),
+                    strana_b_id_broj: formData.get('jednostrani_prima_id'),
+                    svrha_otkrivanja: formData.get('svrha_otkrivanja'),
+                    period_trajanja_godine: Number(formData.get('period_trajanja_godine')),
+                    ima_ugovornu_kaznu: formData.get('ima_ugovornu_kaznu') === 'da',
+                    iznos_kazne: formData.get('ima_ugovornu_kaznu') === 'da' ? Number(formData.get('iznos_kazne')) : null
+                }
+            } else {
+                nda_podaci = {
+                    tip_nda: 'obostrani',
+                    strana_a_naziv: formData.get('obostrani_a_naziv'),
+                    strana_a_adresa: formData.get('obostrani_a_adresa'),
+                    strana_a_id_broj: formData.get('obostrani_a_id'),
+                    strana_b_naziv: formData.get('obostrani_b_naziv'),
+                    strana_b_adresa: formData.get('obostrani_b_adresa'),
+                    strana_b_id_broj: formData.get('obostrani_b_id'),
+                    svrha_otkrivanja: formData.get('svrha_otkrivanja'),
+                    period_trajanja_godine: Number(formData.get('period_trajanja_godine')),
+                    ima_ugovornu_kaznu: formData.get('ima_ugovornu_kaznu') === 'da',
+                    iznos_kazne: formData.get('ima_ugovornu_kaznu') === 'da' ? Number(formData.get('iznos_kazne')) : null
+                }
+            }
+
+            // Pripremi payload
+            const payload = {
+                tip_ugovora: "NDA",
+                cijena: 29,
+                email_klijenta: formData.get('email_klijenta'),
+                nda_podaci
+            };
+
+            // Prikaži loader na placanje stranici
+            showPage('placanje-page');
+            if (placanjeLoader) placanjeLoader.classList.remove('hidden');
+            if (placanjeContent) placanjeContent.classList.add('hidden');
+            if (placanjeError) placanjeError.classList.add('hidden');
+
+            try {
+                // Pozovi backend (AJAX)
+                const response = await fetch('/api/kreiraj-nda', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error || "Greška prilikom slanja podataka.");
+
+                // Prikaz instrukcija za plaćanje (demo podaci)
+                setTimeout(() => {
+                    if (placanjeLoader) placanjeLoader.classList.add('hidden');
+                    if (placanjeContent) placanjeContent.classList.remove('hidden');
+
+                    // Popuni podatke za plaćanje (simulacija)
+                    document.getElementById('primalac-display').innerText = "Advokatska kancelarija Dejan Radinović";
+                    document.getElementById('adresa-display').innerText = "Podgorica, Crna Gora";
+                    document.getElementById('racun-display').innerText = "555-123456789-10";
+                    document.getElementById('banka-display').innerText = "CKB Banka";
+                    document.getElementById('svrha-display').innerText = "NDA - " + data.porudzbina_uid;
+                    document.getElementById('iznos-display').innerText = "29,00 €";
+
+                    // QR kod (samo simulacija, možeš proširiti podatke po želji)
+                    if (window.QRCode) {
+                        document.getElementById('qrcode').innerHTML = '';
+                        new QRCode(document.getElementById('qrcode'), {
+                            text: "Platite 29 EUR na račun 555-123456789-10, svrha: NDA - " + data.porudzbina_uid,
+                            width: 180,
+                            height: 180
+                        });
+                    }
+                }, 1000); // demo loader
+
+            } catch (err) {
+                if (placanjeLoader) placanjeLoader.classList.add('hidden');
+                if (placanjeError) placanjeError.classList.remove('hidden');
+            }
+        });
+    }
 });
     </script>
 </body>
