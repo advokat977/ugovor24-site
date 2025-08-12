@@ -1,104 +1,98 @@
-// OVAJ FAJL SE NALAZI NA LOKACIJI: /api/kreiraj-nda/index.ts
-// Vercel automatski prepoznaje ovu strukturu i kreira API endpoint.
-
 import { createClient } from '@supabase/supabase-js';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Definišemo kakve podatke očekujemo da dobijemo od klijenta (iz upitnika)
-// Ovo je TypeScript, pomaže nam da izbjegnemo greške.
-interface NdaRequestBody {
-    email_klijenta: string;
-    tip_nda: 'jednostrani' | 'obostrani';
-    podaci_strane_a: object;
-    podaci_strane_b?: object; // Opciono, samo za obostrani
-    svrha_otkrivanja: string;
-    period_trajanja_godine: number;
-    ima_ugovornu_kaznu: boolean;
-    iznos_kazne?: number; // Opciono
-    mjesto_zakljucenja: string;
-}
-
-// Glavna funkcija - naš "Robot Prijemničar"
+// Glavna funkcija koja se izvršava kada neko popuni formular
 export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
+    req: VercelRequest,
+    res: VercelResponse,
 ) {
-  // Dozvoljavamo samo POST metod. Ako neko pokuša da pristupi drugačije, vraćamo grešku.
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).end('Method Not Allowed');
-  }
-
-  try {
-    // 1. PRIJEM I VALIDACIJA PODATAKA
-    const data: NdaRequestBody = req.body;
-
-    // Osnovna validacija - provjeravamo da li su ključni podaci tu
-    if (!data.email_klijenta || !data.tip_nda || !data.podaci_strane_a || !data.svrha_otkrivanja) {
-        return res.status(400).json({ error: 'Nedostaju obavezni podaci.' });
+    // Proveravamo da li je zahtev poslat na ispravan način
+    if (req.method !== 'POST') {
+        res.setHeader('Allow', 'POST');
+        return res.status(405).end('Method Not Allowed');
     }
 
-    // 2. KONEKCIJA SA BAZOM
-    // Kreiramo sigurnu konekciju sa Supabase bazom.
-    // Ovi ključevi se NIKADA ne upisuju direktno u kod.
-    // Čitaju se iz sigurnog "sefa" na Vercelu (Environment Variables).
-    const supabaseUrl = process.env.SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!; // VAŽNO: Koristimo SERVICE_ROLE ključ!
+    try {
+        const payload = req.body;
+        const nda_podaci = payload.nda_podaci;
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+        // Proveravamo da li su svi neophodni podaci popunjeni
+        const requiredFields = [
+            'email_klijenta', 
+            'nda_podaci.tip_nda', 
+            'nda_podaci.podaci_strane_a.naziv', 
+            'nda_podaci.podaci_strane_b.naziv',
+            'nda_podaci.svrha_otkrivanja'
+        ];
 
-    // 3. UPIS U BAZU (TRANSAKCIJA)
-    // Koristimo "transakciju" da bismo osigurali da se oba upisa dese uspješno.
-    // Ako drugi upis ne uspije, prvi će biti poništen. Ovo čuva integritet podataka.
-    // Najbolja praksa je da se ovo radi kroz RPC funkciju u samoj bazi, ali za početak je i ovo sigurno.
+        for (const field of requiredFields) {
+            let value = payload;
+            let path = field.split('.');
+            for (let part of path) {
+                value = value[part];
+                if (value === undefined || value === null || value === '') {
+                    return res.status(400).json({ error: `Nedostaje obavezni podatak: ${field}` });
+                }
+            }
+        }
 
-    // Prvo, upisujemo osnovne podatke u glavnu tabelu 'porudzbine'
-    const { data: porudzbinaData, error: porudzbinaError } = await supabase
-      .from('porudzbine')
-      .insert({
-        tip_ugovora: 'NDA',
-        cijena: 29, // Fiksna cijena za NDA
-        status: 'čeka uplatu',
-        email_klijenta: data.email_klijenta,
-      })
-      .select()
-      .single();
+        // Povezujemo se sa bazom podataka (Supabase)
+        const supabaseUrl = process.env.SUPABASE_URL!;
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-    if (porudzbinaError) {
-      // Ako upis u prvu tabelu ne uspije, bacamo grešku.
-      throw porudzbinaError;
+        const supabase = createClient(supabaseUrl, supabaseServiceKey);
+        let porudzbina_id: number | null = null;
+        let porudzbina_uid: string | null = null;
+
+        try {
+            // Korak 1: Kreiranje nove porudžbine u glavnoj tabeli
+            const { data: porudzbinaData, error: porudzbinaError } = await supabase
+                .from('porudzbine')
+                .insert([{
+                    tip_ugovora: payload.tip_ugovora,
+                    cijena: payload.cijena,
+                    email_klijenta: payload.email_klijenta,
+                    status: 'čeka uplatu'
+                }])
+                .select('id, porudzbina_uid')
+                .single();
+
+            if (porudzbinaError) {
+                throw porudzbinaError;
+            }
+
+            porudzbina_id = porudzbinaData.id;
+            porudzbina_uid = porudzbinaData.porudzbina_uid;
+
+            // Korak 2: Unos specifičnih podataka za NDA u drugu tabelu
+            const { error: ndaError } = await supabase
+                .from('nda_podaci')
+                .insert([{
+                    ...nda_podaci,
+                    porudzbina_id: porudzbina_id
+                }]);
+
+            if (ndaError) {
+                throw ndaError;
+            }
+
+            // Korak 3: Ako je sve uspešno, šaljemo odgovor nazad sajtu
+            return res.status(200).json({
+                porudzbina_uid: porudzbina_uid,
+                message: 'Porudžbina je uspešno kreirana. Pređite na plaćanje.'
+            });
+        } catch (dbError) {
+            // Ako nešto krene po zlu, brišemo porudžbinu da ne ostane nepotpuna
+            if (porudzbina_id) {
+                await supabase.from('porudzbine').delete().eq('id', porudzbina_id);
+                console.error('Izvršeno brisanje porudžbine zbog greške u transakciji:', porudzbina_id);
+            }
+            console.error('Greška pri obradi baze podataka:', dbError);
+            return res.status(500).json({ error: 'Došlo je do greške pri čuvanju podataka. Molimo pokušajte ponovo.' });
+        }
+
+    } catch (e) {
+        console.error('Greška u serverless funkciji:', e);
+        return res.status(500).json({ error: 'Došlo je do interne greške servera. Proverite logove.' });
     }
-
-    // Zatim, ako je prvi upis uspio, upisujemo specifične podatke u 'nda_podaci'
-    const { error: ndaError } = await supabase
-      .from('nda_podaci')
-      .insert({
-        porudzbina_id: porudzbinaData.id, // Povezujemo sa ID-jem iz prve tabele
-        tip_nda: data.tip_nda,
-        podaci_strane_a: data.podaci_strane_a,
-        podaci_strane_b: data.podaci_strane_b,
-        svrha_otkrivanja: data.svrha_otkrivanja,
-        period_trajanja_godine: data.period_trajanja_godine,
-        ima_ugovornu_kaznu: data.ima_ugovornu_kaznu,
-        iznos_kazne: data.iznos_kazne,
-      });
-
-    if (ndaError) {
-      // Ako drugi upis ne uspije, moramo obrisati prvi da ne ostane "siroče"
-      await supabase.from('porudzbine').delete().eq('id', porudzbinaData.id);
-      throw ndaError;
-    }
-
-    // 4. SLANJE ODGOVORA
-    // Ako je sve prošlo kako treba, vraćamo uspješan odgovor i jedinstveni ID porudžbine.
-    // Na osnovu ovog ID-ja, sajt će preusmjeriti klijenta na stranicu za plaćanje.
-    return res.status(201).json({ 
-        message: 'Porudžbina uspješno kreirana.',
-        porudzbina_uid: porudzbinaData.porudzbina_uid 
-    });
-
-  } catch (error) {
-    console.error('Greška prilikom kreiranja porudžbine:', error);
-    return res.status(500).json({ error: 'Došlo je do interne greške na serveru.' });
-  }
 }
