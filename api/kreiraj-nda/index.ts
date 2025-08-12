@@ -13,6 +13,7 @@ export default async function handler(
 
     try {
         const payload = req.body;
+        const nda_podaci = payload.nda_podaci;
 
         // Proveravamo da li su svi neophodni podaci popunjeni
         const requiredFields = [
@@ -66,17 +67,17 @@ export default async function handler(
                 .from('nda_podaci')
                 .insert([{
                     porudzbina_id: porudzbina_id,
-                    tip_nda: payload.nda_podaci.tip_nda,
-                    strana_a_naziv: payload.nda_podaci.strana_a_naziv,
-                    strana_a_adresa: payload.nda_podaci.strana_a_adresa,
-                    strana_a_id_broj: payload.nda_podaci.strana_a_id_broj,
-                    strana_b_naziv: payload.nda_podaci.strana_b_naziv,
-                    strana_b_adresa: payload.nda_podaci.strana_b_adresa,
-                    strana_b_id_broj: payload.nda_podaci.strana_b_id_broj,
-                    svrha_otkrivanja: payload.nda_podaci.svrha_otkrivanja,
-                    period_trajanja_godine: payload.nda_podaci.period_trajanja_godine,
-                    ima_ugovornu_kaznu: payload.nda_podaci.ima_ugovornu_kaznu,
-                    iznos_kazne: payload.nda_podaci.iznos_kazne
+                    tip_nda: nda_podaci.tip_nda,
+                    strana_a_naziv: nda_podaci.strana_a_naziv,
+                    strana_a_adresa: nda_podaci.strana_a_adresa,
+                    strana_a_id_broj: nda_podaci.strana_a_id_broj,
+                    strana_b_naziv: nda_podaci.strana_b_naziv,
+                    strana_b_adresa: nda_podaci.strana_b_adresa,
+                    strana_b_id_broj: nda_podaci.strana_b_id_broj,
+                    svrha_otkrivanja: nda_podaci.svrha_otkrivanja,
+                    period_trajanja_godine: nda_podaci.period_trajanja_godine,
+                    ima_ugovornu_kaznu: nda_podaci.ima_ugovornu_kaznu,
+                    iznos_kazne: nda_podaci.iznos_kazne
                 }]);
 
             if (ndaError) {
