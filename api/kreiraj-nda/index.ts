@@ -63,7 +63,7 @@ export default async function handler(
             porudzbina_uid = porudzbinaData.porudzbina_uid;
 
             // Korak 2: Unos specifičnih podataka za NDA u drugu tabelu
-            // Konvertujemo JSON objekte u tekst pre slanja
+            // Svi JSON objekti se pretvaraju u običan tekst pre slanja
             const { error: ndaError } = await supabase
                 .from('nda_podaci')
                 .insert([{
@@ -87,7 +87,6 @@ export default async function handler(
                 message: 'Porudžbina je uspešno kreirana. Pređite na plaćanje.'
             });
         } catch (dbError) {
-            // Ako nešto krene po zlu, brišemo porudžbinu da ne ostane nepotpuna
             if (porudzbina_id) {
                 await supabase.from('porudzbine').delete().eq('id', porudzbina_id);
                 console.error('Izvršeno brisanje porudžbine zbog greške u transakciji:', porudzbina_id);
