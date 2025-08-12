@@ -34,7 +34,13 @@ export default async function handler(
   }
 
   try {
-    const payload: NdaPayload = req.body;
+    // Osigurajmo parsiranje body-ja ako je slučajno string
+    let payload: NdaPayload;
+    if (typeof req.body === 'string') {
+        payload = JSON.parse(req.body);
+    } else {
+        payload = req.body;
+    }
 
     // Validacija osnovnih podataka
     if (!payload.email_klijenta || !payload.nda_podaci) {
@@ -57,7 +63,7 @@ export default async function handler(
       .select('id, porudzbina_uid')
       .single();
 
-    if (porudzbinaError) {
+    if (porudzbinaError || !porudzbinaData) {
       console.error('Supabase porudzbina greska:', porudzbinaError);
       throw new Error('Greška pri kreiranju osnovne porudžbine.');
     }
