@@ -15,40 +15,6 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        .hero-gradient {
-            background: linear-gradient(180deg, #f3f4f6 0%, #ffffff 100%);
-        }
-        .paket-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        }
-        /* Stilovi za pravne stranice */
-        .legal-page h2 {
-            font-size: 2.25rem; /* 36px */
-            font-weight: 700;
-            margin-bottom: 1.5rem; /* 24px */
-        }
-        .legal-page h4 {
-            font-size: 1.25rem; /* 20px */
-            font-weight: 600;
-            margin-top: 2rem; /* 32px */
-            margin-bottom: 1rem; /* 16px */
-        }
-        .legal-page p, .legal-page li {
-            margin-bottom: 1rem; /* 16px */
-            line-height: 1.75; /* 28px */
-        }
-        .legal-page ul {
-            list-style-type: disc;
-            margin-left: 1.5rem; /* 24px */
-            margin-bottom: 1rem; /* 16px */
-        }
-        /* Stilovi za formu */
-        .form-section { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e5e7eb; }
-        .form-label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; transition: border-color 0.2s, box-shadow 0.2s; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4); }
-        .form-radio-label { display: flex; align-items: center; padding: 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; cursor: pointer; }
-        .form-radio-label input { margin-right: 0.75rem; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -56,7 +22,7 @@
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <a href="#home-page" class="nav-link text-2xl font-bold text-gray-900">Ugovor<span class="text-blue-600">24</span>.com</a>
+                <a href="#home-page" class="nav-link text-2xl font-bold text-gray-900" aria-label="Ugovor24.com logo i link na početnu stranicu">Ugovor<span class="text-blue-600">24</span>.com</a>
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#usluge" class="nav-link text-gray-600 hover:text-blue-600 transition-colors">Usluge i Cijene</a>
                     <a href="#kako-radi" class="nav-link text-gray-600 hover:text-blue-600 transition-colors">Kako Radi</a>
@@ -64,25 +30,25 @@
                     <a href="#faq" class="nav-link text-gray-600 hover:text-blue-600 transition-colors">FAQ</a>
                 </nav>
                 <a href="#usluge" class="nav-link hidden md:inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-all">Započni</a>
-                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100" aria-label="Otvori mobilni meni">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
                 </button>
             </div>
-             <div id="mobile-menu" class="hidden md:hidden mt-4">
+            <nav id="mobile-menu" class="hidden md:hidden mt-4">
                 <a href="#usluge" class="nav-link block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Usluge i Cijene</a>
                 <a href="#kako-radi" class="nav-link block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">Kako Radi</a>
                 <a href="#o-nama" class="nav-link block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">O Nama</a>
                 <a href="#faq" class="nav-link block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded-md">FAQ</a>
                 <a href="#usluge" class="nav-link block w-full mt-2 bg-blue-600 text-white text-center font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-all">Započni</a>
-            </div>
+            </nav>
         </div>
     </header>
 
     <main>
         <div id="home-page" class="page-content">
-            <section id="home" class="hero-gradient py-20 md:py-32">
+            <section id="home" class="bg-gray-100 py-20 md:py-32 bg-gradient-to-b from-gray-100 to-white">
                 <div class="container mx-auto px-6 text-center">
                     <h1 class="text-4xl md:text-6xl font-bold text-gray-900 leading-tight">
                         Pravni Dokumenti, Kreirani Pametno.
@@ -149,10 +115,10 @@
                                 </button>
                             </div>
                         </div>
-                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
+                        <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Djelu</h3>
                             <p class="text-gray-600 flex-grow">Za freelancere i projektne angažmane. Definišite obim posla, rokove i naknadu.</p>
-                             <div class="mt-6">
+                            <div class="mt-6">
                                 <p class="text-4xl font-bold text-gray-900">59€</p>
                                 <button class="service-btn-disabled mt-4 w-full bg-gray-300 text-gray-500 font-semibold px-6 py-3 rounded-lg cursor-not-allowed">
                                     Uskoro
@@ -162,7 +128,7 @@
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Zakupu</h3>
                             <p class="text-gray-600 flex-grow">Zaštitite svoja prava prilikom iznajmljivanja stana ili poslovnog prostora.</p>
-                             <div class="mt-6">
+                            <div class="mt-6">
                                 <p class="text-4xl font-bold text-gray-900">79€</p>
                                 <button class="service-btn-disabled mt-4 w-full bg-gray-300 text-gray-500 font-semibold px-6 py-3 rounded-lg cursor-not-allowed">
                                     Uskoro
@@ -172,7 +138,7 @@
                         <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow flex flex-col">
                             <h3 class="text-xl font-semibold text-gray-900 mb-3">Ugovor o Radu</h3>
                             <p class="text-gray-600 flex-grow">Zasnivanje radnog odnosa u skladu sa Zakonom o radu Crne Gore.</p>
-                             <div class="mt-6">
+                            <div class="mt-6">
                                 <p class="text-4xl font-bold text-gray-900">99€</p>
                                 <button class="service-btn-disabled mt-4 w-full bg-gray-300 text-gray-500 font-semibold px-6 py-3 rounded-lg cursor-not-allowed">
                                     Uskoro
@@ -185,17 +151,17 @@
 
             <section id="paket" class="py-20">
                 <div class="container mx-auto px-6">
-                    <div class="paket-gradient text-white p-10 md:p-16 rounded-2xl shadow-2xl text-center">
-                         <h2 class="text-3xl md:text-4xl font-bold">Poslovni Paket</h2>
-                         <p class="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">Za klijente sa redovnim potrebama. Kontinuitet, predvidivi troškovi i viši nivo podrške.</p>
-                         <div class="mt-10">
+                    <div class="bg-gradient-to-r from-blue-700 to-blue-500 text-white p-10 md:p-16 rounded-2xl shadow-2xl text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold">Poslovni Paket</h2>
+                        <p class="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">Za klijente sa redovnim potrebama. Kontinuitet, predvidivi troškovi i viši nivo podrške.</p>
+                        <div class="mt-10">
                             <p class="text-5xl font-bold">149€<span class="text-2xl font-medium text-blue-200">/mjesečno</span></p>
                             <ul class="mt-8 space-y-3 text-blue-50 inline-block text-left">
                                 <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Do 5 standardnih ugovora mjesečno</li>
                                 <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>30 minuta pravnih konsultacija</li>
                                 <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Standardni rok isporuke od 24h</li>
                             </ul>
-                         </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -225,7 +191,7 @@
                         <p class="mt-4 text-lg text-gray-600">Ovdje su odgovori na najčešća pitanja.</p>
                     </div>
                     <div class="space-y-6">
-                         <details class="bg-white p-6 rounded-lg shadow-md group">
+                        <details class="bg-white p-6 rounded-lg shadow-md group">
                             <summary class="flex items-center justify-between cursor-pointer font-semibold text-gray-900">
                                 Da li su ugovori sa platforme ugovor24.com pravno validni?
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
@@ -259,63 +225,56 @@
         </div>
 
         <div id="uslovi-page" class="page-content hidden">
-            <div class="container mx-auto px-6 py-16 max-w-4xl legal-page">
-                </div>
+            <div class="container mx-auto px-6 py-16 max-w-4xl legal-page"></div>
         </div>
 
         <div id="privatnost-page" class="page-content hidden">
-            <div class="container mx-auto px-6 py-16 max-w-4xl legal-page">
-                </div>
+            <div class="container mx-auto px-6 py-16 max-w-4xl legal-page"></div>
         </div>
 
         <div id="kontakt-page" class="page-content hidden">
-            <div class="container mx-auto px-6 py-16 max-w-4xl text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Kontaktirajte Nas</h2>
-                <div class="mt-8 text-lg text-gray-700 space-y-4 leading-relaxed">
-                    <p>Za sva pitanja, specifične zahtjeve ili informacije o kompleksnijim ugovorima, stojimo vam na raspolaganju.</p>
-                    <p class="font-semibold text-gray-900">Advokatska kancelarija Dejan Radinović</p>
-                    <p>Email: <a href="mailto:advokat@ugovor24.com" class="text-blue-600 hover:underline">advokat@ugovor24.com</a></p>
-                    <p>Radno vrijeme: Ponedjeljak - Petak: 10:00 - 14:00</p>
-                    <p class="text-sm text-gray-500 mt-6">*Molimo vas da imate u vidu da se putem emaila ne pružaju pravni savjeti. Za konkretnu pravnu pomoć, molimo koristite usluge na našoj platformi ili zakažite konsultacije.*</p>
-                </div>
-            </div>
+            <div class="container mx-auto px-6 py-16 max-w-4xl text-center"></div>
         </div>
 
         <div id="nda-upitnik-page" class="page-content hidden">
-            <div class="container mx-auto px-6 py-16 max-w-4xl page-container">
+            <div class="container mx-auto px-6 py-16 max-w-4xl">
                 <h2 class="text-center text-3xl font-bold mb-8">Upitnik za Ugovor o Povjerljivosti (NDA)</h2>
-                <form id="nda-form">
-                    <div class="form-section">
+                <form id="nda-form" novalidate>
+                    <div class="mb-8 pb-6 border-b border-gray-200">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 1: Tip Ugovora</h4>
                         <p class="text-gray-600 mb-4">Ovo je najvažnije pitanje koje određuje strukturu ugovora.</p>
                         <div class="space-y-4">
-                            <label class="form-radio-label">
-                                <input type="radio" name="nda_type" value="jednostrani" checked>
-                                <span><strong>Jednostrani (One-Way):</strong> Jedna strana otkriva povjerljive informacije, a druga se obavezuje da ih čuva.</span>
+                            <label class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors">
+                                <input type="radio" name="nda_type" value="jednostrani" checked class="mr-4 text-blue-600 focus:ring-blue-500">
+                                <div>
+                                    <strong class="text-gray-900">Jednostrani (One-Way):</strong> <span class="text-gray-600">Jedna strana otkriva povjerljive informacije, a druga se obavezuje da ih čuva.</span>
+                                </div>
                             </label>
-                            <label class="form-radio-label">
-                                <input type="radio" name="nda_type" value="obostrani">
-                                <span><strong>Obostrani (Mutual):</strong> Obje strane međusobno razmjenjuju povjerljive informacije.</span>
+                            <label class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors">
+                                <input type="radio" name="nda_type" value="obostrani" class="mr-4 text-blue-600 focus:ring-blue-500">
+                                <div>
+                                    <strong class="text-gray-900">Obostrani (Mutual):</strong> <span class="text-gray-600">Obje strane međusobno razmjenjuju povjerljive informacije.</span>
+                                </div>
                             </label>
                         </div>
                     </div>
-                    <div class="form-section">
+                    <div class="mb-8 pb-6 border-b border-gray-200">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 2: Podaci o Ugovornim Stranama</h4>
                         <div id="jednostrani-fields" class="space-y-6">
                             <div>
                                 <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana koja OTKRIVA informacije</h5>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="form-label">Puni naziv / Ime i prezime:</label>
-                                        <input name="jednostrani_otkriva_naziv" type="text" class="form-input" required>
+                                        <label class="block font-semibold mb-1">Puni naziv / Ime i prezime:</label>
+                                        <input name="jednostrani_otkriva_naziv" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" required>
                                     </div>
                                     <div>
-                                        <label class="form-label">Adresa sjedišta / prebivališta:</label>
-                                        <input name="jednostrani_otkriva_adresa" type="text" class="form-input" required>
+                                        <label class="block font-semibold mb-1">Adresa sjedišta / prebivališta:</label>
+                                        <input name="jednostrani_otkriva_adresa" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" required>
                                     </div>
                                     <div>
-                                        <label class="form-label">Identifikacioni broj (PIB ili JMBG):</label>
-                                        <input name="jednostrani_otkriva_id" type="text" class="form-input" required>
+                                        <label class="block font-semibold mb-1">Identifikacioni broj (PIB ili JMBG):</label>
+                                        <input name="jednostrani_otkriva_id" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" required>
                                     </div>
                                 </div>
                             </div>
@@ -323,16 +282,16 @@
                                 <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana koja PRIMA informacije</h5>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="form-label">Puni naziv / Ime i prezime:</label>
-                                        <input name="jednostrani_prima_naziv" type="text" class="form-input" required>
+                                        <label class="block font-semibold mb-1">Puni naziv / Ime i prezime:</label>
+                                        <input name="jednostrani_prima_naziv" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" required>
                                     </div>
                                     <div>
-                                        <label class="form-label">Adresa sjedišta / prebivališta:</label>
-                                        <input name="jednostrani_prima_adresa" type="text" class="form-input" required>
+                                        <label class="block font-semibold mb-1">Adresa sjedišta / prebivališta:</label>
+                                        <input name="jednostrani_prima_adresa" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" required>
                                     </div>
                                     <div>
-                                        <label class="form-label">Identifikacioni broj (PIB ili JMBG):</label>
-                                        <input name="jednostrani_prima_id" type="text" class="form-input" required>
+                                        <label class="block font-semibold mb-1">Identifikacioni broj (PIB ili JMBG):</label>
+                                        <input name="jednostrani_prima_id" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" required>
                                     </div>
                                 </div>
                             </div>
@@ -342,16 +301,16 @@
                                 <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana A</h5>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="form-label">Puni naziv / Ime i prezime:</label>
-                                        <input name="obostrani_a_naziv" type="text" class="form-input">
+                                        <label class="block font-semibold mb-1">Puni naziv / Ime i prezime:</label>
+                                        <input name="obostrani_a_naziv" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow">
                                     </div>
                                     <div>
-                                        <label class="form-label">Adresa sjedišta / prebivališta:</label>
-                                        <input name="obostrani_a_adresa" type="text" class="form-input">
+                                        <label class="block font-semibold mb-1">Adresa sjedišta / prebivališta:</label>
+                                        <input name="obostrani_a_adresa" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow">
                                     </div>
                                     <div>
-                                        <label class="form-label">Identifikacioni broj (PIB ili JMBG):</label>
-                                        <input name="obostrani_a_id" type="text" class="form-input">
+                                        <label class="block font-semibold mb-1">Identifikacioni broj (PIB ili JMBG):</label>
+                                        <input name="obostrani_a_id" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow">
                                     </div>
                                 </div>
                             </div>
@@ -359,55 +318,61 @@
                                 <h5 class="font-semibold text-lg mb-4 text-gray-700">Strana B</h5>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="form-label">Puni naziv / Ime i prezime:</label>
-                                        <input name="obostrani_b_naziv" type="text" class="form-input">
+                                        <label class="block font-semibold mb-1">Puni naziv / Ime i prezime:</label>
+                                        <input name="obostrani_b_naziv" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow">
                                     </div>
                                     <div>
-                                        <label class="form-label">Adresa sjedišta / prebivališta:</label>
-                                        <input name="obostrani_b_adresa" type="text" class="form-input">
+                                        <label class="block font-semibold mb-1">Adresa sjedišta / prebivališta:</label>
+                                        <input name="obostrani_b_adresa" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow">
                                     </div>
                                     <div>
-                                        <label class="form-label">Identifikacioni broj (PIB ili JMBG):</label>
-                                        <input name="obostrani_b_id" type="text" class="form-input">
+                                        <label class="block font-semibold mb-1">Identifikacioni broj (PIB ili JMBG):</label>
+                                        <input name="obostrani_b_id" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-section">
+                    <div class="mb-8 pb-6 border-b border-gray-200">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 3: Svrha i Uslovi Ugovora</h4>
                         <div class="space-y-4">
                             <div>
-                                <label class="form-label">U kom gradu se zaključuje ugovor?</label>
-                                <input name="mjesto_zakljucenja" type="text" class="form-input" placeholder="Npr. Podgorica" required>
+                                <label class="block font-semibold mb-1">U kom gradu se zaključuje ugovor?</label>
+                                <input name="mjesto_zakljucenja" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" placeholder="Npr. Podgorica" required>
                             </div>
                             <div>
-                                <label class="form-label">Vaš email za dostavu dokumenata:</label>
-                                <input name="email_klijenta" type="email" class="form-input" placeholder="npr. email@vasadomena.com" required>
+                                <label class="block font-semibold mb-1">Vaš email za dostavu dokumenata:</label>
+                                <input name="email_klijenta" type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" placeholder="npr. email@vasadomena.com" required>
                             </div>
                             <div>
-                                <label class="form-label">Koja je svrha razmjene povjerljivih informacija?</label>
-                                <textarea name="svrha_otkrivanja" class="form-textarea" rows="3" placeholder="Npr. Pregovori o potencijalnoj poslovnoj saradnji na projektu X" required></textarea>
+                                <label class="block font-semibold mb-1">Koja je svrha razmjene povjerljivih informacija?</label>
+                                <textarea name="svrha_otkrivanja" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" rows="3" placeholder="Npr. Pregovori o potencijalnoj poslovnoj saradnji na projektu X" required></textarea>
                             </div>
                             <div>
-                                <label class="form-label">Koliko dugo (u godinama) traje obaveza čuvanja povjerljivosti?</label>
-                                <input name="period_trajanja_godine" type="number" class="form-input" value="3">
+                                <label class="block font-semibold mb-1">Koliko dugo (u godinama) traje obaveza čuvanja povjerljivosti?</label>
+                                <input name="period_trajanja_godine" type="number" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" value="3" required min="1">
                             </div>
                         </div>
                     </div>
-                    <div class="form-section">
+                    <div class="mb-8 pb-6 border-b border-gray-200">
                         <h4 class="text-xl font-semibold mb-4">SEKCIJA 4: Dodatne Zaštitne Klauzule</h4>
                         <div class="space-y-4">
                             <div>
-                                <label class="form-label">Da li želite da ugovor sadrži klauzulu o ugovornoj kazni?</label>
-                                <select id="ugovorna-kazna-select" name="ima_ugovornu_kaznu" class="form-select">
+                                <label class="block font-semibold mb-1">Da li želite da ugovor sadrži klauzulu o ugovornoj kazni?</label>
+                                <select id="ugovorna-kazna-select" name="ima_ugovornu_kaznu" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow">
                                     <option value="ne">Ne</option>
                                     <option value="da">Da</option>
                                 </select>
                             </div>
                             <div id="ugovorna-kazna-iznos" class="hidden">
-                                <label class="form-label">Iznos ugovorne kazne (u eurima):</label>
-                                <input name="iznos_kazne" type="number" class="form-input" placeholder="Npr. 5000">
+                                <label class="block font-semibold mb-1">Iznos ugovorne kazne (u eurima):</label>
+                                <input name="iznos_kazne" type="number" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-shadow" placeholder="Npr. 5000">
+                            </div>
+                            <div class="mt-4 flex items-start">
+                                <input type="checkbox" id="ai-consent" name="ai-consent" class="mt-1 mr-2 rounded text-blue-600 border-gray-300 focus:ring-blue-500" required>
+                                <label for="ai-consent" class="text-sm text-gray-700">
+                                    Prihvatam da se moji podaci, uključujući lične podatke, obrade od strane softverskih servisa trećih lica (poput Google AI) u svrhe generisanja nacrta dokumenta, u skladu sa <a href="#privatnost-page" class="text-blue-600 hover:underline">Politikom Privatnosti</a>. Razumijem da je ovo neophodan korak za pružanje usluge.
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -494,48 +459,47 @@
                 kontakt: `<h2 class="text-3xl md:text-4xl font-bold text-gray-900">Kontaktirajte Nas</h2><div class="mt-8 text-lg text-gray-700 space-y-4 leading-relaxed"><p>Za sva pitanja, specifične zahtjeve ili informacije o kompleksnijim ugovorima, stojimo vam na raspolaganju.</p><p class="font-semibold text-gray-900">Advokatska kancelarija Dejan Radinović</p><p>Email: <a href="mailto:advokat@ugovor24.com" class="text-blue-600 hover:underline">advokat@ugovor24.com</a></p><p>Radno vrijeme: Ponedjeljak - Petak: 10:00 - 14:00</p><p class="text-sm text-gray-500 mt-6">*Molimo vas da imate u vidu da se putem emaila ne pružaju pravni savjeti. Za konkretnu pravnu pomoć, molimo koristite usluge na našoj platformi ili zakažite konsultacije.*</p></div>`
             };
 
-            function showPage(pageId, scrollToSection = null) {
-                pageContents.forEach(page => {
-                    page.classList.add('hidden');
-                });
-                
+            const showPage = (pageId) => {
+                pageContents.forEach(page => page.classList.add('hidden'));
                 const targetPage = document.getElementById(pageId);
                 if (targetPage) {
                     targetPage.classList.remove('hidden');
-                    if (scrollToSection) {
-                        const sectionElement = document.getElementById(scrollToSection);
-                        if (sectionElement) {
-                            sectionElement.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    } else {
-                        window.scrollTo(0, 0);
-                    }
+                    window.scrollTo(0, 0);
                 } else {
                     document.getElementById('home-page').classList.remove('hidden');
-                    window.scrollTo(0, 0);
                 }
-            }
+            };
 
-            // Ažuriranje HTML sadržaja iz JavaScript objekta
-            document.querySelector('#uslovi-page .legal-page').innerHTML = content.uslovi;
-            document.querySelector('#privatnost-page .legal-page').innerHTML = content.privatnost;
-            document.querySelector('#kontakt-page .container').innerHTML = content.kontakt;
+            const scrollToSection = (sectionId) => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
 
+            const handleNavigation = (e) => {
+                e.preventDefault();
+                const href = e.currentTarget.getAttribute('href');
+                const hash = href.substring(1);
+
+                if (homePageSections.includes(hash)) {
+                    showPage('home-page');
+                    setTimeout(() => scrollToSection(hash), 100);
+                } else if (hash === 'home-page') {
+                    showPage('home-page');
+                } else {
+                    showPage(hash);
+                }
+
+                if (window.innerWidth <= 768) {
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            };
+            
             navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const href = link.getAttribute('href');
-                    const targetId = href.substring(1);
-
-                    if (homePageSections.includes(targetId) || targetId === 'home-page') {
-                        showPage('home-page', targetId === 'home-page' ? null : targetId);
-                    } else {
-                        showPage(targetId);
-                    }
-                });
+                link.addEventListener('click', handleNavigation);
             });
-
-            // Logika za dugmad "Započni"
+            
             document.querySelectorAll('.service-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const pageId = button.dataset.service;
@@ -543,41 +507,67 @@
                 });
             });
 
-            // Logika za formu NDA upitnika
+            const handleHashChange = () => {
+                const hash = window.location.hash.substring(1);
+                if (hash && document.getElementById(hash) && !homePageSections.includes(hash)) {
+                    showPage(hash);
+                } else if (hash && homePageSections.includes(hash)) {
+                    showPage('home-page');
+                    setTimeout(() => scrollToSection(hash), 100);
+                } else {
+                    showPage('home-page');
+                }
+            };
+
+            window.addEventListener('hashchange', handleHashChange);
+            handleHashChange();
+
+            document.querySelector('#uslovi-page .legal-page').innerHTML = content.uslovi;
+            document.querySelector('#privatnost-page .legal-page').innerHTML = content.privatnost;
+            document.querySelector('#kontakt-page .container').innerHTML = content.kontakt;
+
             const ndaForm = document.getElementById('nda-form');
             if (ndaForm) {
-                // Skrivanje/prikazivanje polja za jednostrani/obostrani ugovor
-                const ndaTypeRadios = document.querySelectorAll('input[name="nda_type"]');
+                const ndaTypeRadios = ndaForm.querySelectorAll('input[name="nda_type"]');
                 const jednostraniFields = document.getElementById('jednostrani-fields');
                 const obostraniFields = document.getElementById('obostrani-fields');
-
-                ndaTypeRadios.forEach(radio => {
-                    radio.addEventListener('change', (e) => {
-                        if (e.target.value === 'jednostrani') {
-                            jednostraniFields.classList.remove('hidden');
-                            obostraniFields.classList.add('hidden');
-                        } else {
-                            jednostraniFields.classList.add('hidden');
-                            obostraniFields.classList.remove('hidden');
-                        }
-                    });
-                });
-                
-                // Skrivanje/prikazivanje polja za ugovornu kaznu
                 const ugovornaKaznaSelect = document.getElementById('ugovorna-kazna-select');
                 const ugovornaKaznaIznos = document.getElementById('ugovorna-kazna-iznos');
+
+                const updateFormFields = () => {
+                    const ndaType = document.querySelector('input[name="nda_type"]:checked').value;
+                    const isJednostrani = ndaType === 'jednostrani';
+                    jednostraniFields.classList.toggle('hidden', !isJednostrani);
+                    obostraniFields.classList.toggle('hidden', isJednostrani);
+
+                    const formFields = ndaForm.querySelectorAll('input[required], textarea[required]');
+                    formFields.forEach(field => {
+                        const isFieldRelevant = (isJednostrani && field.name.startsWith('jednostrani_')) || 
+                                                (!isJednostrani && field.name.startsWith('obostrani_')) || 
+                                                !field.name.startsWith('jednostrani_') && !field.name.startsWith('obostrani_');
+                        field.disabled = !isFieldRelevant;
+                    });
+                };
+                
+                ndaTypeRadios.forEach(radio => radio.addEventListener('change', updateFormFields));
+                updateFormFields();
+
                 ugovornaKaznaSelect.addEventListener('change', (e) => {
+                    ugovornaKaznaIznos.classList.toggle('hidden', e.target.value !== 'da');
+                    const kaznaInput = ugovornaKaznaIznos.querySelector('input');
                     if (e.target.value === 'da') {
-                        ugovornaKaznaIznos.classList.remove('hidden');
+                        kaznaInput.setAttribute('required', 'required');
+                        kaznaInput.value = '';
                     } else {
-                        ugovornaKaznaIznos.classList.add('hidden');
+                        kaznaInput.removeAttribute('required');
                     }
                 });
 
-                // Slanje forme
                 ndaForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
+
                     const button = e.target.querySelector('button[type="submit"]');
+                    const originalButtonText = button.textContent;
                     button.disabled = true;
                     button.textContent = 'Šaljem...';
 
@@ -586,7 +576,7 @@
                     
                     const payload = {
                         tip_ugovora: 'Ugovor o Povjerljivosti (NDA)',
-                        cijena: 29, // Privremeno fiksirano,
+                        cijena: 29,
                         email_klijenta: formProps.email_klijenta,
                         nda_podaci: {
                             tip_nda: formProps.nda_type,
@@ -622,25 +612,18 @@
                             body: JSON.stringify(payload),
                         });
 
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(errorData.error || 'Došlo je do greške.');
-                        }
-
                         const result = await response.json();
                         
-                        // Prikazivanje stranice sa instrukcijama za plaćanje
+                        if (!response.ok) {
+                            throw new Error(result.error || 'Došlo je do greške.');
+                        }
+                        
                         const placanjePage = document.getElementById('placanje-page');
-                        const porudzbinaIdDisplay = document.getElementById('porudzbina-id-display');
-                        const pozivNaBrojRef = document.getElementById('poziv-na-broj-ref');
-                        const iznosUplate = document.getElementById('iznos-uplate');
+                        document.getElementById('porudzbina-id-display').textContent = result.porudzbina_uid;
+                        document.getElementById('poziv-na-broj-ref').textContent = result.porudzbina_uid;
+                        document.getElementById('iznos-uplate').textContent = payload.cijena;
+
                         const qrCodeElement = document.getElementById('qrcode');
-
-                        porudzbinaIdDisplay.textContent = result.porudzbina_uid;
-                        pozivNaBrojRef.textContent = result.porudzbina_uid;
-                        iznosUplate.textContent = payload.cijena;
-
-                        // Generisanje QR koda
                         const qrText = `
                             PR:advokat Dejan Radinović
                             AD:Bozane Vucinic 7-5, 81000 Podgorica, Crna Gora
@@ -668,26 +651,15 @@
                         alert(`Došlo je do greške prilikom slanja: ${error.message}`);
                     } finally {
                         button.disabled = false;
-                        button.textContent = 'Nastavi na Plaćanje';
+                        button.textContent = originalButtonText;
                     }
                 });
             }
 
-            // Show home page on initial load
-            showPage('home-page');
-
-            // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenuButton.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
-            });
-
-            // Close mobile menu on link click
-            document.querySelectorAll('#mobile-menu a.nav-link').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    mobileMenu.classList.add('hidden');
-                });
             });
         });
     </script>
