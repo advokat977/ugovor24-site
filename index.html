@@ -190,13 +190,78 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const content = {
-                // ... Sadržaj za pravne stranice i kontakt ...
-            };
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ugovor 24</title>
+    <style>
+        /* Ensure all pages are visible by default */
+        .page {
+            display: block;
+        }
+        
+        /* Only hide non-active pages */
+        .page.inactive {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <button onclick="showPage('home')">Početna</button>
+        <button onclick="showPage('about')">O nama</button>
+        <button onclick="showPage('contact')">Kontakt</button>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page">
+        <h1>Dobrodošli na Ugovor 24</h1>
+        <p>Vaše pouzdano mjesto za pravne usluge</p>
+        <!-- Home page content -->
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page inactive">
+        <h1>O nama</h1>
+        <p>Mi smo tim pravnih stručnjaka...</p>
+        <!-- About page content -->
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page inactive">
+        <h1>Kontaktirajte nas</h1>
+        <p>Kako vas možemo pomoći?</p>
+        <!-- Contact page content -->
+    </div>
+
+    <script>
+        // Improved navigation function
+        function showPage(pageId) {
+            // Get all pages
+            const pages = document.querySelectorAll('.page');
             
-            // ... Ovdje ide kompletan, ispravljen JavaScript kod
+            // Hide all pages first
+            pages.forEach(page => {
+                page.classList.add('inactive');
+            });
+            
+            // Show the selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.remove('inactive');
+            }
+        }
+
+        // Show home page by default when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('home');
         });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
