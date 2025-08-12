@@ -191,12 +191,103 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const content = {
-                // ... Sadržaj za pravne stranice i kontakt ...
-            };
-            
-            // ... Ovdje ide kompletan, ispravljen JavaScript kod
+    // SPA navigacija po anchorima
+    const pages = document.querySelectorAll('.page-content');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileMenuBtn = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const serviceBtns = document.querySelectorAll('.service-btn');
+    const ndaTypeRadios = document.querySelectorAll('input[name="nda_type"]');
+    const ugovornaKaznaSelect = document.getElementById('ugovorna-kazna-select');
+    const ugovornaKaznaIznos = document.getElementById('ugovorna-kazna-iznos');
+
+    // Helper: Sakrij sve stranice
+    function hideAllPages() {
+        pages.forEach(page => page.classList.add('hidden'));
+    }
+
+    // Helper: Prikaži stranicu po ID-u
+    function showPage(id) {
+        hideAllPages();
+        const page = document.getElementById(id) || document.getElementById('home-page');
+        page.classList.remove('hidden');
+        window.scrollTo(0, 0);
+        if (mobileMenu) mobileMenu.classList.add('hidden');
+    }
+
+    // Klik na meni linkove
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                const pageId = href.replace('#', '');
+                showPage(pageId);
+                // Update hash in URL
+                history.pushState(null, '', href);
+            }
+            if (mobileMenu) mobileMenu.classList.add('hidden');
         });
+    });
+
+    // Klik na "Započni" dugmad u uslugama
+    serviceBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const target = btn.getAttribute('data-service');
+            if (target) {
+                e.preventDefault();
+                showPage(target);
+                history.pushState(null, '', '#' + target);
+            }
+        });
+    });
+
+    // Mobilni meni
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    // Prikaz polja u NDA upitniku
+    function updateNdaFields() {
+        const tip = document.querySelector('input[name="nda_type"]:checked').value;
+        const jednostrani = document.getElementById('jednostrani-fields');
+        const obostrani = document.getElementById('obostrani-fields');
+        if (tip === 'jednostrani') {
+            if (jednostrani) jednostrani.classList.remove('hidden');
+            if (obostrani) obostrani.classList.add('hidden');
+        } else {
+            if (jednostrani) jednostrani.classList.add('hidden');
+            if (obostrani) obostrani.classList.remove('hidden');
+        }
+    }
+    ndaTypeRadios.forEach(radio =>
+        radio.addEventListener('change', updateNdaFields)
+    );
+    updateNdaFields();
+
+    // Prikaz ugovorne kazne
+    if (ugovornaKaznaSelect && ugovornaKaznaIznos) {
+        ugovornaKaznaSelect.addEventListener('change', function () {
+            if (this.value === 'da') {
+                ugovornaKaznaIznos.classList.remove('hidden');
+                ugovornaKaznaIznos.querySelector('input').setAttribute('required', 'required');
+            } else {
+                ugovornaKaznaIznos.classList.add('hidden');
+                ugovornaKaznaIznos.querySelector('input').removeAttribute('required');
+            }
+        });
+    }
+
+    // Prikaz prave stranice ako je hash u URL-u
+    function routeByHash() {
+        const hash = window.location.hash || '#home-page';
+        showPage(hash.replace('#',''));
+    }
+    window.addEventListener('popstate', routeByHash);
+    routeByHash();
+});
     </script>
 </body>
 </html>
