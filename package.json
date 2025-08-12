@@ -1,0 +1,17 @@
+{
+  "name": "ugovor24-site",
+  "version": "1.0.0",
+  "description": "Aplikacija za generisanje pravnih ugovora",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel start"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "@types/node": "^20.10.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/vercel__node": "^1.14.0",
+    "typescript": "^5.3.2"
+  }
+}
