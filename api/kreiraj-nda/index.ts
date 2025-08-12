@@ -63,14 +63,14 @@ export default async function handler(
             porudzbina_uid = porudzbinaData.porudzbina_uid;
 
             // Korak 2: Unos specifičnih podataka za NDA u drugu tabelu
-            // U ovom koraku, umesto da šaljemo ceo JSON objekat, šaljemo pojedinačne vrednosti
+            // Konvertujemo JSON objekte u tekst pre slanja
             const { error: ndaError } = await supabase
                 .from('nda_podaci')
                 .insert([{
                     porudzbina_id: porudzbina_id,
                     tip_nda: nda_podaci.tip_nda,
-                    podaci_strane_a: nda_podaci.podaci_strane_a, // Ovo je JSONB, pa je OK
-                    podaci_strane_b: nda_podaci.podaci_strane_b, // Ovo je JSONB, pa je OK
+                    podaci_strane_a: JSON.stringify(nda_podaci.podaci_strane_a),
+                    podaci_strane_b: JSON.stringify(nda_podaci.podaci_strane_b),
                     svrha_otkrivanja: nda_podaci.svrha_otkrivanja,
                     period_trajanja_godine: nda_podaci.period_trajanja_godine,
                     ima_ugovornu_kaznu: nda_podaci.ima_ugovornu_kaznu,
