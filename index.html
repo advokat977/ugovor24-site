@@ -578,19 +578,17 @@
                         tip_ugovora: 'Ugovor o Povjerljivosti (NDA)',
                         cijena: 29,
                         email_klijenta: formProps.email_klijenta,
-                        nda_podaci: {
-                            tip_nda: formProps.nda_type,
-                            strana_a_naziv: (formProps.nda_type === 'obostrani' ? formProps.obostrani_a_naziv : formProps.jednostrani_otkriva_naziv),
-                            strana_a_adresa: (formProps.nda_type === 'obostrani' ? formProps.obostrani_a_adresa : formProps.jednostrani_otkriva_adresa),
-                            strana_a_id_broj: (formProps.nda_type === 'obostrani' ? formProps.obostrani_a_id : formProps.jednostrani_otkriva_id),
-                            strana_b_naziv: (formProps.nda_type === 'obostrani' ? formProps.obostrani_b_naziv : formProps.jednostrani_prima_naziv),
-                            strana_b_adresa: (formProps.nda_type === 'obostrani' ? formProps.obostrani_b_adresa : formProps.jednostrani_prima_adresa),
-                            strana_b_id_broj: (formProps.nda_type === 'obostrani' ? formProps.obostrani_b_id : formProps.jednostrani_prima_id),
-                            svrha_otkrivanja: formProps.svrha_otkrivanja,
-                            period_trajanja_godine: parseInt(formProps.period_trajanja_godine, 10),
-                            ima_ugovornu_kaznu: formProps.ima_ugovornu_kaznu === 'da',
-                            iznos_kazne: formProps.ima_ugovornu_kaznu === 'da' ? parseInt(formProps.iznos_kazne, 10) : null
-                        }
+                        tip_nda: formProps.nda_type,
+                        strana_a_naziv: (formProps.nda_type === 'obostrani' ? formProps.obostrani_a_naziv : formProps.jednostrani_otkriva_naziv),
+                        strana_a_adresa: (formProps.nda_type === 'obostrani' ? formProps.obostrani_a_adresa : formProps.jednostrani_otkriva_adresa),
+                        strana_a_id_broj: (formProps.nda_type === 'obostrani' ? formProps.obostrani_a_id : formProps.jednostrani_otkriva_id),
+                        strana_b_naziv: (formProps.nda_type === 'obostrani' ? formProps.obostrani_b_naziv : formProps.jednostrani_prima_naziv),
+                        strana_b_adresa: (formProps.nda_type === 'obostrani' ? formProps.obostrani_b_adresa : formProps.jednostrani_prima_adresa),
+                        strana_b_id_broj: (formProps.nda_type === 'obostrani' ? formProps.obostrani_b_id : formProps.jednostrani_prima_id),
+                        svrha_otkrivanja: formProps.svrha_otkrivanja,
+                        period_trajanja_godine: parseInt(formProps.period_trajanja_godine, 10),
+                        ima_ugovornu_kaznu: formProps.ima_ugovornu_kaznu === 'da',
+                        iznos_kazne: formProps.ima_ugovornu_kaznu === 'da' ? parseInt(formProps.iznos_kazne, 10) : null
                     };
 
                     try {
