@@ -1,19 +1,26 @@
-// OVAJ FAJL SE NALAZI NA LOKACIJI: /api/kreiraj-nda/index.ts
-// Vercel automatski prepoznaje ovu strukturu i kreira API endpoint.
+// LOKACIJA: /api/kreiraj-nda/index.ts
 
 import { createClient } from '@supabase/supabase-js';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Definišemo kakve podatke očekujemo da dobijemo od klijenta (iz upitnika)
-interface NdaRequestBody {
+// Definišemo kakve podatke očekujemo od klijenta
+interface NdaPayload {
+    tip_ugovora: string;
+    cijena: number;
     email_klijenta: string;
-    tip_nda: 'jednostrani' | 'obostrani';
-    podaci_strane_a: object;
-    podaci_strane_b: object;
-    svrha_otkrivanja: string;
-    period_trajanja_godine: number;
-    ima_ugovornu_kaznu: boolean;
-    iznos_kazne?: number | null;
+    nda_podaci: {
+        tip_nda: 'jednostrani' | 'obostrani';
+        strana_a_naziv: string;
+        strana_a_adresa: string;
+        strana_a_id_broj: string;
+        strana_b_naziv: string;
+        strana_b_adresa: string;
+        strana_b_id_broj: string;
+        svrha_otkrivanja: string;
+        period_trajanja_godine: number;
+        ima_ugovornu_kaznu: boolean;
+        iznos_kazne?: number | null;
+    }
 }
 
 // Glavna funkcija - naš "Robot Prijemničar"
@@ -21,74 +28,66 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
 ) {
-  // Dozvoljavamo samo POST metod.
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).end('Method Not Allowed');
   }
 
   try {
-    // 1. PRIJEM PODATAKA
-    const data: NdaRequestBody = req.body;
+    const payload: NdaPayload = req.body;
 
-    // Osnovna validacija
-    if (!data.email_klijenta || !data.tip_nda || !data.podaci_strane_a || !data.svrha_otkrivanja) {
-        return res.status(400).json({ error: 'Nedostaju obavezni podaci.' });
+    // Validacija osnovnih podataka
+    if (!payload.email_klijenta || !payload.nda_podaci) {
+        return res.status(400).json({ error: 'Nedostaju osnovni podaci.' });
     }
 
-    // 2. KONEKCIJA SA BAZOM
-    // Koristimo tajne ključeve iz Vercel "sefa"
     const supabaseUrl = process.env.SUPABASE_URL!;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 3. UPIS U BAZU
-    // Prvo, upisujemo osnovne podatke u glavnu tabelu 'porudzbine'
+    // Korak 1: Kreiranje nove porudžbine u glavnoj tabeli
     const { data: porudzbinaData, error: porudzbinaError } = await supabase
       .from('porudzbine')
       .insert({
-        tip_ugovora: 'NDA',
-        cijena: 29,
-        status: 'čeka uplatu',
-        email_klijenta: data.email_klijenta,
+        tip_ugovora: payload.tip_ugovora,
+        cijena: payload.cijena,
+        email_klijenta: payload.email_klijenta,
+        status: 'čeka uplatu'
       })
       .select('id, porudzbina_uid')
       .single();
 
     if (porudzbinaError) {
-      throw porudzbinaError;
+      console.error('Supabase porudzbina greska:', porudzbinaError);
+      throw new Error('Greška pri kreiranju osnovne porudžbine.');
     }
 
-    // Zatim, upisujemo specifične podatke u 'nda_podaci'
+    const porudzbina_id = porudzbinaData.id;
+
+    // Korak 2: Unos specifičnih podataka za NDA
     const { error: ndaError } = await supabase
       .from('nda_podaci')
       .insert({
-        porudzbina_id: porudzbinaData.id,
-        tip_nda: data.tip_nda,
-        podaci_strane_a: data.podaci_strane_a, // Upisujemo kompletan objekat
-        podaci_strane_b: data.podaci_strane_b, // Upisujemo kompletan objekat
-        svrha_otkrivanja: data.svrha_otkrivanja,
-        period_trajanja_godine: data.period_trajanja_godine,
-        ima_ugovornu_kaznu: data.ima_ugovornu_kaznu,
-        iznos_kazne: data.iznos_kazne,
+        porudzbina_id: porudzbina_id,
+        ...payload.nda_podaci // Magija: Raspakujemo sve podatke iz nda_podaci objekta
       });
 
     if (ndaError) {
-      // Ako drugi upis ne uspije, brišemo prvi da ne ostane "siroče"
-      await supabase.from('porudzbine').delete().eq('id', porudzbinaData.id);
-      throw ndaError;
+      // Ako drugi upis ne uspije, brišemo prvi
+      await supabase.from('porudzbine').delete().eq('id', porudzbina_id);
+      console.error('Supabase NDA podaci greska:', ndaError);
+      throw new Error('Greška pri čuvanju detalja ugovora.');
     }
 
-    // 4. SLANJE ODGOVORA
-    // Vraćamo uspješan odgovor i jedinstveni ID porudžbine.
-    return res.status(200).json({ 
-        message: 'Porudžbina uspješno kreirana.',
-        porudzbina_uid: porudzbinaData.porudzbina_uid 
+    // Korak 3: Ako je sve uspešno, šaljemo odgovor
+    return res.status(200).json({
+      porudzbina_uid: porudzbinaData.porudzbina_uid,
+      message: 'Porudžbina je uspešno kreirana.'
     });
 
-  } catch (error) {
-    console.error('Greška prilikom kreiranja porudžbine:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Nepoznata greška';
-    return res.status(500).json({ error: 'Došlo je do interne greške na serveru.', details: errorMessage });
+  } catch (e) {
+    const error = e as Error;
+    console.error('Generalna greška u funkciji:', error);
+    return res.status(500).json({ error: 'Došlo je do interne greške servera.', details: error.message });
   }
 }
