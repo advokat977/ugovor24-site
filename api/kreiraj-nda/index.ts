@@ -6,7 +6,6 @@ export default async function handler(
     req: VercelRequest,
     res: VercelResponse,
 ) {
-    // Proveravamo da li je zahtev poslat na ispravan način
     if (req.method !== 'POST') {
         res.setHeader('Allow', 'POST');
         return res.status(405).end('Method Not Allowed');
@@ -18,9 +17,9 @@ export default async function handler(
 
         // Proveravamo da li su svi neophodni podaci popunjeni
         const requiredFields = [
-            'email_klijenta', 
-            'nda_podaci.tip_nda', 
-            'nda_podaci.podaci_strane_a.naziv', 
+            'email_klijenta',
+            'nda_podaci.tip_nda',
+            'nda_podaci.podaci_strane_a.naziv',
             'nda_podaci.podaci_strane_b.naziv',
             'nda_podaci.svrha_otkrivanja'
         ];
@@ -36,7 +35,6 @@ export default async function handler(
             }
         }
 
-        // Povezujemo se sa bazom podataka (Supabase)
         const supabaseUrl = process.env.SUPABASE_URL!;
         const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
@@ -65,11 +63,18 @@ export default async function handler(
             porudzbina_uid = porudzbinaData.porudzbina_uid;
 
             // Korak 2: Unos specifičnih podataka za NDA u drugu tabelu
+            // U ovom koraku, umesto da šaljemo ceo JSON objekat, šaljemo pojedinačne vrednosti
             const { error: ndaError } = await supabase
                 .from('nda_podaci')
                 .insert([{
-                    ...nda_podaci,
-                    porudzbina_id: porudzbina_id
+                    porudzbina_id: porudzbina_id,
+                    tip_nda: nda_podaci.tip_nda,
+                    podaci_strane_a: nda_podaci.podaci_strane_a, // Ovo je JSONB, pa je OK
+                    podaci_strane_b: nda_podaci.podaci_strane_b, // Ovo je JSONB, pa je OK
+                    svrha_otkrivanja: nda_podaci.svrha_otkrivanja,
+                    period_trajanja_godine: nda_podaci.period_trajanja_godine,
+                    ima_ugovornu_kaznu: nda_podaci.ima_ugovornu_kaznu,
+                    iznos_kazne: nda_podaci.iznos_kazne
                 }]);
 
             if (ndaError) {
