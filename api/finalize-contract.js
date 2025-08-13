@@ -40,7 +40,7 @@ async function sendFinalEmailToClient(order, finalDocumentUrl, documentName) {
         } else {
             clientName = order.client_email;
         }
-
+        
         const fileResponse = await fetch(finalDocumentUrl);
         const fileContent = await fileResponse.arrayBuffer();
         
@@ -112,16 +112,26 @@ export default async function handler(req, res) {
   if (!order_id || !action) {
     return res.status(400).json({ error: 'Missing order ID or action' });
   }
-  
-  const client_table = {
-    'Ugovor o djelu': 'orders_ugovor_o_djelu',
-    'Ugovor o zakupu': 'orders_ugovor_o_zakupu',
-    'Ugovor o radu': 'orders_ugovor_o_radu',
-    'Ugovor o povjerljivosti (NDA)': 'orders_ugovor_o_povjerljivosti_nda',
-    'Set dokumenata za registraciju firme (DOO)': 'orders_set_za_firmu_doo'
-  };
 
   try {
+    const { data: order, error: orderError } = await supabase
+      .from('orders')
+      .select(`
+        *,
+        orders_ugovor_o_djelu(naziv_narucioca),
+        orders_ugovor_o_zakupu(naziv_zakupca),
+        orders_ugovor_o_radu(ime_i_prezime_zaposlenog),
+        orders_ugovor_o_povjerljivosti_nda(tip_ugovora, naziv_strane_a, naziv_strane_koja_prima),
+        orders_set_za_firmu_doo(ime_osnivaca_1)
+      `)
+      .eq('id', order_id)
+      .single();
+
+    if (orderError || !order) {
+        console.error('Order not found or database error:', orderError);
+        return res.status(404).json({ error: 'Order not found or database error' });
+    }
+
     if (action === 'verify_payment') {
       const { error } = await supabase
         .from('orders')
@@ -136,19 +146,6 @@ export default async function handler(req, res) {
     }
 
     if (action === 'send_final') {
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          ${client_table[order.ugovor_type]}(*)
-        `)
-        .eq('id', order_id)
-        .single();
-      
-      if (orderError || !order) {
-        return res.status(404).json({ error: 'Order not found' });
-      }
-
       if (!order.is_paid || !order.final_document_url) {
         return res.status(400).json({ error: 'Order not paid or final document not uploaded' });
       }
