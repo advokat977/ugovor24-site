@@ -88,12 +88,11 @@ Ugovor je sačinjen u 2 (dva) istovjetna primjerka, po jedan za svaku ugovornu s
 **IZVRŠILAC POSLA** _________________________ {{naziv_izvrsioca}}`,
 };
 
-// Generisanje PDF-a sa predracunom
 async function generateInvoicePDF(orderId, ugovorType, totalPrice) {
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([600, 400]);
     
-    // Ugradnja fonta sa podrškom za dijakritičke znakove
+    // Ugradnja standardnog fonta sa podrškom za dijakritičke znakove
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
     page.drawText('PREDRACUN', { x: 50, y: 350, size: 24, font: font, color: rgb(0.13, 0.13, 0.13) });
