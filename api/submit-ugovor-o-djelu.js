@@ -17,6 +17,13 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
+// Funkcija za uklanjanje dijakritickih znakova iz teksta
+function removeDiacritics(text) {
+    if (!text) return '';
+    return text.replace(/č/g, 'c').replace(/ć/g, 'c').replace(/š/g, 's').replace(/ž/g, 'z').replace(/đ/g, 'dj')
+               .replace(/Č/g, 'C').replace(/Ć/g, 'C').replace(/Š/g, 'S').replace(/Ž/g, 'Z').replace(/Đ/g, 'Dj');
+}
+
 // Funkcija za formatiranje JSON objekta u citljiv tekst
 function formatFormData(formData) {
     let formattedText = '';
@@ -130,7 +137,7 @@ Ugovor je sacinjen u 2 (dva) istovjetna primjerka, po jedan za svaku ugovornu st
 **IZVRSILAC POSLA** _________________________ {{naziv_izvrsioca}}`,
 };
 
-async function generateInvoicePDF(orderId, ugovorType, totalPrice, clientName) {
+async function generateInvoicePDF(orderId, ugovorType, totalPrice, clientName, clientAddress, clientID) {
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([595, 842]); // A4 format
     
@@ -138,7 +145,6 @@ async function generateInvoicePDF(orderId, ugovorType, totalPrice, clientName) {
     const primaryColor = rgb(0, 0.49, 1);
     const black = rgb(0.13, 0.13, 0.13);
     
-    // URL tvog sajta za logo
     const logoUrl = 'https://ugovor24-site.vercel.app/logo.png';
     let logoImage = null;
     try {
@@ -150,56 +156,69 @@ async function generateInvoicePDF(orderId, ugovorType, totalPrice, clientName) {
     
     if (logoImage) {
         const logoDims = logoImage.scale(0.3);
-        page.drawImage(logoImage, {
-            x: 50,
-            y: 780,
-            width: logoDims.width,
-            height: logoDims.height,
-        });
+        page.drawImage(logoImage, { x: 50, y: 780, width: logoDims.width, height: logoDims.height });
     }
 
     // Header za racun
-    page.drawText('PREDRACUN', { x: 450, y: 780, size: 18, font: font, color: black });
-    page.drawText(`Br. narudzbine: ${orderId.substring(0, 8)}`, { x: 400, y: 760, size: 10, font: font, color: black });
+    page.drawText('PREDRACUN', { x: 440, y: 780, size: 18, font: font, color: black });
+    page.drawText(`Br. narudzbe: ${orderId.substring(0, 8)}`, { x: 420, y: 760, size: 10, font: font, color: black });
 
     // Izdato za (Narucilac)
     page.drawText('IZDATO ZA:', { x: 50, y: 720, size: 12, font: font, color: primaryColor });
     page.drawText(clientName, { x: 50, y: 700, size: 12, font: font, color: black });
-    
-    // Podaci o stavci
-    page.drawText('Usluga', { x: 50, y: 650, size: 12, font: font, color: primaryColor });
-    page.drawText('Ukupno', { x: 450, y: 650, size: 12, font: font, color: primaryColor });
+    page.drawText(clientAddress, { x: 50, y: 685, size: 10, font: font, color: black });
+    page.drawText(`ID broj: ${clientID}`, { x: 50, y: 670, size: 10, font: font, color: black });
+
+    // Tabela sa uslugom i cijenom
+    page.drawText('Usluga', { x: 50, y: 620, size: 12, font: font, color: primaryColor });
+    page.drawText('Cijena', { x: 450, y: 620, size: 12, font: font, color: primaryColor });
     page.drawLine({
-        start: { x: 50, y: 640 },
-        end: { x: 545, y: 640 },
+        start: { x: 50, y: 610 },
+        end: { x: 545, y: 610 },
         color: primaryColor,
         thickness: 1
     });
-    page.drawText(ugovorType, { x: 50, y: 620, size: 12, font: font, color: black });
-    page.drawText(`${totalPrice} EUR`, { x: 450, y: 620, size: 12, font: font, color: black });
+    page.drawText(ugovorType, { x: 50, y: 590, size: 12, font: font, color: black });
+    page.drawText(`${totalPrice} EUR`, { x: 450, y: 590, size: 12, font: font, color: black });
+    page.drawLine({
+        start: { x: 50, y: 580 },
+        end: { x: 545, y: 580 },
+        color: primaryColor,
+        thickness: 1
+    });
+    
+    // Ukupno
+    page.drawText('UKUPNO', { x: 350, y: 550, size: 12, font: font, color: black });
+    page.drawText(`${totalPrice} EUR`, { x: 450, y: 550, size: 12, font: font, color: black });
+    page.drawLine({
+        start: { x: 350, y: 540 },
+        end: { x: 545, y: 540 },
+        color: black,
+        thickness: 1
+    });
 
     // Instrukcije za placanje
-    page.drawText('Podaci za uplatu:', { x: 50, y: 550, size: 12, font: font, color: primaryColor });
-    page.drawText('Primalac: Advokatska kancelarija Dejan Radinovic', { x: 50, y: 530, size: 12, font: font, color: black });
-    page.drawText('Adresa: Bozane Vucinica 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 515, size: 12, font: font, color: black });
-    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 500, size: 12, font: font, color: black });
-    page.drawText('Broj racuna: 540-0000000011285-46', { x: 50, y: 485, size: 12, font: font, color: black });
+    page.drawText('Podaci za uplatu:', { x: 50, y: 500, size: 12, font: font, color: primaryColor });
+    page.drawText('Primalac: Advokatska kancelarija Dejan Radinovic', { x: 50, y: 480, size: 12, font: font, color: black });
+    page.drawText('Adresa: Bozane Vucinica 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 465, size: 12, font: font, color: black });
+    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 450, size: 12, font: font, color: black });
+    page.drawText('Broj racuna: 540-0000000011285-46', { x: 50, y: 435, size: 12, font: font, color: black });
 
     const pdfBytes = await pdfDoc.save();
     return pdfBytes;
 }
 
-async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice, orderId, clientName) {
+async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice, orderId, clientName, clientAddress, clientID) {
     try {
-        const invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice, clientName);
+        const invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice, clientName, clientAddress, clientID);
         
         await resend.emails.send({
             from: 'noreply@ugovor24.com',
             to: clientEmail,
             subject: `Potvrda zahtjeva za ${ugovorType} - ugovor24.com`,
             html: `
-                <p>Postovani/a ${clientName},</p>
-                <p>Ovo je automatska potvrda da je Vas zahtjev za **${ugovorType}** uspjesno primljen.</p>
+                <p>Postovani/a ${removeDiacritics(clientName)},</p>
+                <p>Ovo je automatska potvrda da je Vas zahtjev za **${removeDiacritics(ugovorType)}** uspjesno primljen.</p>
                 <p>Nacrt Vaseg ugovora je vec u procesu generisanja i bice spreman za pregled cim Vasa uplata bude proknjizena.</p>
                 <p>Molimo izvrsite uplatu bankarskim transferom u iznosu od **${totalPrice} EUR**. Predracun sa instrukcijama za placanje je u prilogu.</p>
                 <p>Nakon sto uplata bude proknjizena na nasem racunu, ugovor ce biti pregledan i poslat Vam u roku od 24 casa.</p>
@@ -230,7 +249,7 @@ async function sendNotificationEmailToAdmin(ugovorType, orderId, formData) {
             subject: `NOVA NARUDZBA: ${ugovorType} (#${orderId.substring(0, 8)})`,
             html: `
                 <p>Dobar dan, Dejane,</p>
-                <p>Imate novu narudzbinu za **${ugovorType}**.</p>
+                <p>Imate novu narudzbinu za **${removeDiacritics(ugovorType)}**.</p>
                 <p>ID narudzbe: **${orderId}**</p>
                 <p>---</p>
                 <p>Podaci iz upitnika:</p>
@@ -296,7 +315,9 @@ export default async function handler(req, res) {
   const client_email = formData['client_email'];
   const ugovor_type = 'Ugovor o djelu';
   const total_price = 59;
-  const client_name = formData['naziv_narucioca'] || client_email;
+  const client_name = formData['naziv_narucioca'];
+  const client_address = formData['adresa_narucioca'];
+  const client_id = formData['id_broj_narucioca'];
 
   if (!client_email || !ugovor_type || !total_price) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -364,7 +385,7 @@ export default async function handler(req, res) {
         console.error('Greska pri generisanju nacrta:', generationResult.error);
     }
     
-    const emailResult = await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, formData['naziv_narucioca']);
+    const emailResult = await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, client_name, client_address, client_id);
     if (emailResult.error) {
         console.error('Greska pri slanju e-maila klijentu:', emailResult.error);
     }
