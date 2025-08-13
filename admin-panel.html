@@ -142,6 +142,7 @@
         document.addEventListener('DOMContentLoaded', fetchOrders);
 
         async function fetchOrders() {
+            console.log('Fetching orders from Supabase...');
             const { data, error } = await supabase
                 .from('orders')
                 .select('*')
@@ -151,9 +152,13 @@
                 console.error('Error fetching orders:', error);
                 return;
             }
+            console.log('Orders fetched successfully:', data);
 
             const tableBody = document.querySelector('#orders-table tbody');
             tableBody.innerHTML = '';
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Nema pristiglih narudžbina.</td></tr>';
+            }
             data.forEach(order => {
                 const row = document.createElement('tr');
                 const formattedOrderNumber = String(order.order_number).padStart(5, '0');
@@ -162,6 +167,18 @@
                 const finalStatusClass = order.is_final_approved ? 'status-true' : 'status-false';
                 const finalStatusText = order.is_final_approved ? 'Poslato' : 'Čeka odobrenje';
 
+                let actionButtonsHtml = '';
+                if (!order.is_paid) {
+                    actionButtonsHtml += `<button class="primary" onclick="verifyPayment('${order.id}')">Verifikuj Uplatu</button>`;
+                }
+                actionButtonsHtml += `
+                    <input type="file" id="file-${order.id}" style="display: none;" onchange="uploadFile('${order.id}')">
+                    <button class="secondary" onclick="document.getElementById('file-${order.id}').click()">Priloži Ugovor</button>
+                `;
+                if (order.is_paid && !order.is_final_approved && order.final_document_url) {
+                    actionButtonsHtml += `<button class="primary" onclick="sendFinal('${order.id}')">Pošalji Finalni Ugovor</button>`;
+                }
+
                 row.innerHTML = `
                     <td>#${formattedOrderNumber}</td>
                     <td>${order.ugovor_type}</td>
@@ -169,12 +186,7 @@
                     <td>${order.total_price} €</td>
                     <td><span class="status-badge ${paidStatusClass}">${paidStatusText}</span></td>
                     <td><span class="status-badge ${finalStatusClass}">${finalStatusText}</span></td>
-                    <td class="action-buttons">
-                        ${!order.is_paid ? `<button class="primary" onclick="verifyPayment('${order.id}')">Verifikuj Uplatu</button>` : ''}
-                        <input type="file" id="file-${order.id}" style="display: none;" onchange="uploadFile('${order.id}')">
-                        <button class="secondary" onclick="document.getElementById('file-${order.id}').click()">Priloži Ugovor</button>
-                        ${order.is_paid && !order.is_final_approved ? `<button class="primary" onclick="sendFinal('${order.id}')">Pošalji Finalni Ugovor</button>` : ''}
-                    </td>
+                    <td class="action-buttons">${actionButtonsHtml}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -187,7 +199,7 @@
                 body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
             });
             if (response.ok) {
-                fetchOrders();
+                fetchOrders(); // Refresh table
                 alert('Uplata verifikovana!');
             } else {
                 alert('Greška pri verifikaciji uplate.');
