@@ -221,7 +221,7 @@ async function generateInvoicePDF(orderId, ugovorType, totalPrice, orderNumber, 
 async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice, orderId, orderNumber, clientName, clientAddress, clientID) {
     try {
         const formattedOrderNumber = formatOrderNumber(orderNumber);
-        const invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice, clientName, clientAddress, clientID, formattedOrderNumber);
+        const invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice, formattedOrderNumber, clientName, clientAddress, clientID);
         
         await resend.emails.send({
             from: 'noreply@ugovor24.com',
@@ -245,4 +245,182 @@ async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice
         });
         return { success: true };
     } catch (error) {
-        console
+        console.error('Greska pri slanju e-maila klijentu:', error);
+        return { error: 'Failed to send email to client' };
+    }
+}
+
+async function sendNotificationEmailToAdmin(ugovorType, orderId, orderNumber, formData) {
+    const formattedData = formatFormData(formData);
+    const formattedOrderNumber = formatOrderNumber(orderNumber);
+
+    try {
+        await resend.emails.send({
+            from: 'noreply@ugovor24.com',
+            to: 'titograd977@gmail.com',
+            subject: `NOVA NARUDZBA: ${removeDiacritics(ugovorType)} (#${formattedOrderNumber})`,
+            html: `
+                <p>Dobar dan, Dejane,</p>
+                <p>Imate novu narudzbinu za **${removeDiacritics(ugovorType)}**.</p>
+                <p>Broj narudzbe: **${formattedOrderNumber}**</p>
+                <p>ID narudzbe: **${orderId}**</p>
+                <p>---</p>
+                <p>Podaci iz upitnika:</p>
+                <pre>${formattedData}</pre>
+                <p>---</p>
+                <p>Srdacan pozdrav,</p>
+                <p>Sistem ugovor24.com</p>
+            `,
+        });
+        return { success: true };
+    } catch (error) {
+        console.error('Greska pri slanju e-maila administratoru:', error);
+        return { error: 'Failed to send notification email' };
+    }
+}
+
+async function generateContractDraft(orderId, ugovorType, contractData) {
+    const template = masterTemplates[ugovorType];
+    
+    if (!template) {
+        return { error: 'Template for this contract type not found' };
+    }
+    
+    const prompt = `Ti si strucni advokat iz Crne Gore. Na osnovu prilozenih podataka i master templejta, generisi nacrt ugovora.
+    
+    Pravni kontekst:
+    - Pravo Crne Gore
+    - Sudska praksa Crne Gore i EU
+    - Najbolje prakse EU
+    
+    Podaci za ugovor: ${JSON.stringify(contractData)}
+    
+    Master template:
+    ${template}
+    
+    Molim te, vrati mi samo konacan tekst ugovora, sa popunjenim podacima i uklonjenim placeholderima poput {{#if...}}, u formatu pogodnom za kopiranje i finalizaciju. Ne dodaj nikakav uvodni ili zakljucni tekst, samo cisti tekst ugovora.`;
+
+    try {
+        const result = await model.generateContent(prompt);
+        const generatedDraft = result.response.text();
+        
+        const { error: updateError } = await supabase
+            .from('orders')
+            .update({ generated_draft: generatedDraft, is_draft_generated: true })
+            .eq('id', orderId);
+
+        if (updateError) {
+            console.error('Greska pri azuriranju narudzine:', updateError);
+            return { error: 'Database update error' };
+        }
+    } catch (e) {
+        console.error('Greska pri generisanju nacrta:', e);
+        return { error: 'AI generation failed' };
+    }
+    
+    return { success: true };
+}
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  const formData = req.body;
+
+  const client_email = formData['client_email'];
+  const ugovor_type = 'Ugovor o djelu';
+  const total_price = 59;
+  const client_name = formData['naziv_narucioca'];
+  const client_address = formData['adresa_narucioca'];
+  const client_id = formData['id_broj_narucioca'];
+
+  if (!client_email || !ugovor_type || !total_price) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    // 1. Unos u glavnu 'orders' tabelu
+    const { data: orderData, error: orderError } = await supabase
+      .from('orders')
+      .insert([
+        { 
+          client_email,
+          ugovor_type,
+          total_price
+        }
+      ])
+      .select('id, order_number'); // Dohvatamo i novi order_number
+
+    if (orderError) {
+      console.error('Greska pri unosu u orders tabelu:', orderError);
+      return res.status(500).json({ error: 'Database insertion error' });
+    }
+    
+    const order_id = orderData[0].id;
+    const order_number = orderData[0].order_number;
+    
+    // 2. Unos specificnih podataka u 'orders_ugovor_o_djelu' tabelu
+    const { error: specificError } = await supabase
+      .from('orders_ugovor_o_djelu')
+      .insert([
+        { 
+          order_id: order_id,
+          mjesto_zakljucenja: formData['mjesto_zakljucenja'],
+          datum_zakljucenja: formData['datum_zakljucenja'],
+          naziv_narucioca: formData['naziv_narucioca'],
+          adresa_narucioca: formData['adresa_narucioca'],
+          id_broj_narucioca: formData['id_broj_narucioca'],
+          naziv_izvrsioca: formData['naziv_izvrsioca'],
+          adresa_izvrsioca: formData['adresa_izvrsioca'],
+          id_broj_izvrsioca: formData['id_broj_izvrsioca'],
+          racun_izvrsioca: formData['racun_izvrsioca'],
+          banka_izvrsioca: formData['banka_izvrsioca'],
+          predmet_ugovora: formData['predmet_ugovora'],
+          rok_zavrsetka: formData['rok_zavrsetka'],
+          isporuka_definisana: formData['isporuka_definisana'] === 'Da',
+          definicija_isporuke: formData['definicija_isporuke'] || null,
+          iznos_naknade_broj: formData['iznos_naknade_broj'],
+          tip_naknade: formData['tip_naknade'],
+          rok_placanja: formData['rok_placanja'],
+          je_autorsko_djelo: formData['je_autorsko_djelo'] === 'Da',
+          pristup_povjerljivim_info: formData['pristup_povjerljivim_info'] === 'Da',
+          definisan_proces_revizije: formData['definisan_proces_revizije'] === 'Da',
+          broj_revizija: formData['broj_revizija'] || null,
+          rok_za_feedback: formData['rok_za_feedback'] || null
+        }
+      ]);
+
+    if (specificError) {
+      console.error('Greska pri unosu u orders_ugovor_o_djelu tabelu:', specificError);
+      return res.status(500).json({ error: 'Database insertion error' });
+    }
+
+    // 3. Pokretanje AI generisanja (automatski) i slanje e-maila sa predracunom
+    const generationResult = await generateContractDraft(order_id, ugovor_type, formData);
+    if (generationResult.error) {
+        console.error('Greska pri generisanju nacrta:', generationResult.error);
+    }
+    
+    const emailResult = await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, order_number, client_name, client_address, client_id);
+    if (emailResult.error) {
+        console.error('Greska pri slanju e-maila klijentu:', emailResult.error);
+    }
+
+    const adminEmailResult = await sendNotificationEmailToAdmin(ugovor_type, order_id, order_number, formData);
+    if (adminEmailResult.error) {
+        console.error('Greska pri slanju e-maila administratoru:', adminEmailResult.error);
+    }
+    
+    // 4. Preusmjeravanje klijenta na stranicu za placanje
+    res.writeHead(302, {
+      'Location': `/placanje.html?cijena=${total_price}&ugovor=${encodeURIComponent(ugovor_type)}`,
+      'Content-Type': 'text/plain',
+    });
+    res.end('Redirecting to payment...');
+    
+  } catch (err) {
+    console.error('Neocekivana greska:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
