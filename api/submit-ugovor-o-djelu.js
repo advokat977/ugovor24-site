@@ -92,20 +92,20 @@ async function generateInvoicePDF(orderId, ugovorType, totalPrice) {
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([600, 400]);
     
-    // Ugradnja standardnog fonta sa podrškom za dijakritičke znakove
+    // Ugradnja standardnog fonta koji podrzava dijakriticke znakove
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
     page.drawText('PREDRACUN', { x: 50, y: 350, size: 24, font: font, color: rgb(0.13, 0.13, 0.13) });
-    page.drawText(`Broj narudžbine: ${orderId}`, { x: 50, y: 320, size: 12, font: font });
+    page.drawText(`Broj narudzbine: ${orderId}`, { x: 50, y: 320, size: 12, font: font });
     page.drawText(`Usluga: ${ugovorType}`, { x: 50, y: 300, size: 12, font: font });
-    page.drawText(`Iznos za uplatu: ${totalPrice} €`, { x: 50, y: 280, size: 12, font: font, color: rgb(0, 0.49, 1) });
+    page.drawText(`Iznos za uplatu: ${totalPrice} EUR`, { x: 50, y: 280, size: 12, font: font, color: rgb(0, 0.49, 1) });
     
-    // Dodavanje instrukcija za placanje
-    page.drawText('Instrukcije za plaćanje:', { x: 50, y: 220, size: 14, font: font, color: rgb(0.13, 0.13, 0.13) });
-    page.drawText('Primalac: Advokatska kancelarija Dejan Radinović', { x: 50, y: 200, size: 12, font: font });
-    page.drawText('Adresa: Božane Vučinić 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 185, size: 12, font: font });
+    // Dodavanje instrukcija za placanje bez dijakritickih znakova
+    page.drawText('Instrukcije za placanje:', { x: 50, y: 220, size: 14, font: font, color: rgb(0.13, 0.13, 0.13) });
+    page.drawText('Primalac: Advokatska kancelarija Dejan Radinovic', { x: 50, y: 200, size: 12, font: font });
+    page.drawText('Adresa: Bozane Vucinica 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 185, size: 12, font: font });
     page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 170, size: 12, font: font });
-    page.drawText('Broj računa: 540-0000000011285-46', { x: 50, y: 155, size: 12, font: font });
+    page.drawText('Broj racuna: 540-0000000011285-46', { x: 50, y: 155, size: 12, font: font });
     
     const pdfBytes = await pdfDoc.save();
     return pdfBytes;
