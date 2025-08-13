@@ -53,6 +53,9 @@
             color: var(--text-color);
             text-decoration: none;
         }
+        .logo-24 {
+            color: var(--primary-color);
+        }
         .content-section {
             padding: 4rem 0;
             flex-grow: 1;
@@ -186,7 +189,7 @@
 
     <header>
         <div class="container">
-            <a href="index.html" class="logo">ugovor24.com</a>
+            <a href="index.html" class="logo">ugovor<span class="logo-24">24</span>.com</a>
             <nav>
                 <a href="index.html#kako-radi">Kako radi</a>
                 <a href="index.html#faq">FAQ</a>
@@ -202,11 +205,9 @@
                     <h1>Ugovor o Radu</h1>
                     <p class="form-description">Molimo Vas da popunite sljedeća polja kako biste dobili nacrt ugovora. Svi podaci su povjerljivi i obrađuju se u skladu sa našom Politikom privatnosti.</p>
 
-                    <form id="work-agreement-form">
+                    <form id="work-agreement-form" action="/api/submit-ugovor-o-radu" method="post">
                         
                         <h2>SEKCIJA 1: Osnovni Podaci o Ugovoru</h2>
-                        <p class="disclaimer-text">Ovi podaci definišu osnovni okvir ugovora.</p>
-                        
                         <div class="form-group">
                             <label for="mjesto_zakljucenja">1. U kom gradu se zaključuje ugovor?</label>
                             <p class="disclaimer-text">Ovaj podatak će se koristiti i kao mjesto suda u slučaju spora.</p>
@@ -385,12 +386,18 @@
                         </div>
                         
                         <div class="terms-checkbox">
-                            <input type="checkbox" id="terms-acceptance" name="terms-acceptance" required>
-                            <label for="terms-acceptance">Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
+                            <label>
+                                <input type="checkbox" name="terms_acceptance" required>
+                                Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
                             </label>
                         </div>
                         
-                        <button type="submit">Pošalji i Plati (99 EUR)</button>
+                        <div class="form-group">
+                            <label for="client_email">Email adresa:</label>
+                            <input type="email" id="client_email" name="client_email" required>
+                        </div>
+                        
+                        <button type="submit">Pošalji i Plati (99 €)</button>
                     </form>
                 </div>
             </div>
@@ -410,12 +417,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('datum_zakljucenja').value = today;
-            document.getElementById('datum_stupanja_na_rad').value = today;
-
+            const datumZakljucenja = document.getElementById('datum_zakljucenja');
+            const datumStupanjaNaRad = document.getElementById('datum_stupanja_na_rad');
+            if (datumZakljucenja) {
+                datumZakljucenja.value = today;
+            }
+            if (datumStupanjaNaRad) {
+                datumStupanjaNaRad.value = today;
+            }
+            
             // Inicijalno postavljanje `required` atributa
             const radNaDaljinuNe = document.querySelector('input[name="rad_na_daljinu"][value="Ne"]');
-            if (radNaDaljinuNe.checked) {
+            if (radNaDaljinuNe && radNaDaljinuNe.checked) {
                 const mjestoRadaField = document.getElementById('mjesto_rada_field');
                 mjestoRadaField.style.display = 'block';
                 document.getElementById('mjesto_rada').required = true;
@@ -440,13 +453,6 @@
             field.style.display = show ? 'block' : 'none';
             document.getElementById('period_probnog_rada').required = show;
         }
-        
-        document.getElementById('work-agreement-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const cijena = "99";
-            const ugovor = "Ugovor o radu";
-            window.location.href = `placanje.html?cijena=${cijena}&ugovor=${encodeURIComponent(ugovor)}`;
-        });
     </script>
 </body>
 </html>
