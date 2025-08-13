@@ -1,7 +1,6 @@
 // api/submit-ugovor-o-radu.js
 
 import { createClient } from '@supabase/supabase-js';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Resend } from 'resend';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
@@ -10,9 +9,6 @@ const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 function removeDiacritics(text) {
     if (!text) return '';
@@ -102,7 +98,7 @@ Zaposleni potvrduje da posjeduje navedenu strucnu spremu i da je Poslodavcu pred
 
 Clan 5: Vrijeme Trajanja Ugovora
 1.  Ovaj Ugovor se zakljucuje na: **{{tip_radnog_odnosa}}**.
-{{#if je_na_odredjeno}}
+{{#if je_na_odredeno}}
 2.  Radni odnos na odredeno vrijeme zasniva se zbog {{razlog_rada_na_odredeno}}, i traje do {{datum_isteka_ugovora}}.
 {{/if}}
 
@@ -168,7 +164,7 @@ Na sve sto nije regulisano ovim Ugovorom primjenjivace se odredbe Zakona o radu,
 Ugovor je sacinjen u 2 (dva) istovjetna primjerka, po jedan za svaku ugovornu stranu.
 <br>
 **POSLODAVAC** _________________________ {{naziv_poslodavca}} (Zastupan po: {{zastupnik_poslodavca}})
-**ZAPOSLENI** _________________________ {{ime_i_prezime_zaposlenog}}`,
+**Zaposleni** _________________________ {{ime_i_prezime_zaposlenog}}`,
 };
 
 async function generateInvoicePDF(orderId, ugovorType, totalPrice, orderNumber, clientName, clientAddress, clientID) {
@@ -252,7 +248,7 @@ async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice
                 <p>Postovani/a ${removeDiacritics(clientName)},</p>
                 <p>Ovo je automatska potvrda da je Vas zahtjev za **${removeDiacritics(ugovorType)}** uspjesno primljen pod brojem **${formattedOrderNumber}**.</p>
                 <p>Molimo izvrsite uplatu bankarskim transferom u iznosu od **${totalPrice} EUR**. Predracun sa instrukcijama za placanje je u prilogu.</p>
-                <p>Ukoliko za izradu ugovora budu potrebne dodatne informacije, kontaktiracemo Vas. Ugovor ce biti generisan, pregledan i poslat Vam u roku od 24 casa od momenta kada uplata bude proknjizena i dostupna na nasem racunu.</p>
+                <p>Ukoliko za izradu ugovora budu potrebne dodatne informacije, kontaktiracemo Vas. Nakon sto uplata bude proknjizena na nasem racunu, ugovor ce biti pregledan i poslat Vam.</p>
                 <p>Srdacan pozdrav,</p>
                 <p>Tim ugovor24.com</p>
             `,
@@ -299,48 +295,6 @@ async function sendNotificationEmailToAdmin(ugovorType, orderId, orderNumber, fo
     }
 }
 
-async function generateContractDraft(orderId, ugovorType, contractData) {
-    const template = masterTemplates[ugovorType];
-    
-    if (!template) {
-        return { error: 'Template for this contract type not found' };
-    }
-    
-    const prompt = `Ti si strucni advokat iz Crne Gore. Na osnovu prilozenih podataka i master templejta, generisi nacrt ugovora.
-    
-    Pravni kontekst:
-    - Pravo Crne Gore
-    - Sudska praksa Crne Gore i EU
-    - Najbolje prakse EU
-    
-    Podaci za ugovor: ${JSON.stringify(contractData)}
-    
-    Master template:
-    ${template}
-    
-    Molim te, vrati mi samo konacan tekst ugovora, sa popunjenim podacima i uklonjenim placeholderima poput {{#if...}}, u formatu pogodnom za kopiranje i finalizaciju. Ne dodaj nikakav uvodni ili zakljucni tekst, samo cisti tekst ugovora.`;
-
-    try {
-        const result = await model.generateContent(prompt);
-        const generatedDraft = result.response.text();
-        
-        const { error: updateError } = await supabase
-            .from('orders')
-            .update({ generated_draft: generatedDraft, is_draft_generated: true })
-            .eq('id', orderId);
-
-        if (updateError) {
-            console.error('Greska pri azuriranju narudzine:', updateError);
-            return { error: 'Database update error' };
-        }
-    } catch (e) {
-        console.error('Greska pri generisanju nacrta:', e);
-        return { error: 'AI generation failed' };
-    }
-    
-    return { success: true };
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -349,11 +303,11 @@ export default async function handler(req, res) {
   const formData = req.body;
 
   const client_email = formData['client_email'];
-  const ugovor_type = 'Ugovor o povjerljivosti (NDA)';
-  const total_price = 29;
-  const client_name = formData['tip_ugovora'] === 'Jednostrani' ? formData['naziv_strane_koja_prima'] : formData['naziv_strane_a'];
-  const client_address = formData['tip_ugovora'] === 'Jednostrani' ? formData['adresa_strane_koja_prima'] : formData['adresa_strane_a'];
-  const client_id = formData['tip_ugovora'] === 'Jednostrani' ? formData['id_broj_strane_koja_prima'] : formData['id_broj_strane_a'];
+  const ugovor_type = 'Ugovor o radu';
+  const total_price = 99;
+  const client_name = formData['ime_i_prezime_zaposlenog'];
+  const client_address = formData['adresa_zaposlenog'];
+  const client_id = formData['jmbg_zaposlenog'];
 
   if (!client_email || !ugovor_type || !total_price) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -379,52 +333,46 @@ export default async function handler(req, res) {
     const order_id = orderData[0].id;
     const order_number = orderData[0].order_number;
     
-    const specificData = formData['tip_ugovora'] === 'Jednostrani' ? {
-      order_id: order_id,
-      tip_ugovora: formData['tip_ugovora'],
-      naziv_strane_koja_otkriva: formData['naziv_strane_koja_otkriva'],
-      adresa_strane_koja_otkriva: formData['adresa_strane_koja_otkriva'],
-      id_broj_strane_koja_otkriva: formData['id_broj_strane_koja_otkriva'],
-      naziv_strane_koja_prima: formData['naziv_strane_koja_prima'],
-      adresa_strane_koja_prima: formData['adresa_strane_koja_prima'],
-      id_broj_strane_koja_prima: formData['id_broj_strane_koja_prima'],
-      mjesto_zakljucenja: formData['mjesto_zakljucenja'],
-      datum_zakljucenja: formData['datum_zakljucenja'],
-      svrha_otkrivanja: formData['svrha_otkrivanja'],
-      period_trajanja_obaveze: formData['period_trajanja_obaveze'],
-      ugovorena_kazna: formData['ugovorena_kazna'] === 'Da',
-      iznos_ugovorene_kazne: formData['iznos_ugovorene_kazne'] || null
-    } : {
-      order_id: order_id,
-      tip_ugovora: formData['tip_ugovora'],
-      naziv_strane_a: formData['naziv_strane_a'],
-      adresa_strane_a: formData['adresa_strane_a'],
-      id_broj_strane_a: formData['id_broj_strane_a'],
-      naziv_strane_b: formData['naziv_strane_b'],
-      adresa_strane_b: formData['adresa_strane_b'],
-      id_broj_strane_b: formData['id_broj_strane_b'],
-      mjesto_zakljucenja: formData['mjesto_zakljucenja'],
-      datum_zakljucenja: formData['datum_zakljucenja'],
-      svrha_otkrivanja: formData['svrha_otkrivanja'],
-      period_trajanja_obaveze: formData['period_trajanja_obaveze'],
-      ugovorena_kazna: formData['ugovorena_kazna'] === 'Da',
-      iznos_ugovorene_kazne: formData['iznos_ugovorene_kazne'] || null
-    };
-
     const { error: specificError } = await supabase
-      .from('orders_ugovor_o_povjerljivosti_nda')
-      .insert([specificData]);
+      .from('orders_ugovor_o_radu')
+      .insert([
+        { 
+          order_id: order_id,
+          mjesto_zakljucenja: formData['mjesto_zakljucenja'],
+          datum_zakljucenja: formData['datum_zakljucenja'],
+          naziv_poslodavca: formData['naziv_poslodavca'],
+          adresa_poslodavca: formData['adresa_poslodavca'],
+          pib_poslodavca: formData['pib_poslodavca'],
+          zastupnik_poslodavca: formData['zastupnik_poslodavca'],
+          ime_i_prezime_zaposlenog: formData['ime_i_prezime_zaposlenog'],
+          adresa_zaposlenog: formData['adresa_zaposlenog'],
+          jmbg_zaposlenog: formData['jmbg_zaposlenog'],
+          naziv_radnog_mjesta: formData['naziv_radnog_mjesta'],
+          opis_poslova: formData['opis_poslova'],
+          nivo_kvalifikacije_obrazovanja: formData['nivo_kvalifikacije_obrazovanja'],
+          stepen_strucne_spreme: formData['stepen_strucne_spreme'],
+          rad_na_daljinu: formData['rad_na_daljinu'] === 'Da',
+          mjesto_rada: formData['mjesto_rada'] || null,
+          tip_radnog_odnosa: formData['tip_radnog_odnosa'],
+          razlog_rada_na_odredeno: formData['razlog_rada_na_odredeno'] || null,
+          datum_isteka_ugovora: formData['datum_isteka_ugovora'] || null,
+          datum_stupanja_na_rad: formData['datum_stupanja_na_rad'],
+          tip_radnog_vremena: formData['tip_radnog_vremena'],
+          broj_radnih_sati_sedmicno: formData['broj_radnih_sati_sedmicno'],
+          iznos_bruto_zarade_broj: formData['iznos_bruto_zarade_broj'],
+          broj_dana_godisnjeg_odmora: formData['broj_dana_godisnjeg_odmora'],
+          otkazni_rok: formData['otkazni_rok'],
+          definisan_probni_rad: formData['definisan_probni_rad'] === 'Da',
+          period_probnog_rada: formData['period_probnog_rada'] || null,
+          definisana_zabrana_konkurencije: formData['definisana_zabrana_konkurencije'] === 'Da'
+        }
+      ]);
 
     if (specificError) {
-      console.error('Greska pri unosu u orders_ugovor_o_povjerljivosti_nda tabelu:', specificError);
+      console.error('Greska pri unosu u orders_ugovor_o_radu tabelu:', specificError);
       return res.status(500).json({ error: 'Database insertion error' });
     }
 
-    const generationResult = await generateContractDraft(order_id, ugovor_type, formData);
-    if (generationResult.error) {
-        console.error('Greska pri generisanju nacrta:', generationResult.error);
-    }
-    
     const emailResult = await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, order_number, client_name, client_address, client_id);
     if (emailResult.error) {
         console.error('Greska pri slanju e-maila klijentu:', emailResult.error);
