@@ -2,15 +2,19 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { Resend } from 'resend';
+import { PDFDocument, rgb } from 'pdf-lib';
 
 // Supabase URL i anonimni ključ se uzimaju iz Vercel varijabli okruženja
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Resend
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 // Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-// Ispravljen naziv modela, koristimo 'gemini-1.5-flash'
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // Master templejti za ugovore (kao JS stringovi)
@@ -85,6 +89,60 @@ Ugovor je sačinjen u 2 (dva) istovjetna primjerka, po jedan za svaku ugovornu s
     // Ovdje će biti ostali master templejti
 };
 
+// Generisanje PDF-a sa predracunom
+async function generateInvoicePDF(orderId, ugovorType, totalPrice) {
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([600, 400]);
+
+    // Ovdje bi se dodao logo, ali cemo ga za sada preskociti radi jednostavnosti.
+    
+    page.drawText('PREDRACUN', { x: 50, y: 350, size: 24, font: await pdfDoc.embedFont('Helvetica-Bold') });
+    page.drawText(`Broj narudžbine: ${orderId}`, { x: 50, y: 320, size: 12 });
+    page.drawText(`Usluga: ${ugovorType}`, { x: 50, y: 300, size: 12 });
+    page.drawText(`Iznos za uplatu: ${totalPrice} €`, { x: 50, y: 280, size: 12, color: rgb(0, 0, 0.5) });
+    
+    // Dodavanje instrukcija za placanje
+    page.drawText('Instrukcije za plaćanje:', { x: 50, y: 220, size: 14, font: await pdfDoc.embedFont('Helvetica-Bold') });
+    page.drawText('Primalac: Advokatska kancelarija Dejan Radinović', { x: 50, y: 200, size: 12 });
+    page.drawText('Adresa: Božane Vučinić 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 185, size: 12 });
+    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 170, size: 12 });
+    page.drawText('Broj računa: 540-0000000011285-46', { x: 50, y: 155, size: 12 });
+    
+    const pdfBytes = await pdfDoc.save();
+    return pdfBytes;
+}
+
+async function sendConfirmationEmail(clientEmail, ugovorType, totalPrice, orderId) {
+    try {
+        const invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice);
+        
+        await resend.emails.send({
+            from: 'ugovor24.com <noreply@ugovor24.com>',
+            to: clientEmail,
+            subject: `Potvrda zahtjeva za ${ugovorType} - ugovor24.com`,
+            html: `
+                <p>Poštovani/a,</p>
+                <p>Ovo je automatska potvrda da je Vaš zahtjev za ${ugovorType} uspješno primljen.</p>
+                <p>Nacrt Vašeg ugovora je već u procesu generisanja uz pomoć AI-a i biće spreman za pregled čim Vaša uplata bude proknjižena.</p>
+                <p>Molimo izvršite uplatu bankarskim transferom u iznosu od ${totalPrice} €. Predračun sa instrukcijama za plaćanje je u prilogu.</p>
+                <p>Nakon što uplata bude proknjižena na našem računu, ugovor će biti pregledan i poslat Vam u roku od 24 časa.</p>
+                <p>Srdačan pozdrav,</p>
+                <p>Tim ugovor24.com</p>
+            `,
+            attachments: [
+                {
+                    filename: `predracun-${orderId}.pdf`,
+                    content: Buffer.from(invoicePdfBytes)
+                }
+            ]
+        });
+        return { success: true };
+    } catch (error) {
+        console.error('Greška pri slanju e-maila:', error);
+        return { error: 'Failed to send email' };
+    }
+}
+
 async function generateContractDraft(orderId, ugovorType, contractData) {
     const template = masterTemplates[ugovorType];
     
@@ -133,7 +191,7 @@ export default async function handler(req, res) {
 
   const client_email = formData['client_email'];
   const ugovor_type = 'Ugovor o djelu';
-  const total_price = 59; // Cijena ugovora
+  const total_price = 59;
 
   if (!client_email || !ugovor_type || !total_price) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -197,12 +255,17 @@ export default async function handler(req, res) {
 
     // 3. Pokretanje AI generisanja (automatski)
     const generationResult = await generateContractDraft(order_id, ugovor_type, formData);
-    
     if (generationResult.error) {
         console.error('Greška pri generisanju nacrta:', generationResult.error);
     }
     
-    // 4. Preusmjeravanje klijenta na stranicu za plaćanje
+    // 4. Slanje e-maila sa predracunom
+    const emailResult = await sendConfirmationEmail(client_email, ugovor_type, total_price, order_id);
+    if (emailResult.error) {
+        console.error('Greška pri slanju e-maila:', emailResult.error);
+    }
+    
+    // 5. Preusmjeravanje klijenta na stranicu za plaćanje
     res.writeHead(302, {
       'Location': `/placanje.html?cijena=${total_price}&ugovor=${encodeURIComponent(ugovor_type)}`,
       'Content-Type': 'text/plain',
