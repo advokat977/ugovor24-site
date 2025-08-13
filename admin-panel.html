@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ugovor24.com</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"></script>
     <style>
         :root {
             --primary-color: #007bff;
@@ -136,7 +137,7 @@
     <script>
         const supabaseUrl = 'https://jgkllsxeuoozpglzwxwg.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc';
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabase = supabase_js.createClient(supabaseUrl, supabaseKey);
 
         document.addEventListener('DOMContentLoaded', fetchOrders);
 
