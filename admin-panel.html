@@ -23,121 +23,218 @@
             background-color: var(--background-color);
             color: var(--text-color);
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
         }
-        .admin-card {
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        header {
             background: var(--card-background);
-            border-radius: 12px;
-            padding: 3rem;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            max-width: 600px;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
             text-align: center;
         }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-color);
+        main {
+            flex-grow: 1;
         }
-        p {
-            color: var(--light-text);
-            margin-bottom: 2rem;
+        .table-responsive {
+            overflow-x: auto;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            padding: 1.5rem;
         }
-        .form-group {
-            margin-bottom: 1.5rem;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th, td {
             text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
         }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
+        th {
+            background-color: var(--background-color);
             font-weight: 600;
         }
-        input[type="text"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
+        tr:hover {
+            background-color: #f1f3f5;
         }
-        button {
-            width: 100%;
-            padding: 1rem;
-            background-color: var(--primary-color);
-            color: #ffffff;
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8em;
+            color: #fff;
+        }
+        .status-false { background-color: #e85959; }
+        .status-true { background-color: #20c997; }
+        .action-buttons button, .action-buttons input {
+            font-size: 0.8em;
+            padding: 6px 10px;
             border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 1.5rem;
+            margin-right: 5px;
         }
-        button:hover {
-            background-color: #0056b3;
+        .action-buttons button.primary { background-color: var(--primary-color); color: #fff; }
+        .action-buttons button.primary:hover { background-color: #0056b3; }
+        .action-buttons button.secondary { background-color: var(--secondary-color); color: #fff; }
+        .action-buttons button.secondary:hover { background-color: #5a6268; }
+        .footer {
+            background: var(--text-color);
+            color: #ffffff;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            text-align: center;
         }
-        #status-message {
-            margin-top: 1rem;
-            font-weight: 600;
-        }
-        .success {
-            color: green;
-        }
-        .error {
-            color: red;
+        .footer p {
+            margin: 0;
+            color: #adb5bd;
         }
     </style>
 </head>
 <body>
 
-    <div class="admin-card">
+    <header>
         <h1>Admin Panel</h1>
-        <p>Unesite ID narudžbine i pokrenite generisanje nacrta ugovora.</p>
+        <p>Upravljanje narudžbinama</p>
+    </header>
 
-        <form id="generate-form">
-            <div class="form-group">
-                <label for="order-id">ID Narudžbine:</label>
-                <input type="text" id="order-id" name="order_id" required>
+    <main>
+        <div class="container">
+            <div class="table-responsive">
+                <table id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Broj narudžbe</th>
+                            <th>Ugovor</th>
+                            <th>Klijent</th>
+                            <th>Iznos</th>
+                            <th>Uplata</th>
+                            <th>Status</th>
+                            <th>Akcije</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
             </div>
-            <button type="submit">Pokreni Generisanje Nacrta</button>
-        </form>
+        </div>
+    </main>
 
-        <div id="status-message"></div>
-    </div>
-
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
+        </div>
+    </footer>
+    
     <script>
-        document.getElementById('generate-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const orderId = document.getElementById('order-id').value;
-            const statusMessage = document.getElementById('status-message');
-            
-            statusMessage.textContent = 'Generisanje u toku...';
-            statusMessage.className = '';
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+        const supabaseUrl = 'https://[tvoj_supabase_url].supabase.co'; // ZAMIJENI SA SVOJIM SUPABASE URL-om
+        const supabaseKey = 'anon_key_sa_vertelom'; // ZAMIJENI SA SVOJIM ANON_KEY KLJUCEM
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-            try {
-                const response = await fetch('/api/generate-contract', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ order_id: orderId }),
-                });
+        document.addEventListener('DOMContentLoaded', fetchOrders);
 
-                const data = await response.json();
+        async function fetchOrders() {
+            const { data, error } = await supabase
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-                if (response.ok) {
-                    statusMessage.textContent = 'Uspješno generisan nacrt! Provjerite bazu podataka.';
-                    statusMessage.className = 'success';
-                } else {
-                    statusMessage.textContent = `Greška: ${data.error || 'Nepoznata greška'}`;
-                    statusMessage.className = 'error';
-                }
-            } catch (error) {
-                statusMessage.textContent = 'Greška pri komunikaciji sa serverom.';
-                statusMessage.className = 'error';
+            if (error) {
+                console.error('Error fetching orders:', error);
+                return;
             }
-        });
+
+            const tableBody = document.querySelector('#orders-table tbody');
+            tableBody.innerHTML = '';
+            data.forEach(order => {
+                const row = document.createElement('tr');
+                const formattedOrderNumber = String(order.order_number).padStart(5, '0');
+                const paidStatusClass = order.is_paid ? 'status-true' : 'status-false';
+                const paidStatusText = order.is_paid ? 'Uplaćeno' : 'Na čekanju';
+                const finalStatusClass = order.is_final_approved ? 'status-true' : 'status-false';
+                const finalStatusText = order.is_final_approved ? 'Poslato' : 'Čeka odobrenje';
+
+                row.innerHTML = `
+                    <td>#${formattedOrderNumber}</td>
+                    <td>${order.ugovor_type}</td>
+                    <td>${order.client_email}</td>
+                    <td>${order.total_price} €</td>
+                    <td><span class="status-badge ${paidStatusClass}">${paidStatusText}</span></td>
+                    <td><span class="status-badge ${finalStatusClass}">${finalStatusText}</span></td>
+                    <td class="action-buttons">
+                        ${!order.is_paid ? `<button class="primary" onclick="verifyPayment('${order.id}')">Verifikuj Uplatu</button>` : ''}
+                        <input type="file" id="file-${order.id}" style="display: none;" onchange="uploadFile('${order.id}')">
+                        <button class="secondary" onclick="document.getElementById('file-${order.id}').click()">Priloži Ugovor</button>
+                        ${order.is_paid && !order.is_final_approved ? `<button class="primary" onclick="sendFinal('${order.id}')">Pošalji Finalni Ugovor</button>` : ''}
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        async function verifyPayment(orderId) {
+            const response = await fetch('/api/finalize-contract', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
+            });
+            if (response.ok) {
+                fetchOrders(); // Refresh table
+                alert('Uplata verifikovana!');
+            } else {
+                alert('Greška pri verifikaciji uplate.');
+            }
+        }
+        
+        async function uploadFile(orderId) {
+            const fileInput = document.getElementById(`file-${orderId}`);
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const { data, error } = await supabase.storage
+                .from('ugovori')
+                .upload(`${orderId}/${file.name}`, file, { cacheControl: '3600', upsert: false });
+            
+            if (error) {
+                console.error('Error uploading file:', error);
+                alert('Greška pri upload-u fajla!');
+                return;
+            }
+
+            const fileUrl = `${supabaseUrl}/storage/v1/object/public/ugovori/${orderId}/${file.name}`;
+            await fetch('/api/finalize-contract', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'upload_file', order_id: orderId, fileUrl: fileUrl }),
+            });
+            
+            fetchOrders();
+            alert('Ugovor priložen!');
+        }
+
+        async function sendFinal(orderId) {
+             const response = await fetch('/api/finalize-contract', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'send_final', order_id: orderId }),
+            });
+            if (response.ok) {
+                fetchOrders(); // Refresh table
+                alert('Finalni ugovor poslat klijentu!');
+            } else {
+                const errorData = await response.json();
+                alert('Greška pri slanju finalnog ugovora: ' + (errorData.error || 'Nepoznata greška.'));
+            }
+        }
     </script>
+    
 </body>
 </html>
