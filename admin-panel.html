@@ -199,7 +199,7 @@
                 body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
             });
             if (response.ok) {
-                fetchOrders(); // Refresh table
+                fetchOrders();
                 alert('Uplata verifikovana!');
             } else {
                 alert('Greška pri verifikaciji uplate.');
