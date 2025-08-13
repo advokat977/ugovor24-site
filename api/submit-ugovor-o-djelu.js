@@ -10,8 +10,8 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-// Vraćamo se na standardni naziv modela, jer problem nije u nazivu, već u ključu.
-const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+// Ispravljen naziv modela, koristimo 'gemini-1.5-flash'
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // Master templejti za ugovore (kao JS stringovi)
 const masterTemplates = {
