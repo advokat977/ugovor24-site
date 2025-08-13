@@ -202,7 +202,7 @@
                     <h1>Ugovor o Djelu</h1>
                     <p class="form-description">Molimo Vas da popunite sljedeća polja kako biste dobili nacrt ugovora. Svi podaci su povjerljivi i obrađuju se u skladu sa našom Politikom privatnosti.</p>
 
-                    <form id="ugovor-o-delu-form" action="/submit-ugovor-o-delu" method="post">
+                    <form id="ugovor-o-delu-form" action="/api/submit-ugovor-o-djelu" method="post">
                         
                         <h2>SEKCIJA 1: Osnovni Podaci o Ugovoru</h2>
                         <div class="form-group">
@@ -355,11 +355,17 @@
                         <div class="disclaimer" style="margin-top: 3rem;">
                             <p><strong>Napomena:</strong> Popunjavanjem ovog upitnika dajete podatke koji će biti direktno unijeti u nacrt ugovora. Molimo Vas da obratite pažnju na tačnost i istinitost unijetih informacija.</p>
                         </div>
-                        
+
                         <div class="terms-checkbox">
-                            <input type="checkbox" id="terms-acceptance" name="terms-acceptance" required>
-                            <label for="terms-acceptance">Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
+                            <label>
+                                <input type="checkbox" name="terms_acceptance" required>
+                                Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
                             </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="client_email">Email adresa:</label>
+                            <input type="email" id="client_email" name="client_email" required>
                         </div>
                         
                         <button type="submit">Pošalji i Plati (59 EUR)</button>
@@ -382,7 +388,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('datum_zakljucenja').value = today;
+            const dateInput = document.getElementById('datum_zakljucenja');
+            if (dateInput) {
+                dateInput.value = today;
+            }
         });
         
         function toggleIsporuka(show) {
@@ -397,13 +406,6 @@
             document.getElementById('broj_revizija').required = show;
             document.getElementById('rok_za_feedback').required = show;
         }
-        
-        document.getElementById('ugovor-o-delu-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const cijena = "59";
-            const ugovor = "Ugovor o djelu";
-            window.location.href = `placanje.html?cijena=${cijena}&ugovor=${encodeURIComponent(ugovor)}`;
-        });
     </script>
 </body>
 </html>
