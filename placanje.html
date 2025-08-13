@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plaćanje - Ugovor24.com</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #212529;
+            --light-text: #6c757d;
+            --border-color: #e9ecef;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        header {
+            background: var(--card-background);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+        .content-section {
+            padding: 4rem 0;
+            flex-grow: 1;
+        }
+        .payment-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        .price-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+        .payment-details {
+            text-align: left;
+            margin-bottom: 2rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+        .payment-details p {
+            margin: 0.5rem 0;
+        }
+        .payment-details strong {
+            display: inline-block;
+            width: 120px;
+        }
+        .qr-code {
+            margin-top: 2rem;
+        }
+        .qr-code img {
+            max-width: 200px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        .qr-code p {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-top: 0.5rem;
+        }
+        .footer {
+            background: var(--text-color);
+            color: #ffffff;
+            padding: 2rem 0;
+            margin-top: auto;
+            text-align: center;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .footer p {
+            margin: 0;
+            color: #adb5bd;
+        }
+        .footer .links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.2s;
+        }
+        .footer .links a:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">ugovor24.com</a>
+            <nav>
+                <a href="index.html#kako-radi">Kako radi</a>
+                <a href="index.html#faq">FAQ</a>
+                <a href="kontakt.html">Kontakt</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="content-section">
+            <div class="container">
+                <div class="payment-card">
+                    <h1>Instrukcije za plaćanje</h1>
+                    <p>Hvala Vam! Vaš zahtjev je uspješno poslat. Molimo izvršite uplatu bankarskim transferom na sljedeće podatke:</p>
+
+                    <p class="price-display">Iznos za uplatu: <span id="cijena-ugovora"></span></p>
+
+                    <div class="payment-details">
+                        <p><strong>Primalac:</strong> Advokatska kancelarija Dejan Radinović</p>
+                        <p><strong>Adresa:</strong> Božane Vučinić 7-5, 81000 Podgorica, Crna Gora</p>
+                        <p><strong>Banka:</strong> Erste bank AD Podgorica</p>
+                        <p><strong>Broj računa:</strong> 540-0000000011285-46</p>
+                        <p><strong>Svrha uplate:</strong> <span id="svrha-uplate"></span></p>
+                    </div>
+
+                    <div class="qr-code">
+                        <img id="qr-image" src="" alt="QR kod za plaćanje">
+                        <p>Skenirajte ovaj QR kod za bržu uplatu. Potrebno je ručno unijeti iznos.</p>
+                    </div>
+
+                    <p style="margin-top: 2rem;">Vaš ugovor će biti generisan i poslat na email adresu koju ste naveli u upitniku, u roku od 24 časa od momenta evidentiranja uplate.</p>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
+            <div class="links">
+                <a href="uslovi-koriscenja.html">Uslovi korišćenja</a>
+                <a href="politika-privatnosti.html">Politika privatnosti</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cijena = urlParams.get('cijena');
+            const ugovor = urlParams.get('ugovor');
+            
+            if (cijena) {
+                document.getElementById('cijena-ugovora').textContent = `${cijena} EUR`;
+            } else {
+                document.getElementById('cijena-ugovora').textContent = `[Iznos nije dostupan]`;
+            }
+            
+            const svrhaUplateElement = document.getElementById('svrha-uplate');
+            if (ugovor) {
+                svrhaUplateElement.textContent = `Uplata za ${ugovor}`;
+            } else {
+                svrhaUplateElement.textContent = `Uplata za ugovor (molimo navedite ime ugovora)`;
+            }
+
+            // Generiše podatke za QR kod
+            const qrData = `Primalac: Advokatska kancelarija Dejan Radinovic, Broj racuna: 540-0000000011285-46, Svrha uplate: Uplata za ${ugovor ? ugovor : 'ugovor'}, Iznos: ${cijena ? cijena : '0'}`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}`;
+            document.getElementById('qr-image').src = qrUrl;
+        });
+    </script>
+</body>
+</html>
