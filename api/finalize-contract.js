@@ -21,11 +21,10 @@ function formatOrderNumber(number) {
   return `${leadingZeros}${numString}`;
 }
 
-async function sendFinalEmailToClient(order) {
+async function sendFinalEmailToClient(order, finalDocumentUrl) {
     try {
         const ugovorType = order.ugovor_type;
         const formattedOrderNumber = formatOrderNumber(order.order_number);
-        const finalDocumentUrl = order.final_document_url;
         
         let clientName = '';
         if (ugovorType === 'Ugovor o djelu' && order.orders_ugovor_o_djelu.length > 0) {
@@ -59,6 +58,31 @@ async function sendFinalEmailToClient(order) {
     } catch (error) {
         console.error('Greska pri slanju finalnog e-maila:', error);
         return { error: 'Failed to send final email' };
+    }
+}
+
+async function sendFinalEmailToAdmin(order, finalDocumentUrl) {
+    try {
+        const ugovorType = order.ugovor_type;
+        const formattedOrderNumber = formatOrderNumber(order.order_number);
+        
+        await resend.emails.send({
+            from: 'noreply@ugovor24.com',
+            to: 'titograd977@gmail.com', // Tvoja e-mail adresa
+            subject: `KOPIJA: Poslat finalni ugovor (${removeDiacritics(ugovorType)} #${formattedOrderNumber})`,
+            html: `
+                <p>Dobar dan, Dejane,</p>
+                <p>Kopija e-maila poslatog klijentu **${order.client_email}**.</p>
+                <p>Ugovor za **${removeDiacritics(ugovorType)}** pod brojem **#${formattedOrderNumber}** je uspesno poslat.</p>
+                <p>Link za preuzimanje: **<a href="${finalDocumentUrl}">Preuzmi finalni dokument</a>**</p>
+                <p>Srdacan pozdrav,</p>
+                <p>Sistem ugovor24.com</p>
+            `,
+        });
+        return { success: true };
+    } catch (error) {
+        console.error('Greska pri slanju kopije e-maila administratoru:', error);
+        return { error: 'Failed to send copy email' };
     }
 }
 
@@ -109,9 +133,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Order not paid or final document not uploaded' });
       }
 
-      const emailResult = await sendFinalEmailToClient(order);
+      const clientEmailResult = await sendFinalEmailToClient(order, order.final_document_url);
+      const adminEmailResult = await sendFinalEmailToAdmin(order, order.final_document_url);
 
-      if (emailResult.error) {
+      if (clientEmailResult.error || adminEmailResult.error) {
         return res.status(500).json({ error: 'Failed to send final email' });
       }
       
