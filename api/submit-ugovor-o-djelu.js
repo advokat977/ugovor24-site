@@ -94,18 +94,37 @@ async function generateInvoicePDF(orderId, ugovorType, totalPrice) {
     
     // Ugradnja standardnog fonta koji podrzava dijakriticke znakove
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const primaryColor = rgb(0, 0.49, 1); // Plava boja za isticanje
 
-    page.drawText('PREDRACUN', { x: 50, y: 350, size: 24, font: font, color: rgb(0.13, 0.13, 0.13) });
-    page.drawText(`Broj narudzbine: ${orderId}`, { x: 50, y: 320, size: 12, font: font });
-    page.drawText(`Usluga: ${ugovorType}`, { x: 50, y: 300, size: 12, font: font });
-    page.drawText(`Iznos za uplatu: ${totalPrice} EUR`, { x: 50, y: 280, size: 12, font: font, color: rgb(0, 0.49, 1) });
+    // URL tvog sajta za logo, prilagođeno da radi i na lokalnoj mašini za testiranje
+    const logoUrl = 'https://ugovor24-site.vercel.app/logo.png';
+    const logoBytes = await fetch(logoUrl).then(res => res.arrayBuffer());
+    const logoImage = await pdfDoc.embedPng(logoBytes);
     
-    // Dodavanje instrukcija za placanje bez dijakritickih znakova
-    page.drawText('Instrukcije za placanje:', { x: 50, y: 220, size: 14, font: font, color: rgb(0.13, 0.13, 0.13) });
-    page.drawText('Primalac: Advokatska kancelarija Dejan Radinovic', { x: 50, y: 200, size: 12, font: font });
-    page.drawText('Adresa: Bozane Vucinica 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 185, size: 12, font: font });
-    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 170, size: 12, font: font });
-    page.drawText('Broj racuna: 540-0000000011285-46', { x: 50, y: 155, size: 12, font: font });
+    // Dimenzije loga
+    const logoDims = logoImage.scale(0.5);
+
+    page.drawImage(logoImage, {
+      x: 50,
+      y: 350 - logoDims.height,
+      width: logoDims.width,
+      height: logoDims.height,
+    });
+    
+    // Tekst u PDF-u (poboljsana citljivost)
+    page.drawText('PREDRACUN', { x: 50, y: 310, size: 24, font: font, color: primaryColor });
+    page.drawText('____________________________________________', { x: 50, y: 305, size: 12, font: font, color: primaryColor });
+    
+    page.drawText(`Broj narudžbine: ${orderId}`, { x: 50, y: 280, size: 12, font: font });
+    page.drawText(`Usluga: ${ugovorType}`, { x: 50, y: 260, size: 12, font: font });
+    page.drawText(`Iznos za uplatu: ${totalPrice} €`, { x: 50, y: 240, size: 12, font: font, color: primaryColor });
+    
+    // Podaci o plaćanju
+    page.drawText('Instrukcije za plaćanje:', { x: 50, y: 200, size: 14, font: font });
+    page.drawText('Primalac: Advokatska kancelarija Dejan Radinović', { x: 50, y: 180, size: 12, font: font });
+    page.drawText('Adresa: Božane Vučinić 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 165, size: 12, font: font });
+    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 150, size: 12, font: font });
+    page.drawText('Broj računa: 540-0000000011285-46', { x: 50, y: 135, size: 12, font: font });
     
     const pdfBytes = await pdfDoc.save();
     return pdfBytes;
@@ -116,7 +135,7 @@ async function sendConfirmationEmail(clientEmail, ugovorType, totalPrice, orderI
         const invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice);
         
         await resend.emails.send({
-            from: 'ugovor24.com <noreply@ugovor24.com>',
+            from: 'onboarding@resend.dev',
             to: clientEmail,
             subject: `Potvrda zahtjeva za ${ugovorType} - ugovor24.com`,
             html: `
