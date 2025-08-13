@@ -98,6 +98,8 @@ export default async function handler(req, res) {
     // 2. Unos u specificnu tabelu na osnovu ugovor_type
     const specificData = { order_id, ...formData };
     delete specificData['ugovor_type']; // Ukloni polje jer je već u `orders` tabeli
+    delete specificData['client_email']; // *** OVA LINIJA JE DODATA ZBOG NOVE GRESKE ***
+    delete specificData['e_mail_adresa']; // I ova, ako se koristi u drugom formularu
 
     const { error: specificError } = await supabase
       .from(specificTable)
