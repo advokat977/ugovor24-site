@@ -2,7 +2,6 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
@@ -28,12 +27,27 @@ async function sendFinalEmailToClient(order) {
         const formattedOrderNumber = formatOrderNumber(order.order_number);
         const finalDocumentUrl = order.final_document_url;
         
+        let clientName = '';
+        if (ugovorType === 'Ugovor o djelu' && order.orders_ugovor_o_djelu.length > 0) {
+            clientName = order.orders_ugovor_o_djelu[0].naziv_narucioca;
+        } else if (ugovorType === 'Ugovor o zakupu' && order.orders_ugovor_o_zakupu.length > 0) {
+            clientName = order.orders_ugovor_o_zakupu[0].naziv_zakupca;
+        } else if (ugovorType === 'Ugovor o radu' && order.orders_ugovor_o_radu.length > 0) {
+            clientName = order.orders_ugovor_o_radu[0].ime_i_prezime_zaposlenog;
+        } else if (ugovorType === 'Ugovor o povjerljivosti (NDA)' && order.orders_ugovor_o_povjerljivosti_nda.length > 0) {
+            clientName = order.orders_ugovor_o_povjerljivosti_nda[0].tip_ugovora === 'Jednostrani' ? order.orders_ugovor_o_povjerljivosti_nda[0].naziv_strane_koja_prima : order.orders_ugovor_o_povjerljivosti_nda[0].naziv_strane_a;
+        } else if (ugovorType === 'Set dokumenata za registraciju firme (DOO)' && order.orders_set_za_firmu_doo.length > 0) {
+            clientName = order.orders_set_za_firmu_doo[0].ime_osnivaca_1;
+        } else {
+            clientName = order.client_email;
+        }
+        
         await resend.emails.send({
             from: 'noreply@ugovor24.com',
             to: order.client_email,
             subject: `Vas ugovor je spreman za preuzimanje: ${removeDiacritics(ugovorType)} (#${formattedOrderNumber})`,
             html: `
-                <p>Postovani/a,</p>
+                <p>Postovani/a ${removeDiacritics(clientName)},</p>
                 <p>Cestitamo! Vasa uplata je proknjizena i Vas ugovor je odobren.</p>
                 <p>Finalna verzija Vaseg ugovora je spremna za preuzimanje na linku ispod.</p>
                 <p>Ugovor: **<a href="${finalDocumentUrl}">Preuzmi finalni dokument</a>**</p>
@@ -76,7 +90,14 @@ export default async function handler(req, res) {
     if (action === 'send_final') {
       const { data: order, error: orderError } = await supabase
         .from('orders')
-        .select('*')
+        .select(`
+          *,
+          orders_ugovor_o_djelu(naziv_narucioca),
+          orders_ugovor_o_zakupu(naziv_zakupca),
+          orders_ugovor_o_radu(ime_i_prezime_zaposlenog),
+          orders_ugovor_o_povjerljivosti_nda(tip_ugovora, naziv_strane_a, naziv_strane_koja_prima),
+          orders_set_za_firmu_doo(ime_osnivaca_1)
+        `)
         .eq('id', order_id)
         .single();
 
