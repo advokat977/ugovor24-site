@@ -215,7 +215,7 @@ async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice
                 <p>Postovani/a ${removeDiacritics(clientName)},</p>
                 <p>Ovo je automatska potvrda da je Vas zahtjev za **${removeDiacritics(ugovorType)}** uspjesno primljen pod brojem **${formattedOrderNumber}**.</p>
                 <p>Molimo izvrsite uplatu bankarskim transferom u iznosu od **${totalPrice} EUR**. Predracun sa instrukcijama za placanje je u prilogu.</p>
-                <p>Ukoliko za izradu ugovora budu potrebne dodatne informacije, kontaktiracemo Vas. Ugovor ce biti generisan, pregledan i poslat Vam u roku od 24 casa od momenta kada uplata bude proknjizena i dostupna na nasem racunu.</p>
+                <p>Ukoliko za izradu ugovora budu potrebne dodatne informacije, kontaktiracemo Vas. Nakon sto uplata bude proknjizena na nasem racunu, ugovor ce biti pregledan i poslat Vam.</p>
                 <p>Srdacan pozdrav,</p>
                 <p>Tim ugovor24.com</p>
             `,
@@ -260,48 +260,6 @@ async function sendNotificationEmailToAdmin(ugovorType, orderId, orderNumber, fo
         console.error('Greska pri slanju e-maila administratoru:', error);
         return { error: 'Failed to send notification email' };
     }
-}
-
-async function generateContractDraft(orderId, ugovorType, contractData) {
-    const template = masterTemplates[ugovorType];
-    
-    if (!template) {
-        return { error: 'Template for this contract type not found' };
-    }
-    
-    const prompt = `Ti si strucni advokat iz Crne Gore. Na osnovu prilozenih podataka i master templejta, generisi nacrt ugovora.
-    
-    Pravni kontekst:
-    - Pravo Crne Gore
-    - Sudska praksa Crne Gore i EU
-    - Najbolje prakse EU
-    
-    Podaci za ugovor: ${JSON.stringify(contractData)}
-    
-    Master template:
-    ${template}
-    
-    Molim te, vrati mi samo konacan tekst ugovora, sa popunjenim podacima i uklonjenim placeholderima poput {{#if...}}, u formatu pogodnom za kopiranje i finalizaciju. Ne dodaj nikakav uvodni ili zakljucni tekst, samo cisti tekst ugovora.`;
-
-    try {
-        const result = await model.generateContent(prompt);
-        const generatedDraft = result.response.text();
-        
-        const { error: updateError } = await supabase
-            .from('orders')
-            .update({ generated_draft: generatedDraft, is_draft_generated: true })
-            .eq('id', orderId);
-
-        if (updateError) {
-            console.error('Greska pri azuriranju narudzine:', updateError);
-            return { error: 'Database update error' };
-        }
-    } catch (e) {
-        console.error('Greska pri generisanju nacrta:', e);
-        return { error: 'AI generation failed' };
-    }
-    
-    return { success: true };
 }
 
 export default async function handler(req, res) {
@@ -383,11 +341,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Database insertion error' });
     }
 
-    const generationResult = await generateContractDraft(order_id, ugovor_type, formData);
-    if (generationResult.error) {
-        console.error('Greska pri generisanju nacrta:', generationResult.error);
-    }
-    
     const emailResult = await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, order_number, client_name, client_address, client_id);
     if (emailResult.error) {
         console.error('Greska pri slanju e-maila klijentu:', emailResult.error);
