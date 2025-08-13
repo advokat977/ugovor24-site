@@ -294,12 +294,12 @@ export default async function handler(req, res) {
 
   const formData = req.body;
 
-  const client_email = formData['client_email'];
-  const ugovor_type = 'Ugovor o djelu';
-  const total_price = 59;
-  const client_name = formData['naziv_narucioca'];
-  const client_address = formData['adresa_narucioca'];
-  const client_id = formData['id_broj_narucioca'];
+  const client_email = formData['e_mail_adresa'];
+  const ugovor_type = 'Set dokumenata za registraciju firme (DOO)';
+  const total_price = 199;
+  const client_name = formData['ime_osnivaca_1'];
+  const client_address = formData['adresa_osnivaca_1'];
+  const client_id = formData['id_osnivaca_1'];
 
   if (!client_email || !ugovor_type || !total_price) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -310,7 +310,7 @@ export default async function handler(req, res) {
       .from('orders')
       .insert([
         { 
-          client_email,
+          client_email: formData['e_mail_adresa'],
           ugovor_type,
           total_price
         }
@@ -326,37 +326,40 @@ export default async function handler(req, res) {
     const order_number = orderData[0].order_number;
     
     const { error: specificError } = await supabase
-      .from('orders_ugovor_o_djelu')
+      .from('orders_set_za_firmu_doo')
       .insert([
         { 
           order_id: order_id,
-          mjesto_zakljucenja: formData['mjesto_zakljucenja'],
-          datum_zakljucenja: formData['datum_zakljucenja'],
-          naziv_narucioca: formData['naziv_narucioca'],
-          adresa_narucioca: formData['adresa_narucioca'],
-          id_broj_narucioca: formData['id_broj_narucioca'],
-          naziv_izvrsioca: formData['naziv_izvrsioca'],
-          adresa_izvrsioca: formData['adresa_izvrsioca'],
-          id_broj_izvrsioca: formData['id_broj_izvrsioca'],
-          racun_izvrsioca: formData['racun_izvrsioca'],
-          banka_izvrsioca: formData['banka_izvrsioca'],
-          predmet_ugovora: formData['predmet_ugovora'],
-          rok_zavrsetka: formData['rok_zavrsetka'],
-          isporuka_definisana: formData['isporuka_definisana'] === 'Da',
-          definicija_isporuke: formData['definicija_isporuke'] || null,
-          iznos_naknade_broj: formData['iznos_naknade_broj'],
-          tip_naknade: formData['tip_naknade'],
-          rok_placanja: formData['rok_placanja'],
-          je_autorsko_djelo: formData['je_autorsko_djelo'] === 'Da',
-          pristup_povjerljivim_info: formData['pristup_povjerljivim_info'] === 'Da',
-          definisan_proces_revizije: formData['definisan_proces_revizije'] === 'Da',
-          broj_revizija: formData['broj_revizija'] || null,
-          rok_za_feedback: formData['rok_za_feedback'] || null
+          naziv_firme: formData['naziv_firme'],
+          skraceni_naziv_firme: formData['skraceni_naziv_firme'] || null,
+          adresa_sjedista: formData['adresa_sjedista'],
+          adresa_za_postu: formData['adresa_za_postu'] || null,
+          e_mail_adresa: formData['e_mail_adresa'],
+          opis_pretezne_djelatnosti: formData['opis_pretezne_djelatnosti'],
+          zelite_li_spoljnotrgovinske_poslove: formData['zelite_li_spoljnotrgovinske_poslove'] === 'Da',
+          iznos_kapitala: formData['iznos_kapitala'],
+          tip_osnivaca_1: formData['tip_osnivaca_1'] || null,
+          ime_osnivaca_1: formData['ime_osnivaca_1'] || null,
+          id_osnivaca_1: formData['id_osnivaca_1'] || null,
+          adresa_osnivaca_1: formData['adresa_osnivaca_1'] || null,
+          vrsta_uloga_1: formData['vrsta_uloga_1'] || null,
+          vrijednost_uloga_1: formData['vrijednost_uloga_1'] || null,
+          opis_nenovcanog_uloga_1: formData['opis_nenovcanog_uloga_1'] || null,
+          ime_direktora: formData['ime_direktora'],
+          id_direktora: formData['id_direktora'],
+          samostalni_direktor: formData['samostalni_direktor'] === 'Da',
+          detalji_ovlascenja: formData['detalji_ovlascenja'] || null,
+          zelite_li_odb_dir: formData['zelite_li_odb_dir'] === 'Da',
+          clanovi_odbora_direktora: formData['clanovi_odbora_direktora'] || null,
+          prokurista: formData['prokurista'] === 'Da',
+          ime_i_id_prokuriste: formData['ime_i_id_prokuriste'] || null,
+          dodatne_odredbe_statuta: formData['dodatne_odredbe_statuta'] || null,
+          procijenjeni_troskovi_osnivanja: formData['procijenjeni_troskovi_osnivanja'] || null
         }
       ]);
 
     if (specificError) {
-      console.error('Greska pri unosu u orders_ugovor_o_djelu tabelu:', specificError);
+      console.error('Greska pri unosu u orders_set_za_firmu_doo tabelu:', specificError);
       return res.status(500).json({ error: 'Database insertion error' });
     }
 
