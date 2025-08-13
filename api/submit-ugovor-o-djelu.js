@@ -3,7 +3,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Resend } from 'resend';
-import { PDFDocument, rgb } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 // Supabase URL i anonimni ključ se uzimaju iz Vercel varijabli okruženja
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -86,27 +86,27 @@ Ugovor je sačinjen u 2 (dva) istovjetna primjerka, po jedan za svaku ugovornu s
 <br>
 **NARUČILAC POSLA** _________________________ {{naziv_narucioca}}
 **IZVRŠILAC POSLA** _________________________ {{naziv_izvrsioca}}`,
-    // Ovdje će biti ostali master templejti
 };
 
 // Generisanje PDF-a sa predracunom
 async function generateInvoicePDF(orderId, ugovorType, totalPrice) {
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([600, 400]);
-
-    // Ovdje bi se dodao logo, ali cemo ga za sada preskociti radi jednostavnosti.
     
-    page.drawText('PREDRACUN', { x: 50, y: 350, size: 24, font: await pdfDoc.embedFont('Helvetica-Bold') });
-    page.drawText(`Broj narudžbine: ${orderId}`, { x: 50, y: 320, size: 12 });
-    page.drawText(`Usluga: ${ugovorType}`, { x: 50, y: 300, size: 12 });
-    page.drawText(`Iznos za uplatu: ${totalPrice} €`, { x: 50, y: 280, size: 12, color: rgb(0, 0, 0.5) });
+    // Ugradnja fonta sa podrškom za dijakritičke znakove
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+    page.drawText('PREDRACUN', { x: 50, y: 350, size: 24, font: font, color: rgb(0.13, 0.13, 0.13) });
+    page.drawText(`Broj narudžbine: ${orderId}`, { x: 50, y: 320, size: 12, font: font });
+    page.drawText(`Usluga: ${ugovorType}`, { x: 50, y: 300, size: 12, font: font });
+    page.drawText(`Iznos za uplatu: ${totalPrice} €`, { x: 50, y: 280, size: 12, font: font, color: rgb(0, 0.49, 1) });
     
     // Dodavanje instrukcija za placanje
-    page.drawText('Instrukcije za plaćanje:', { x: 50, y: 220, size: 14, font: await pdfDoc.embedFont('Helvetica-Bold') });
-    page.drawText('Primalac: Advokatska kancelarija Dejan Radinović', { x: 50, y: 200, size: 12 });
-    page.drawText('Adresa: Božane Vučinić 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 185, size: 12 });
-    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 170, size: 12 });
-    page.drawText('Broj računa: 540-0000000011285-46', { x: 50, y: 155, size: 12 });
+    page.drawText('Instrukcije za plaćanje:', { x: 50, y: 220, size: 14, font: font, color: rgb(0.13, 0.13, 0.13) });
+    page.drawText('Primalac: Advokatska kancelarija Dejan Radinović', { x: 50, y: 200, size: 12, font: font });
+    page.drawText('Adresa: Božane Vučinić 7-5, 81000 Podgorica, Crna Gora', { x: 50, y: 185, size: 12, font: font });
+    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 170, size: 12, font: font });
+    page.drawText('Broj računa: 540-0000000011285-46', { x: 50, y: 155, size: 12, font: font });
     
     const pdfBytes = await pdfDoc.save();
     return pdfBytes;
@@ -253,19 +253,18 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Database insertion error' });
     }
 
-    // 3. Pokretanje AI generisanja (automatski)
+    // 3. Pokretanje AI generisanja (automatski) i slanje e-maila sa predracunom
     const generationResult = await generateContractDraft(order_id, ugovor_type, formData);
     if (generationResult.error) {
         console.error('Greška pri generisanju nacrta:', generationResult.error);
     }
     
-    // 4. Slanje e-maila sa predracunom
     const emailResult = await sendConfirmationEmail(client_email, ugovor_type, total_price, order_id);
     if (emailResult.error) {
         console.error('Greška pri slanju e-maila:', emailResult.error);
     }
     
-    // 5. Preusmjeravanje klijenta na stranicu za plaćanje
+    // 4. Preusmjeravanje klijenta na stranicu za plaćanje
     res.writeHead(302, {
       'Location': `/placanje.html?cijena=${total_price}&ugovor=${encodeURIComponent(ugovor_type)}`,
       'Content-Type': 'text/plain',
