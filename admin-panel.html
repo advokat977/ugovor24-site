@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Ugovor24.com</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --primary-color: #007bff;
@@ -199,7 +199,7 @@
                 body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
             });
             if (response.ok) {
-                fetchOrders();
+                fetchOrders(); // Refresh table
                 alert('Uplata verifikovana!');
             } else {
                 alert('Greška pri verifikaciji uplate.');
