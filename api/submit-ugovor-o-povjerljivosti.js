@@ -1,7 +1,6 @@
 // api/submit-ugovor-o-povjerljivosti.js
 
 import { createClient } from '@supabase/supabase-js';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Resend } from 'resend';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
@@ -10,9 +9,6 @@ const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 function removeDiacritics(text) {
     if (!text) return '';
@@ -63,76 +59,6 @@ function formatOrderNumber(number) {
   const leadingZeros = '00000'.substring(0, 5 - numString.length);
   return `${leadingZeros}${numString}`;
 }
-
-const masterTemplates = {
-    'Ugovor o povjerljivosti (NDA)': `UGOVOR O POVJERLJIVOSTI
-Zakljucen u {{mjesto_zakljucenja}}, dana {{datum_zakljucenja}} godine, izmedu:
-{{#if je_obostrano}}
-1.  **{{naziv_strane_a}}**, sa sjedistem/prebivalistem na adresi {{adresa_strane_a}}, JMBG/PIB: {{id_broj_strane_a}}, i
-2.  **{{naziv_strane_b}}**, sa sjedistem/prebivalistem na adresi {{adresa_strane_b}}, JMBG/PIB: {{id_broj_strane_b}},
-    (u daljem tekstu zajedno oznaceni kao "Strane", a pojedinacno kao "Strana").
-{{else}}
-1.  **{{naziv_strane_koja_otkriva}}**, sa sjedistem/prebivalistem na adresi {{adresa_strane_koja_otkriva}}, JMBG/PIB: {{id_broj_strane_koja_otkriva}} (u daljem tekstu: Strana koja otkriva), i
-2.  **{{naziv_strane_koja_prima}}**, sa sjedistem/prebivalistem na adresi {{adresa_strane_koja_prima}}, JMBG/PIB: {{id_broj_strane_koja_prima}} (u daljem tekstu: Strana koja prima).
-{{/if}}
-
-PREAMBULA
-{{#if je_obostrano}}
-Ugovorne strane namjeravaju da razmijene odedene povjerljive informacije u svrhu {{svrha_otkrivanja}} (u daljem tekstu: Svrha). Ovaj Ugovor se zakljucuje kako bi se zastitile te povjerljive informacije od neovlascenog otkrivanja ili koriscenja.
-{{else}}
-Strana koja otkriva namjerava da Strani koja prima otkrije odredene povjerljive informacije u svrhu {{svrha_otkrivanja}} (u daljem tekstu: Svrha). Ovaj Ugovor se zakljucuje kako bi se zastitile te povjerljive informacije od neovlascenog otkrivanja ili koriscenja od strane Strane koja prima.
-{{/if}}
-
-Clan 1: Definicija Povjerljivih Informacija
-1.  "Povjerljive informacije" oznacavaju sve nejavne informacije, bez obzira na formu, koje jedna Strana otkrije drugoj, a koje su oznacene kao "povjerljive". 2. Povjerljive informacije ukljucuju, ali se ne ogranicavaju na: poslovne planove, finansijske podatke, liste klijenata, marketinske strategije, tehnicke podatke, softverski kod, patente, izume, poslovne tajne, know-how, i sve druge informacije koje nisu javno dostupne.
-3. Povjerljive informacije ukljucuju i sve analize, kompilacije, studije ili druge dokumente koje pripremi Strana koja prima, a koji sadrze informacije koje je otkrila Strana koja otkriva.
-
-Clan 2: Obaveze Strane koja Prima
-Strana koja prima se obavezuje da ce: a) Cuvati Povjerljive informacije u strogoj tajnosti. b) Koristiti Povjerljive informacije iskljucivo i samo u Svrhu definisanu u Preambuli ovog Ugovora. c) Ograniciti pristup Povjerljivim informacijama iskljucivo na svoje zaposlene, saradnike ili savjetnike. d) U slucaju da sazna za bilo kakvo neovlasceno otkrivanje, o tome odmah obavijestiti Stranu koja otkriva.
-
-Clan 3: Izuzeci od Povjerljivosti
-Obaveze iz clana 2. nece se primjenjivati na informacije za koje Strana koja prima moze dokazati da: a) su bile javno poznate u trenutku otkrivanja; b) su bile u posjedu Strane koja prima prije otkrivanja; c) su zakonito dobijene od treceg lica; d) su samostalno razvijene od strane Strane koja prima; e) moraju biti otkrivene na osnovu zakona, sudskog naloga ili naloga drugog nadleznog organa.
-
-Clan 4: Trajanje Obaveze
-Obaveza cuvanja povjerljivosti traje za vrijeme od {{period_trajanja_obaveze}} godina od dana zakljucenja ovog Ugovora. Obaveza cuvanja povjerljivosti za informacije koje predstavljaju poslovnu tajnu traje sve dok te informacije imaju karakter poslovne tajne.
-
-Clan 5: Povrat ili Unistenje Informacija
-Na pisani zahtjev Strane koja otkriva, Strana koja prima je duzna da vrati sve originale i kopije Povjerljivih informacija ili da ih unisti i o tome dostavi pisanu potvrdu.
-
-Clan 6: Vlasnistvo nad Informacijama
-Sve Povjerljive informacije ostaju iskljucivo vlasnistvo Strane koja otkriva. Ovaj Ugovor ne podrazumijeva prenos bilo kakvog prava, licence ili vlasnistva nad Povjerljivim informacijama.
-
-Clan 7: Bez Garancija
-Strana koja otkriva ne daje nikakve garancije u pogledu tacnosti, potpunosti ili pouzdanosti Povjerljivih informacija. Cjelokupan rizik snosi Strana koja prima.
-
-Clan 8: Bez Daljih Obaveza
-Ovaj Ugovor ne obavezuje nijednu Stranu da ude u bilo kakav dalji poslovni odnos.
-
-Clan 9: Posljedice Povrede Ugovora
-Ugovorne strane su saglasne da bi neovlasceno otkrivanje Povjerljivih informacija nanijelo nenadoknadivu stetu Strani koja otkriva.
-{{#if ugovorena_kazna}}
-U slucaju povrede obaveze cuvanja povjerljivosti, Strana koja prima se obavezuje da Strani koja otkriva isplati ugovornu kaznu u iznosu od {{iznos_ugovorene_kazne}} € (slovima: {{iznos_ugovorene_kazne_slovima}} eura), bez umanjenja prava Strane koja otkriva da potrazuje i naknadu stete koja prevazilazi iznos ugovorne kazne.
-{{/if}}
-
-Clan 10: Cjelovitost Ugovora (Integralna Volja)
-Odredbe ovog Ugovora predstavljaju cjelokupnu volju ugovornih strana i sadrze sve o cemu su se ugovoraci sporazumjeli.
-
-Clan 11: Rjesavanje Sporova
-Ugovorne strane su saglasne da sve eventualne sporove koji proisteknu iz ovog Ugovora rjesavaju sporazumno.
-Ukoliko to ne bude moguce, prihvataju nadleznost Osnovnog suda u {{mjesto_suda}}.
-
-Clan 12: Zavrsne Odredbe
-Na sve odnose ugovornih strana koji nisu obuhvaceni ovim Ugovorom primjenjivace se odredbe Zakona o obligacionim odnosima.
-Ugovor je sacinjen u 2 (dva) istovjetna primjerka, po jedan za svaku ugovornu stranu.
-<br>
-{{#if je_obostrano}}
-**STRANA A** _________________________ {{naziv_strane_a}}
-**STRANA B** _________________________ {{naziv_strane_b}}
-{{else}}
-**STRANA KOJA OTKRIVA** _________________________ {{naziv_strane_koja_otkriva}}
-**STRANA KOJA PRIMA** _________________________ {{naziv_strane_koja_prima}}
-{{/if}}`,
-};
 
 async function generateInvoicePDF(orderId, ugovorType, totalPrice, orderNumber, clientName, clientAddress, clientID) {
     const pdfDoc = await PDFDocument.create();
@@ -272,10 +198,21 @@ export default async function handler(req, res) {
   const client_email = formData['client_email'];
   const ugovor_type = 'Ugovor o povjerljivosti (NDA)';
   const total_price = 29;
-  const client_name = formData['tip_ugovora'] === 'Jednostrani' ? formData['naziv_strane_koja_prima'] : formData['naziv_strane_a'];
-  const client_address = formData['tip_ugovora'] === 'Jednostrani' ? formData['adresa_strane_koja_prima'] : formData['adresa_strane_a'];
-  const client_id = formData['tip_ugovora'] === 'Jednostrani' ? formData['id_broj_strane_koja_prima'] : formData['id_broj_strane_a'];
 
+  let client_name = '';
+  let client_address = '';
+  let client_id = '';
+
+  if (formData['tip_ugovora'] === 'Jednostrani') {
+      client_name = formData['naziv_strane_koja_prima'];
+      client_address = formData['adresa_strane_koja_prima'];
+      client_id = formData['id_broj_strane_koja_prima'];
+  } else {
+      client_name = formData['naziv_strane_a'];
+      client_address = formData['adresa_strane_a'];
+      client_id = formData['id_broj_strane_a'];
+  }
+  
   if (!client_email || !ugovor_type || !total_price) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
