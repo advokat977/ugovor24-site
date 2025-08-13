@@ -372,7 +372,11 @@
 
             // Inicijalno postavljanje `required` atributa
             const jednostraniInputs = document.querySelectorAll('#jednostrani_fields input');
-            jednostraniInputs.forEach(input => input.required = true);
+            jednostraniInputs.forEach(input => {
+                if (input.name !== 'ugovorena_kazna') {
+                    input.required = true;
+                }
+            });
             
             const obostraniInputs = document.querySelectorAll('#obostrani_fields input');
             obostraniInputs.forEach(input => input.required = false);
@@ -384,6 +388,7 @@
             
             const jednostraniInputs = document.querySelectorAll('#jednostrani_fields input');
             const obostraniInputs = document.querySelectorAll('#obostrani_fields input');
+            const kaznaInput = document.getElementById('iznos_ugovorene_kazne');
 
             if (isObostrani) {
                 jednostraniDiv.style.display = 'none';
