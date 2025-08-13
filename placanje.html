@@ -90,19 +90,6 @@
             display: inline-block;
             width: 120px;
         }
-        .qr-code {
-            margin-top: 2rem;
-        }
-        .qr-code img {
-            max-width: 200px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-        .qr-code p {
-            font-size: 0.9rem;
-            color: var(--light-text);
-            margin-top: 0.5rem;
-        }
         .footer {
             background: var(--text-color);
             color: #ffffff;
@@ -153,16 +140,11 @@
                     <p class="price-display">Iznos za uplatu: <span id="cijena-ugovora"></span></p>
 
                     <div class="payment-details">
-                        <p><strong>Primalac:</strong> Advokatska kancelarija Dejan Radinović</p>
-                        <p><strong>Adresa:</strong> Božane Vučinić 7-5, 81000 Podgorica, Crna Gora</p>
+                        <p><strong>Primalac:</strong> advokat Dejan Radinović</p>
+                        <p><strong>Adresa:</strong> Božane Vučinić 7/5, 81000 Podgorica, Crna Gora</p>
                         <p><strong>Banka:</strong> Erste bank AD Podgorica</p>
                         <p><strong>Broj računa:</strong> 540-0000000011285-46</p>
                         <p><strong>Svrha uplate:</strong> <span id="svrha-uplate"></span></p>
-                    </div>
-
-                    <div class="qr-code">
-                        <img id="qr-image" src="" alt="QR kod za plaćanje">
-                        <p>Skenirajte ovaj QR kod za bržu uplatu. Potrebno je ručno unijeti iznos.</p>
                     </div>
 
                     <p style="margin-top: 2rem;">Vaš ugovor će biti generisan i poslat na email adresu koju ste naveli u upitniku, u roku od 24 časa od momenta evidentiranja uplate.</p>
@@ -200,11 +182,6 @@
             } else {
                 svrhaUplateElement.textContent = `Uplata za ugovor (molimo navedite ime ugovora)`;
             }
-
-            // Generiše podatke za QR kod
-            const qrData = `Primalac: Advokatska kancelarija Dejan Radinovic, Broj racuna: 540-0000000011285-46, Svrha uplate: Uplata za ${ugovor ? ugovor : 'ugovor'}, Iznos: ${cijena ? cijena : '0'}`;
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}`;
-            document.getElementById('qr-image').src = qrUrl;
         });
     </script>
 </body>

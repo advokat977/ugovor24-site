@@ -1,458 +1,210 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="sr-Latn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ugovor o Radu - Ugovor24.com</title>
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --background-color: #f8f9fa;
-            --card-background: #ffffff;
-            --text-color: #212529;
-            --light-text: #6c757d;
-            --border-color: #e9ecef;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-        header {
-            background: var(--card-background);
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            margin-left: 2rem;
-            font-weight: 500;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-color);
-            text-decoration: none;
-        }
-        .logo-24 {
-            color: var(--primary-color);
-        }
-        .content-section {
-            padding: 4rem 0;
-            flex-grow: 1;
-        }
-        .content-card {
-            background: var(--card-background);
-            border-radius: 12px;
-            padding: 3rem;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-            text-align: center;
-        }
-        .form-description {
-            text-align: center;
-            font-style: italic;
-            color: var(--light-text);
-            margin-bottom: 2rem;
-        }
-        h2 {
-            font-size: 1.8rem;
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 0.5rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        input[type="text"], input[type="number"], input[type="date"], input[type="email"], textarea, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .disclaimer {
-            background-color: #e9f5ff;
-            border: 1px solid #cce5ff;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-top: 2rem;
-        }
-        .disclaimer p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #004085;
-        }
-        .terms-checkbox {
-            display: flex;
-            align-items: flex-start;
-            margin-top: 2rem;
-            font-size: 0.9rem;
-        }
-        .terms-checkbox input {
-            margin-top: 5px;
-        }
-        .terms-checkbox label {
-            margin-left: 0.5rem;
-        }
-        .terms-checkbox a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        button {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 1.5rem;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .footer {
-            background: var(--text-color);
-            color: #ffffff;
-            padding: 2rem 0;
-            margin-top: auto;
-            text-align: center;
-        }
-        .footer .container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .footer p {
-            margin: 0;
-            color: #adb5bd;
-        }
-        .footer .links a {
-            color: #ffffff;
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: color 0.2s;
-        }
-        .footer .links a:hover {
-            color: var(--primary-color);
-        }
-    </style>
+    <title>Ugovor o radu - ugovor24.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://ugovor24-site.vercel.app/favicon.ico">
 </head>
 <body>
-
     <header>
-        <div class="container">
-            <a href="index.html" class="logo">ugovor<span class="logo-24">24</span>.com</a>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <img src="https://ugovor24-site.vercel.app/logo.png" alt="ugovor24.com Logo">
+            </a>
             <nav>
-                <a href="index.html#kako-radi">Kako radi</a>
-                <a href="index.html#faq">FAQ</a>
+                <a href="index.html">Početna</a>
+                <a href="ugovori.html">Ugovori</a>
                 <a href="kontakt.html">Kontakt</a>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="content-section">
-            <div class="container">
-                <div class="content-card">
-                    <h1>Ugovor o Radu</h1>
-                    <p class="form-description">Molimo Vas da popunite sljedeća polja kako biste dobili nacrt ugovora. Svi podaci su povjerljivi i obrađuju se u skladu sa našom Politikom privatnosti.</p>
+        <div class="form-container">
+            <h1>Ugovor o radu</h1>
+            <p class="form-intro">Molimo popunite formular ispod kako biste generisali Vaš Ugovor o radu. Nakon popunjavanja, bićete preusmjereni na stranicu za plaćanje.</p>
+            
+            <form id="ugovor-o-radu-form" action="/api/submit-form.js" method="POST">
 
-                    <form id="work-agreement-form" action="/api/submit-ugovor-o-radu" method="post">
-                        
-                        <h2>SEKCIJA 1: Osnovni Podaci o Ugovoru</h2>
-                        <div class="form-group">
-                            <label for="mjesto_zakljucenja">1. U kom gradu se zaključuje ugovor?</label>
-                            <p class="disclaimer-text">Ovaj podatak će se koristiti i kao mjesto suda u slučaju spora.</p>
-                            <input type="text" id="mjesto_zakljucenja" name="mjesto_zakljucenja" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="datum_zakljucenja">2. Datum zaključenja ugovora:</label>
-                            <p class="disclaimer-text">Automatski će biti postavljen današnji datum, ali ga možete promijeniti.</p>
-                            <input type="date" id="datum_zakljucenja" name="datum_zakljucenja" required>
-                        </div>
-                        
-                        <h2>SEKCIJA 2: Podaci o Poslodavcu</h2>
-                        <p class="form-description">Unesite podatke o kompaniji koja zapošljava.</p>
-                        
-                        <div class="form-group">
-                            <label for="naziv_poslodavca">3. Puni naziv Poslodavca:</label>
-                            <input type="text" id="naziv_poslodavca" name="naziv_poslodavca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adresa_poslodavca">4. Adresa sjedišta Poslodavca:</label>
-                            <input type="text" id="adresa_poslodavca" name="adresa_poslodavca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="pib_poslodavca">5. Poreski identifikacioni broj (PIB) Poslodavca:</label>
-                            <input type="text" id="pib_poslodavca" name="pib_poslodavca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="zastupnik_poslodavca">6. Ime i prezime lica koje zastupa Poslodavca (npr. Izvršni direktor):</label>
-                            <input type="text" id="zastupnik_poslodavca" name="zastupnik_poslodavca" required>
-                        </div>
-                        
-                        <h2>SEKCIJA 3: Podaci o Zaposlenom</h2>
-                        <p class="form-description">Unesite podatke o licu koje se zapošljava.</p>
+                <input type="hidden" name="ugovor_type" value="Ugovor o radu">
 
-                        <div class="form-group">
-                            <label for="ime_i_prezime_zaposlenog">7. Ime i prezime Zaposlenog:</label>
-                            <input type="text" id="ime_i_prezime_zaposlenog" name="ime_i_prezime_zaposlenog" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adresa_zaposlenog">8. Adresa prebivališta Zaposlenog:</label>
-                            <input type="text" id="adresa_zaposlenog" name="adresa_zaposlenog" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="jmbg_zaposlenog">9. Jedinstveni matični broj (JMBG) Zaposlenog:</label>
-                            <input type="text" id="jmbg_zaposlenog" name="jmbg_zaposlenog" required>
-                        </div>
+                <div class="form-section">
+                    <h3>Opšte informacije</h3>
+                    <label for="mjesto_zakljucenja">Mjesto zaključenja:</label>
+                    <input type="text" id="mjesto_zakljucenja" name="mjesto_zakljucenja" required>
 
-                        <h2>SEKCIJA 4: Radno Mjesto i Uslovi Rada</h2>
-                        <p class="form-description">Ovdje se definiše pozicija i lokacija rada.</p>
-                        
-                        <div class="form-group">
-                            <label for="naziv_radnog_mjesta">10. Naziv radnog mjesta:</label>
-                            <input type="text" id="naziv_radnog_mjesta" name="naziv_radnog_mjesta" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="opis_poslova">11. Molimo, detaljno opišite poslove radnog mjesta:</label>
-                            <p class="disclaimer-text">Navedite ključne odgovornosti i zaduženja.</p>
-                            <textarea id="opis_poslova" name="opis_poslova" required></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="nivo_kvalifikacije_obrazovanja">12. Nivo kvalifikacije obrazovanja potreban za ovo radno mjesto:</label>
-                            <p class="disclaimer-text">Npr. Visoko obrazovanje, Srednje stručno obrazovanje...</p>
-                            <input type="text" id="nivo_kvalifikacije_obrazovanja" name="nivo_kvalifikacije_obrazovanja" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="stepen_strucne_spreme">13. Stepen stručne spreme:</label>
-                            <p class="disclaimer-text">Npr. VII-1, IV, III...</p>
-                            <input type="text" id="stepen_strucne_spreme" name="stepen_strucne_spreme" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>14. Da li će Zaposleni obavljati poslove van prostorija Poslodavca (rad na daljinu)?</label>
-                            <div class="radio-group">
-                                <label><input type="radio" name="rad_na_daljinu" value="Da" onclick="toggleRadNaDaljinu(true)"> Da</label>
-                                <label><input type="radio" name="rad_na_daljinu" value="Ne" checked onclick="toggleRadNaDaljinu(false)"> Ne</label>
-                            </div>
-                            <div id="mjesto_rada_field" style="display: none; margin-top: 1rem;">
-                                <label for="mjesto_rada">Adresa mjesta rada (ako se razlikuje od sjedišta Poslodavca):</label>
-                                <input type="text" id="mjesto_rada" name="mjesto_rada">
-                            </div>
-                        </div>
-
-                        <h2>SEKCIJA 5: Trajanje Ugovora i Radno Vrijeme</h2>
-                        <div class="form-group">
-                            <label>15. Na koje vrijeme se zaključuje ugovor?</label>
-                            <div class="radio-group">
-                                <label><input type="radio" name="tip_radnog_odnosa" value="Na neodređeno vrijeme" onclick="toggleOdredjeno(false)" required> Na neodređeno vrijeme</label>
-                                <label><input type="radio" name="tip_radnog_odnosa" value="Na određeno vrijeme" onclick="toggleOdredjeno(true)"> Na određeno vrijeme</label>
-                            </div>
-                            <div id="odredjeno_vrijeme_fields" style="display: none; margin-top: 1rem;">
-                                <div class="form-group">
-                                    <label for="razlog_rada_na_odredjeno">Razlog za zasnivanje radnog odnosa na određeno vrijeme:</label>
-                                    <p class="disclaimer-text">Npr. Povećan obim posla, zamjena privremeno odsutnog zaposlenog, rad na projektu...</p>
-                                    <input type="text" id="razlog_rada_na_odredjeno" name="razlog_rada_na_odredjeno">
-                                </div>
-                                <div class="form-group">
-                                    <label for="datum_isteka_ugovora">Datum isteka ugovora:</label>
-                                    <input type="date" id="datum_isteka_ugovora" name="datum_isteka_ugovora">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="datum_stupanja_na_rad">16. Datum stupanja na rad:</label>
-                            <input type="date" id="datum_stupanja_na_rad" name="datum_stupanja_na_rad" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>17. Tip radnog vremena:</label>
-                            <div class="radio-group">
-                                <label><input type="radio" name="tip_radnog_vremena" value="puno" required> Puno radno vrijeme</label>
-                                <label><input type="radio" name="tip_radnog_vremena" value="nepuno"> Nepuno radno vrijeme</label>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="broj_radnih_sati_sedmicno">18. Broj radnih sati sedmično:</label>
-                            <p class="disclaimer-text">Standardno je 40 sati za puno radno vrijeme.</p>
-                            <input type="number" id="broj_radnih_sati_sedmicno" name="broj_radnih_sati_sedmicno" required>
-                        </div>
-
-                        <h2>SEKCIJA 6: Zarada i Odmori</h2>
-                        <div class="form-group">
-                            <label for="iznos_bruto_zarade_broj">19. Iznos osnovne bruto zarade (u €):</label>
-                            <p class="disclaimer-text">Bruto zarada je iznos prije odbitka poreza i doprinosa.</p>
-                            <input type="number" id="iznos_bruto_zarade_broj" name="iznos_bruto_zarade_broj" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="broj_dana_godisnjeg_odmora">20. Broj dana godišnjeg odmora:</label>
-                            <p class="disclaimer-text">Zakon propisuje minimum od 20 radnih dana.</p>
-                            <input type="number" id="broj_dana_godisnjeg_odmora" name="broj_dana_godisnjeg_odmora" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="otkazni_rok">21. Otkazni rok (u danima):</label>
-                            <p class="disclaimer-text">Unesite standardni otkazni rok koji važi za obje strane.</p>
-                            <input type="number" id="otkazni_rok" name="otkazni_rok" required>
-                        </div>
-                        
-                        <h2>SEKCIJA 7: Pametna Pitanja (Dodatne Klauzule)</h2>
-                        <p class="form-description">Vaši odgovori na ova pitanja će automatski dodati važne klauzule u ugovor.</p>
-
-                        <div class="form-group">
-                            <label>22. Da li se ugovara probni rad?</label>
-                            <div class="radio-group">
-                                <label><input type="radio" name="definisan_probni_rad" value="Da" onclick="toggleProbniRad(true)"> Da</label>
-                                <label><input type="radio" name="definisan_probni_rad" value="Ne" checked onclick="toggleProbniRad(false)"> Ne</label>
-                            </div>
-                            <div id="probni_rad_field" style="display: none; margin-top: 1rem;">
-                                <label for="period_probnog_rada">Trajanje probnog rada (u mjesecima):</label>
-                                <input type="number" id="period_probnog_rada" name="period_probnog_rada" max="6">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>23. Da li želite da ugovor sadrži klauzulu o zabrani konkurencije tokom trajanja radnog odnosa?</label>
-                            <p class="disclaimer-text">Ovo sprječava zaposlenog da radi za konkurenciju ili obavlja konkurentsku djelatnost dok je zaposlen kod Vas.</p>
-                            <div class="radio-group">
-                                <label><input type="radio" name="definisana_zabrana_konkurencije" value="Da"> Da</label>
-                                <label><input type="radio" name="definisana_zabrana_konkurencije" value="Ne" checked> Ne</label>
-                            </div>
-                        </div>
-                        
-                        <div class="disclaimer" style="margin-top: 3rem;">
-                            <p><strong>Napomena:</strong> Popunjavanjem ovog upitnika dajete podatke koji će biti direktno unijeti u nacrt ugovora. Molimo Vas da obratite pažnju na tačnost i istinitost unijetih informacija.</p>
-                        </div>
-                        
-                        <div class="terms-checkbox">
-                            <label>
-                                <input type="checkbox" name="terms_acceptance" required>
-                                Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
-                            </label>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="client_email">Email adresa:</label>
-                            <input type="email" id="client_email" name="client_email" required>
-                        </div>
-                        
-                        <button type="submit">Pošalji i Plati (99 €)</button>
-                    </form>
+                    <label for="datum_zakljucenja">Datum zaključenja:</label>
+                    <input type="date" id="datum_zakljucenja" name="datum_zakljucenja" required>
                 </div>
-            </div>
-        </section>
+
+                <div class="form-section">
+                    <h3>Podaci o Poslodavcu</h3>
+                    <label for="naziv_poslodavca">Naziv Poslodavca:</label>
+                    <input type="text" id="naziv_poslodavca" name="naziv_poslodavca" required>
+
+                    <label for="adresa_poslodavca">Adresa Poslodavca:</label>
+                    <input type="text" id="adresa_poslodavca" name="adresa_poslodavca" required>
+                    
+                    <label for="pib_poslodavca">PIB Poslodavca:</label>
+                    <input type="text" id="pib_poslodavca" name="pib_poslodavca" required>
+
+                    <label for="zastupnik_poslodavca">Ime i prezime zastupnika poslodavca:</label>
+                    <input type="text" id="zastupnik_poslodavca" name="zastupnik_poslodavca" required>
+                </div>
+
+                <div class="form-section">
+                    <h3>Podaci o Zaposlenom</h3>
+                    <label for="ime_i_prezime_zaposlenog">Ime i prezime Zaposlenog:</label>
+                    <input type="text" id="ime_i_prezime_zaposlenog" name="ime_i_prezime_zaposlenog" required>
+
+                    <label for="adresa_zaposlenog">Adresa Zaposlenog:</label>
+                    <input type="text" id="adresa_zaposlenog" name="adresa_zaposlenog" required>
+                    
+                    <label for="jmbg_zaposlenog">JMBG Zaposlenog:</label>
+                    <input type="text" id="jmbg_zaposlenog" name="jmbg_zaposlenog" required>
+                    
+                    <label for="client_email">Vaš e-mail:</label>
+                    <input type="email" id="client_email" name="client_email" required>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Detalji posla</h3>
+                    <label for="naziv_radnog_mjesta">Naziv radnog mjesta:</label>
+                    <input type="text" id="naziv_radnog_mjesta" name="naziv_radnog_mjesta" required>
+
+                    <label for="opis_poslova">Opis poslova:</label>
+                    <textarea id="opis_poslova" name="opis_poslova" rows="4" required></textarea>
+
+                    <label for="nivo_kvalifikacije_obrazovanja">Nivo kvalifikacije obrazovanja:</label>
+                    <input type="text" id="nivo_kvalifikacije_obrazovanja" name="nivo_kvalifikacije_obrazovanja" required>
+                    
+                    <label for="stepen_strucne_spreme">Stepen stručne spreme:</label>
+                    <input type="text" id="stepen_strucne_spreme" name="stepen_strucne_spreme" required>
+
+                    <label for="rad_na_daljinu">Rad na daljinu?</label>
+                    <select id="rad_na_daljinu" name="rad_na_daljinu" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+
+                    <div id="mjesto_rada_field">
+                        <label for="mjesto_rada">Mjesto rada:</label>
+                        <input type="text" id="mjesto_rada" name="mjesto_rada">
+                    </div>
+
+                    <label for="tip_radnog_odnosa">Tip radnog odnosa:</label>
+                    <select id="tip_radnog_odnosa" name="tip_radnog_odnosa" required>
+                        <option value="Neodređeno">Neodređeno</option>
+                        <option value="Određeno">Određeno</option>
+                    </select>
+
+                    <div id="odredjeno_polja" style="display:none;">
+                        <label for="razlog_rada_na_odredjeno">Razlog rada na određeno:</label>
+                        <input type="text" id="razlog_rada_na_odredjeno" name="razlog_rada_na_odredjeno">
+                        <label for="datum_isteka_ugovora">Datum isteka ugovora:</label>
+                        <input type="date" id="datum_isteka_ugovora" name="datum_isteka_ugovora">
+                    </div>
+                    
+                    <label for="datum_stupanja_na_rad">Datum stupanja na rad:</label>
+                    <input type="date" id="datum_stupanja_na_rad" name="datum_stupanja_na_rad" required>
+                    
+                    <label for="tip_radnog_vremena">Tip radnog vremena:</label>
+                    <select id="tip_radnog_vremena" name="tip_radnog_vremena" required>
+                        <option value="Puno">Puno</option>
+                        <option value="Nepuno">Nepuno</option>
+                    </select>
+                    
+                    <label for="broj_radnih_sati_sedmicno">Broj radnih sati sedmično:</label>
+                    <input type="number" id="broj_radnih_sati_sedmicno" name="broj_radnih_sati_sedmicno" required>
+                    
+                    <label for="iznos_bruto_zarade_broj">Iznos bruto zarade (u EUR):</label>
+                    <input type="number" id="iznos_bruto_zarade_broj" name="iznos_bruto_zarade_broj" required>
+
+                    <label for="broj_dana_godisnjeg_odmora">Broj dana godišnjeg odmora:</label>
+                    <input type="number" id="broj_dana_godisnjeg_odmora" name="broj_dana_godisnjeg_odmora" required>
+                    
+                    <label for="otkazni_rok">Otkazni rok (u danima):</label>
+                    <input type="number" id="otkazni_rok" name="otkazni_rok" required>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Dodatne opcije</h3>
+                    <label for="definisan_probni_rad">Definisan probni rad?</label>
+                    <select id="definisan_probni_rad" name="definisan_probni_rad" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+                    
+                    <div id="probni_rad_polja" style="display:none;">
+                        <label for="period_probnog_rada">Trajanje probnog rada (u mjesecima):</label>
+                        <input type="number" id="period_probnog_rada" name="period_probnog_rada">
+                    </div>
+
+                    <label for="definisana_zabrana_konkurencije">Definisana zabrana konkurencije?</label>
+                    <select id="definisana_zabrana_konkurencije" name="definisana_zabrana_konkurencije" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms_acceptance" name="terms_acceptance" required>
+                        <label for="terms_acceptance">Saglasan/na sam sa <a href="uslovi_koriscenja.html" target="_blank">Uslovima korišćenja</a> i <a href="politika_privatnosti.html" target="_blank">Politikom privatnosti</a>.</label>
+                    </div>
+                    <button type="submit" class="submit-button">Generiši Ugovor (99 EUR)</button>
+                </div>
+            </form>
+        </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
-            <div class="links">
-                <a href="uslovi-koriscenja.html">Uslovi korišćenja</a>
-                <a href="politika-privatnosti.html">Politika privatnosti</a>
-            </div>
-        </div>
+    <footer>
+        <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
     </footer>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const today = new Date().toISOString().split('T')[0];
-            const datumZakljucenja = document.getElementById('datum_zakljucenja');
-            const datumStupanjaNaRad = document.getElementById('datum_stupanja_na_rad');
-            if (datumZakljucenja) {
-                datumZakljucenja.value = today;
-            }
-            if (datumStupanjaNaRad) {
-                datumStupanjaNaRad.value = today;
-            }
-            
-            // Inicijalno postavljanje `required` atributa
-            const radNaDaljinuNe = document.querySelector('input[name="rad_na_daljinu"][value="Ne"]');
-            if (radNaDaljinuNe && radNaDaljinuNe.checked) {
-                const mjestoRadaField = document.getElementById('mjesto_rada_field');
+        const radNaDaljinuSelect = document.getElementById('rad_na_daljinu');
+        const mjestoRadaField = document.getElementById('mjesto_rada_field');
+
+        radNaDaljinuSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Da') {
+                mjestoRadaField.style.display = 'none';
+                document.getElementById('mjesto_rada').required = false;
+            } else {
                 mjestoRadaField.style.display = 'block';
                 document.getElementById('mjesto_rada').required = true;
             }
         });
-
-        function toggleRadNaDaljinu(show) {
-            const field = document.getElementById('mjesto_rada_field');
-            field.style.display = show ? 'none' : 'block';
-            document.getElementById('mjesto_rada').required = !show;
-        }
-
-        function toggleOdredjeno(show) {
-            const fields = document.getElementById('odredjeno_vrijeme_fields');
-            fields.style.display = show ? 'block' : 'none';
-            document.getElementById('razlog_rada_na_odredjeno').required = show;
-            document.getElementById('datum_isteka_ugovora').required = show;
-        }
-
-        function toggleProbniRad(show) {
-            const field = document.getElementById('probni_rad_field');
-            field.style.display = show ? 'block' : 'none';
-            document.getElementById('period_probnog_rada').required = show;
-        }
+        
+        const tipRadnogOdnosaSelect = document.getElementById('tip_radnog_odnosa');
+        const odredjenoPolja = document.getElementById('odredjeno_polja');
+        
+        tipRadnogOdnosaSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Određeno') {
+                odredjenoPolja.style.display = 'block';
+                document.getElementById('razlog_rada_na_odredjeno').required = true;
+                document.getElementById('datum_isteka_ugovora').required = true;
+            } else {
+                odredjenoPolja.style.display = 'none';
+                document.getElementById('razlog_rada_na_odredjeno').required = false;
+                document.getElementById('datum_isteka_ugovora').required = false;
+            }
+        });
+        
+        const definisanProbniRadSelect = document.getElementById('definisan_probni_rad');
+        const probniRadPolja = document.getElementById('probni_rad_polja');
+        
+        definisanProbniRadSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Da') {
+                probniRadPolja.style.display = 'block';
+                document.getElementById('period_probnog_rada').required = true;
+            } else {
+                probniRadPolja.style.display = 'none';
+                document.getElementById('period_probnog_rada').required = false;
+            }
+        });
     </script>
 </body>
 </html>

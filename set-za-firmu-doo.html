@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="sr-Latn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set dokumenata za registraciju firme (DOO) - ugovor24.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://ugovor24-site.vercel.app/favicon.ico">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <img src="https://ugovor24-site.vercel.app/logo.png" alt="ugovor24.com Logo">
+            </a>
+            <nav>
+                <a href="index.html">Početna</a>
+                <a href="ugovori.html">Ugovori</a>
+                <a href="kontakt.html">Kontakt</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <h1>Set dokumenata za registraciju firme (DOO)</h1>
+            <p class="form-intro">Molimo popunite formular ispod kako biste generisali set dokumenata za registraciju Vaše firme. Nakon popunjavanja, bićete preusmjereni na stranicu za plaćanje.</p>
+            
+            <form id="set-za-firmu-doo-form" action="/api/submit-form.js" method="POST">
+
+                <input type="hidden" name="ugovor_type" value="Set dokumenata za registraciju firme (DOO)">
+
+                <div class="form-section">
+                    <h3>Opšte informacije</h3>
+                    <label for="naziv_firme">Željeni naziv firme:</label>
+                    <input type="text" id="naziv_firme" name="naziv_firme" required>
+
+                    <label for="skraceni_naziv_firme">Skraćeni naziv firme (opciono):</label>
+                    <input type="text" id="skraceni_naziv_firme" name="skraceni_naziv_firme">
+
+                    <label for="adresa_sjedista">Adresa sjedišta firme:</label>
+                    <input type="text" id="adresa_sjedista" name="adresa_sjedista" required>
+
+                    <label for="adresa_za_postu">Adresa za poštu (ako se razlikuje od sjedišta):</label>
+                    <input type="text" id="adresa_za_postu" name="adresa_za_postu">
+
+                    <label for="e_mail_adresa">E-mail adresa firme:</label>
+                    <input type="email" id="e_mail_adresa" name="e_mail_adresa" required>
+
+                    <label for="opis_pretezne_djelatnosti">Opis pretežne djelatnosti:</label>
+                    <textarea id="opis_pretezne_djelatnosti" name="opis_pretezne_djelatnosti" rows="3" required></textarea>
+
+                    <label for="zelite_li_spoljnotrgovinske_poslove">Želite li da se bavite spoljnotrgovinskim poslovima?</label>
+                    <select id="zelite_li_spoljnotrgovinske_poslove" name="zelite_li_spoljnotrgovinske_poslove" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+
+                    <label for="iznos_kapitala">Iznos osnovnog kapitala (u EUR):</label>
+                    <input type="number" id="iznos_kapitala" name="iznos_kapitala" required>
+                </div>
+
+                <div class="form-section">
+                    <h3>Osnivači (Jedini osnivač)</h3>
+                    <p>Ukoliko ima više osnivača, popunjavate podatke samo za jednog, ostale dodajemo ručno po dogovoru.</p>
+                    <label for="tip_osnivaca_1">Tip osnivača 1:</label>
+                    <select id="tip_osnivaca_1" name="tip_osnivaca_1" required>
+                        <option value="Fizičko lice">Fizičko lice</option>
+                        <option value="Pravno lice">Pravno lice</option>
+                    </select>
+                    
+                    <label for="ime_osnivaca_1">Ime i prezime / Naziv osnivača 1:</label>
+                    <input type="text" id="ime_osnivaca_1" name="ime_osnivaca_1" required>
+                    
+                    <label for="id_osnivaca_1">JMBG / PIB osnivača 1:</label>
+                    <input type="text" id="id_osnivaca_1" name="id_osnivaca_1" required>
+                    
+                    <label for="adresa_osnivaca_1">Adresa osnivača 1:</label>
+                    <input type="text" id="adresa_osnivaca_1" name="adresa_osnivaca_1" required>
+
+                    <label for="vrsta_uloga_1">Vrsta uloga osnivača 1:</label>
+                    <select id="vrsta_uloga_1" name="vrsta_uloga_1" required>
+                        <option value="Novčani ulog">Novčani ulog</option>
+                        <option value="Nenovčani ulog">Nenovčani ulog</option>
+                    </select>
+                    
+                    <div id="nenovcani_ulog_fields" style="display:none;">
+                        <label for="vrijednost_uloga_1">Vrijednost uloga (u EUR):</label>
+                        <input type="number" id="vrijednost_uloga_1" name="vrijednost_uloga_1">
+                        <label for="opis_nenovcanog_uloga_1">Opis nenovčanog uloga:</label>
+                        <textarea id="opis_nenovcanog_uloga_1" name="opis_nenovcanog_uloga_1" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Uprava firme</h3>
+                    <label for="ime_direktora">Ime i prezime direktora:</label>
+                    <input type="text" id="ime_direktora" name="ime_direktora" required>
+                    
+                    <label for="id_direktora">JMBG / PIB direktora:</label>
+                    <input type="text" id="id_direktora" name="id_direktora" required>
+
+                    <label for="samostalni_direktor">Da li je direktor samostalni zastupnik (bez ograničenja)?</label>
+                    <select id="samostalni_direktor" name="samostalni_direktor" required>
+                        <option value="Da">Da</option>
+                        <option value="Ne">Ne</option>
+                    </select>
+                    
+                    <div id="detalji_ovlascenja_field" style="display:none;">
+                        <label for="detalji_ovlascenja">Detalji ograničenja ovlašćenja:</label>
+                        <textarea id="detalji_ovlascenja" name="detalji_ovlascenja" rows="2"></textarea>
+                    </div>
+
+                    <label for="zelite_li_odb_dir">Želite li Odbor direktora?</label>
+                    <select id="zelite_li_odb_dir" name="zelite_li_odb_dir" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+
+                    <div id="clanovi_odbora_field" style="display:none;">
+                        <label for="clanovi_odbora_direktora">Članovi Odbora direktora:</label>
+                        <textarea id="clanovi_odbora_direktora" name="clanovi_odbora_direktora" rows="2"></textarea>
+                    </div>
+
+                    <label for="prokurista">Želite li prokuristu?</label>
+                    <select id="prokurista" name="prokurista" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+                    
+                    <div id="prokurista_field" style="display:none;">
+                        <label for="ime_i_id_prokuriste">Ime, prezime i JMBG/PIB prokuriste:</label>
+                        <input type="text" id="ime_i_id_prokuriste" name="ime_i_id_prokuriste">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Ostalo</h3>
+                    <label for="dodatne_odredbe_statuta">Dodatne odredbe statuta (opciono):</label>
+                    <textarea id="dodatne_odredbe_statuta" name="dodatne_odredbe_statuta" rows="3"></textarea>
+
+                    <label for="procijenjeni_troskovi_osnivanja">Procijenjeni troškovi osnivanja (opciono):</label>
+                    <input type="text" id="procijenjeni_troskovi_osnivanja" name="procijenjeni_troskovi_osnivanja">
+                </div>
+                
+                <div class="form-actions">
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms_acceptance" name="terms_acceptance" required>
+                        <label for="terms_acceptance">Saglasan/na sam sa <a href="uslovi_koriscenja.html" target="_blank">Uslovima korišćenja</a> i <a href="politika_privatnosti.html" target="_blank">Politikom privatnosti</a>.</label>
+                    </div>
+                    <button type="submit" class="submit-button">Generiši Ugovor (199 EUR)</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
+    </footer>
+
+    <script>
+        const vrstaUlogaSelect = document.getElementById('vrsta_uloga_1');
+        const nenovcaniUlogFields = document.getElementById('nenovcani_ulog_fields');
+        
+        vrstaUlogaSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Nenovčani ulog') {
+                nenovcaniUlogFields.style.display = 'block';
+                document.getElementById('vrijednost_uloga_1').required = true;
+                document.getElementById('opis_nenovcanog_uloga_1').required = true;
+            } else {
+                nenovcaniUlogFields.style.display = 'none';
+                document.getElementById('vrijednost_uloga_1').required = false;
+                document.getElementById('opis_nenovcanog_uloga_1').required = false;
+            }
+        });
+
+        const samostalniDirektorSelect = document.getElementById('samostalni_direktor');
+        const detaljiOvlascenjaField = document.getElementById('detalji_ovlascenja_field');
+        
+        samostalniDirektorSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Ne') {
+                detaljiOvlascenjaField.style.display = 'block';
+                document.getElementById('detalji_ovlascenja').required = true;
+            } else {
+                detaljiOvlascenjaField.style.display = 'none';
+                document.getElementById('detalji_ovlascenja').required = false;
+            }
+        });
+        
+        const zeliteLiOdbDirSelect = document.getElementById('zelite_li_odb_dir');
+        const clanoviOdboraField = document.getElementById('clanovi_odbora_field');
+        
+        zeliteLiOdbDirSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Da') {
+                clanoviOdboraField.style.display = 'block';
+                document.getElementById('clanovi_odbora_direktora').required = true;
+            } else {
+                clanoviOdboraField.style.display = 'none';
+                document.getElementById('clanovi_odbora_direktora').required = false;
+            }
+        });
+        
+        const prokuristaSelect = document.getElementById('prokurista');
+        const prokuristaField = document.getElementById('prokurista_field');
+        
+        prokuristaSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Da') {
+                prokuristaField.style.display = 'block';
+                document.getElementById('ime_i_id_prokuriste').required = true;
+            } else {
+                prokuristaField.style.display = 'none';
+                document.getElementById('ime_i_id_prokuriste').required = false;
+            }
+        });
+    </script>
+</body>
+</html>

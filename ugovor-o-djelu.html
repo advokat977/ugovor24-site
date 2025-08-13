@@ -1,414 +1,186 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="sr-Latn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ugovor o Djelu - Ugovor24.com</title>
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --background-color: #f8f9fa;
-            --card-background: #ffffff;
-            --text-color: #212529;
-            --light-text: #6c757d;
-            --border-color: #e9ecef;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-        header {
-            background: var(--card-background);
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            margin-left: 2rem;
-            font-weight: 500;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-color);
-            text-decoration: none;
-        }
-        .logo-24 {
-            color: var(--primary-color);
-        }
-        .content-section {
-            padding: 4rem 0;
-            flex-grow: 1;
-        }
-        .content-card {
-            background: var(--card-background);
-            border-radius: 12px;
-            padding: 3rem;
-            box-shadow: 0 4px 12px var(--shadow-color);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-            text-align: center;
-        }
-        .form-description {
-            text-align: center;
-            font-style: italic;
-            color: var(--light-text);
-            margin-bottom: 2rem;
-        }
-        h2 {
-            font-size: 1.8rem;
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 0.5rem;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        input[type="text"], input[type="number"], input[type="date"], input[type="email"], textarea, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        .disclaimer {
-            background-color: #e9f5ff;
-            border: 1px solid #cce5ff;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-top: 2rem;
-        }
-        .disclaimer p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #004085;
-        }
-        .terms-checkbox {
-            display: flex;
-            align-items: flex-start;
-            margin-top: 2rem;
-            font-size: 0.9rem;
-        }
-        .terms-checkbox input {
-            margin-top: 5px;
-        }
-        .terms-checkbox label {
-            margin-left: 0.5rem;
-        }
-        .terms-checkbox a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        button {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            background-color: var(--primary-color);
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 1.5rem;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .footer {
-            background: var(--text-color);
-            color: #ffffff;
-            padding: 2rem 0;
-            margin-top: auto;
-            text-align: center;
-        }
-        .footer .container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .footer p {
-            margin: 0;
-            color: #adb5bd;
-        }
-        .footer .links a {
-            color: #ffffff;
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: color 0.2s;
-        }
-        .footer .links a:hover {
-            color: var(--primary-color);
-        }
-    </style>
+    <title>Ugovor o djelu - ugovor24.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://ugovor24-site.vercel.app/favicon.ico">
 </head>
 <body>
-
     <header>
-        <div class="container">
-            <a href="index.html" class="logo">ugovor<span class="logo-24">24</span>.com</a>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <img src="https://ugovor24-site.vercel.app/logo.png" alt="ugovor24.com Logo">
+            </a>
             <nav>
-                <a href="index.html#kako-radi">Kako radi</a>
-                <a href="index.html#faq">FAQ</a>
+                <a href="index.html">Početna</a>
+                <a href="ugovori.html">Ugovori</a>
                 <a href="kontakt.html">Kontakt</a>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="content-section">
-            <div class="container">
-                <div class="content-card">
-                    <h1>Ugovor o Djelu</h1>
-                    <p class="form-description">Molimo Vas da popunite sljedeća polja kako biste dobili nacrt ugovora. Svi podaci su povjerljivi i obrađuju se u skladu sa našom Politikom privatnosti.</p>
+        <div class="form-container">
+            <h1>Ugovor o djelu</h1>
+            <p class="form-intro">Molimo popunite formular ispod kako biste generisali Vaš Ugovor o djelu. Nakon popunjavanja, bićete preusmjereni na stranicu za plaćanje.</p>
+            
+            <form id="ugovor-o-djelu-form" action="/api/submit-form.js" method="POST">
 
-                    <form id="ugovor-o-delu-form" action="/api/submit-ugovor-o-djelu" method="post">
-                        
-                        <h2>SEKCIJA 1: Osnovni Podaci o Ugovoru</h2>
-                        <div class="form-group">
-                            <label for="mjesto_zakljucenja">1. U kom gradu se zaključuje ugovor?</label>
-                            <p class="disclaimer-text">Ovaj podatak će se koristiti i kao mjesto suda u slučaju spora.</p>
-                            <input type="text" id="mjesto_zakljucenja" name="mjesto_zakljucenja" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="datum_zakljucenja">2. Datum zaključenja ugovora:</label>
-                            <p class="disclaimer-text">Automatski će biti postavljen današnji datum, ali ga možete promijeniti.</p>
-                            <input type="date" id="datum_zakljucenja" name="datum_zakljucenja" required>
-                        </div>
-                        
-                        <h2>SEKCIJA 2: Podaci o Naručiocu Posla</h2>
-                        <p class="form-description">Unesite podatke o licu ili kompaniji koja naručuje posao.</p>
-                        
-                        <div class="form-group">
-                            <label for="naziv_narucioca">3. Puni naziv / Ime i prezime Naručioca:</label>
-                            <input type="text" id="naziv_narucioca" name="naziv_narucioca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adresa_narucioca">4. Adresa sjedišta / prebivališta Naručioca:</label>
-                            <input type="text" id="adresa_narucioca" name="adresa_narucioca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="id_broj_narucioca">5. Identifikacioni broj Naručioca:</label>
-                            <p class="disclaimer-text">Unesite PIB ako je u pitanju pravno lice ili preduzetnik, ili JMBG ako je u pitanju fizičko lice.</p>
-                            <input type="text" id="id_broj_narucioca" name="id_broj_narucioca" required>
-                        </div>
-                        
-                        <h2>SEKCIJA 3: Podaci o Izvršiocu Posla</h2>
-                        <p class="form-description">Unesite podatke o licu ili kompaniji koja će izvršiti posao.</p>
+                <input type="hidden" name="ugovor_type" value="Ugovor o djelu">
 
-                        <div class="form-group">
-                            <label for="naziv_izvrsioca">6. Puni naziv / Ime i prezime Izvršioca:</label>
-                            <input type="text" id="naziv_izvrsioca" name="naziv_izvrsioca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="adresa_izvrsioca">7. Adresa sjedišta / prebivališta Izvršioca:</label>
-                            <input type="text" id="adresa_izvrsioca" name="adresa_izvrsioca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="id_broj_izvrsioca">8. Identifikacioni broj Izvršioca:</label>
-                            <p class="disclaimer-text">Unesite PIB ako je u pitanju pravno lice ili preduzetnik, ili JMBG ako je u pitanju fizičko lice.</p>
-                            <input type="text" id="id_broj_izvrsioca" name="id_broj_izvrsioca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="racun_izvrsioca">9. Broj žiro računa Izvršioca (IBAN):</label>
-                            <p class="disclaimer-text">Na ovaj račun će biti uplaćena naknada.</p>
-                            <input type="text" id="racun_izvrsioca" name="racun_izvrsioca" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="banka_izvrsioca">10. Naziv banke kod koje se vodi račun:</label>
-                            <input type="text" id="banka_izvrsioca" name="banka_izvrsioca" required>
-                        </div>
+                <div class="form-section">
+                    <h3>Opšte informacije</h3>
+                    <label for="mjesto_zakljucenja">Mjesto zaključenja:</label>
+                    <input type="text" id="mjesto_zakljucenja" name="mjesto_zakljucenja" required>
 
-                        <h2>SEKCIJA 4: Predmet i Uslovi Ugovora</h2>
-                        <p class="form-description">Ovdje se definiše suština posla.</p>
-
-                        <div class="form-group">
-                            <label for="predmet_ugovora">11. Molimo, detaljno opišite posao koji je predmet ugovora:</label>
-                            <p class="disclaimer-text">Budite što precizniji. Npr. "Izrada idejnog i konačnog rješenja logotipa za brend 'Moj Brend' prema smjernicama Naručioca."</p>
-                            <textarea id="predmet_ugovora" name="predmet_ugovora" required></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="rok_zavrsetka">12. Koji je krajnji rok za završetak kompletnog posla?</label>
-                            <input type="date" id="rok_zavrsetka" name="rok_zavrsetka" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>13. Da li želite da precizno definišete što se smatra isporukom posla?</label>
-                            <p class="disclaimer-text">Ovo je korisno za kreativne i tehničke poslove. Npr. "Slanje finalnog logotipa u .AI, .SVG i .PNG formatima."</p>
-                            <div class="radio-group">
-                                <label><input type="radio" name="isporuka_definisana" value="Da" onclick="toggleIsporuka(true)"> Da</label>
-                                <label><input type="radio" name="isporuka_definisana" value="Ne" checked onclick="toggleIsporuka(false)"> Ne</label>
-                            </div>
-                            <div id="isporuka_field" style="display: none; margin-top: 1rem;">
-                                <label for="definicija_isporuke">Definicija isporuke:</label>
-                                <input type="text" id="definicija_isporuke" name="definicija_isporuke">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="iznos_naknade_broj">14. Iznos naknade za posao (u €):</label>
-                            <input type="number" id="iznos_naknade_broj" name="iznos_naknade_broj" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>15. Tip naknade:</label>
-                            <p class="disclaimer-text">Bruto iznos uključuje sve poreze i doprinose. Neto je iznos koji se isplaćuje "na ruke".</p>
-                            <div class="radio-group">
-                                <label><input type="radio" name="tip_naknade" value="Bruto" required> Bruto</label>
-                                <label><input type="radio" name="tip_naknade" value="Neto"> Neto</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="rok_placanja">16. U kom roku (u danima) od dana konačnog prihvatanja posla se plaća naknada?</label>
-                            <input type="number" id="rok_placanja" name="rok_placanja" required>
-                        </div>
-                        
-                        <h2>SEKCIJA 5: Dodatna Pitanja (Dodatne Zaštitne Klauzule)</h2>
-                        <p class="form-description">Vaši odgovori na ova pitanja će automatski dodati važne zaštitne klauzule u ugovor.</p>
-
-                        <div class="form-group">
-                            <label>17. Da li je rezultat posla autorsko djelo (npr. softver, dizajn, tekst, fotografija)?</label>
-                            <p class="disclaimer-text">Ako je odgovor "Da", u ugovor će se automatski dodati klauzule o prenosu autorskih prava i garanciji originalnosti.</p>
-                            <div class="radio-group">
-                                <label><input type="radio" name="je_autorsko_djelo" value="Da" required> Da</label>
-                                <label><input type="radio" name="je_autorsko_djelo" value="Ne"> Ne</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>18. Da li će Izvršilac tokom rada imati pristup povjerljivim poslovnim informacijama Naručioca?</label>
-                            <p class="disclaimer-text">Ako je odgovor "Da", u ugovor će se automatski dodati klauzula o povjerljivosti i zaštiti podataka (NDA).</p>
-                            <div class="radio-group">
-                                <label><input type="radio" name="pristup_povjerljivim_info" value="Da" required> Da</label>
-                                <label><input type="radio" name="pristup_povjerljivim_info" value="Ne"> Ne</label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>19. Da li želite da definišete proces revizija i prihvatanja posla?</label>
-                            <p class="disclaimer-text">Ovo je preporučljivo za kreativne poslove kako bi se izbjegli nesporazumi.</p>
-                            <div class="radio-group">
-                                <label><input type="radio" name="definisan_proces_revizije" value="Da" onclick="toggleRevizija(true)"> Da</label>
-                                <label><input type="radio" name="definisan_proces_revizije" value="Ne" checked onclick="toggleRevizija(false)"> Ne</label>
-                            </div>
-                            <div id="revizija_fields" style="display: none; margin-top: 1rem;">
-                                <div class="form-group">
-                                    <label for="broj_revizija">Koliko krugova revizija je uključeno u cijenu?</label>
-                                    <input type="number" id="broj_revizija" name="broj_revizija">
-                                </div>
-                                <div class="form-group">
-                                    <label for="rok_za_feedback">Koji je rok (u radnim danima) za Naručioca da dostavi komentare/zahtjeve za izmjenu?</label>
-                                    <input type="number" id="rok_za_feedback" name="rok_za_feedback">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="disclaimer" style="margin-top: 3rem;">
-                            <p><strong>Napomena:</strong> Popunjavanjem ovog upitnika dajete podatke koji će biti direktno unijeti u nacrt ugovora. Molimo Vas da obratite pažnju na tačnost i istinitost unijetih informacija.</p>
-                        </div>
-                        
-                        <div class="terms-checkbox">
-                            <label>
-                                <input type="checkbox" name="terms_acceptance" required>
-                                Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="client_email">Email adresa:</label>
-                            <input type="email" id="client_email" name="client_email" required>
-                        </div>
-                        
-                        <button type="submit">Pošalji i Plati (59 €)</button>
-                    </form>
+                    <label for="datum_zakljucenja">Datum zaključenja:</label>
+                    <input type="date" id="datum_zakljucenja" name="datum_zakljucenja" required>
                 </div>
-            </div>
-        </section>
+
+                <div class="form-section">
+                    <h3>Podaci o Naručiocu</h3>
+                    <p>Firma/Fizičko lice koje naručuje posao.</p>
+                    <label for="naziv_narucioca">Naziv Naručioca:</label>
+                    <input type="text" id="naziv_narucioca" name="naziv_narucioca" required>
+
+                    <label for="adresa_narucioca">Adresa Naručioca:</label>
+                    <input type="text" id="adresa_narucioca" name="adresa_narucioca" required>
+                    
+                    <label for="id_broj_narucioca">ID broj (JMBG/PIB) Naručioca:</label>
+                    <input type="text" id="id_broj_narucioca" name="id_broj_narucioca" required>
+                </div>
+
+                <div class="form-section">
+                    <h3>Podaci o Izvršiocu</h3>
+                    <p>Fizičko lice koje izvršava posao.</p>
+                    <label for="naziv_izvrsioca">Ime i prezime Izvršioca:</label>
+                    <input type="text" id="naziv_izvrsioca" name="naziv_izvrsioca" required>
+
+                    <label for="adresa_izvrsioca">Adresa Izvršioca:</label>
+                    <input type="text" id="adresa_izvrsioca" name="adresa_izvrsioca" required>
+                    
+                    <label for="id_broj_izvrsioca">JMBG Izvršioca:</label>
+                    <input type="text" id="id_broj_izvrsioca" name="id_broj_izvrsioca" required>
+                    
+                    <label for="racun_izvrsioca">Žiro račun Izvršioca:</label>
+                    <input type="text" id="racun_izvrsioca" name="racun_izvrsioca" required>
+                    
+                    <label for="banka_izvrsioca">Banka Izvršioca:</label>
+                    <input type="text" id="banka_izvrsioca" name="banka_izvrsioca" required>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Detalji posla</h3>
+                    <label for="predmet_ugovora">Predmet ugovora (detaljan opis posla):</label>
+                    <textarea id="predmet_ugovora" name="predmet_ugovora" rows="4" required></textarea>
+
+                    <label for="rok_zavrsetka">Rok završetka posla:</label>
+                    <input type="date" id="rok_zavrsetka" name="rok_zavrsetka" required>
+
+                    <label for="isporuka_definisana">Da li je isporuka definisana?</label>
+                    <select id="isporuka_definisana" name="isporuka_definisana" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+
+                    <div id="definicija_isporuke_field" style="display:none;">
+                        <label for="definicija_isporuke">Definicija isporuke:</label>
+                        <textarea id="definicija_isporuke" name="definicija_isporuke" rows="2"></textarea>
+                    </div>
+
+                    <label for="iznos_naknade_broj">Iznos naknade (u EUR):</label>
+                    <input type="number" id="iznos_naknade_broj" name="iznos_naknade_broj" required>
+
+                    <label for="tip_naknade">Tip naknade:</label>
+                    <select id="tip_naknade" name="tip_naknade" required>
+                        <option value="Bruto">Bruto</option>
+                        <option value="Neto">Neto</option>
+                    </select>
+
+                    <label for="rok_placanja">Rok plaćanja (nakon izvršenja posla):</label>
+                    <input type="text" id="rok_placanja" name="rok_placanja" required>
+                </div>
+
+                <div class="form-section">
+                    <h3>Dodatne odredbe</h3>
+                    <label for="je_autorsko_djelo">Da li je predmet ugovora autorsko djelo?</label>
+                    <select id="je_autorsko_djelo" name="je_autorsko_djelo" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+                    
+                    <label for="pristup_povjerljivim_info">Da li Izvršilac ima pristup povjerljivim informacijama?</label>
+                    <select id="pristup_povjerljivim_info" name="pristup_povjerljivim_info" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+
+                    <label for="definisan_proces_revizije">Da li je definisan proces revizije?</label>
+                    <select id="definisan_proces_revizije" name="definisan_proces_revizije" required>
+                        <option value="Ne">Ne</option>
+                        <option value="Da">Da</option>
+                    </select>
+
+                    <div id="revizija_fields" style="display:none;">
+                        <label for="broj_revizija">Broj revizija:</label>
+                        <input type="number" id="broj_revizija" name="broj_revizija">
+                        
+                        <label for="rok_za_feedback">Rok za feedback od strane Naručioca (u danima):</label>
+                        <input type="number" id="rok_za_feedback" name="rok_za_feedback">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Vaši podaci</h3>
+                    <label for="client_email">Vaš e-mail:</label>
+                    <input type="email" id="client_email" name="client_email" required>
+                </div>
+
+                <div class="form-actions">
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms_acceptance" name="terms_acceptance" required>
+                        <label for="terms_acceptance">Saglasan/na sam sa <a href="uslovi_koriscenja.html" target="_blank">Uslovima korišćenja</a> i <a href="politika_privatnosti.html" target="_blank">Politikom privatnosti</a>.</label>
+                    </div>
+                    <button type="submit" class="submit-button">Generiši Ugovor (59 EUR)</button>
+                </div>
+            </form>
+        </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
-            <div class="links">
-                <a href="uslovi-koriscenja.html">Uslovi korišćenja</a>
-                <a href="politika-privatnosti.html">Politika privatnosti</a>
-            </div>
-        </div>
+    <footer>
+        <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
     </footer>
     
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const today = new Date().toISOString().split('T')[0];
-            const dateInput = document.getElementById('datum_zakljucenja');
-            if (dateInput) {
-                dateInput.value = today;
+        const isporukaDefinisanaSelect = document.getElementById('isporuka_definisana');
+        const definicijaIsporukeField = document.getElementById('definicija_isporuke_field');
+        
+        isporukaDefinisanaSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Da') {
+                definicijaIsporukeField.style.display = 'block';
+                document.getElementById('definicija_isporuke').required = true;
+            } else {
+                definicijaIsporukeField.style.display = 'none';
+                document.getElementById('definicija_isporuke').required = false;
             }
         });
         
-        function toggleIsporuka(show) {
-            const field = document.getElementById('isporuka_field');
-            field.style.display = show ? 'block' : 'none';
-            document.getElementById('definicija_isporuke').required = show;
-        }
+        const definisanProcesRevizijeSelect = document.getElementById('definisan_proces_revizije');
+        const revizijaFields = document.getElementById('revizija_fields');
         
-        function toggleRevizija(show) {
-            const fields = document.getElementById('revizija_fields');
-            fields.style.display = show ? 'block' : 'none';
-            document.getElementById('broj_revizija').required = show;
-            document.getElementById('rok_za_feedback').required = show;
-        }
+        definisanProcesRevizijeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'Da') {
+                revizijaFields.style.display = 'block';
+                document.getElementById('broj_revizija').required = true;
+                document.getElementById('rok_za_feedback').required = true;
+            } else {
+                revizijaFields.style.display = 'none';
+                document.getElementById('broj_revizija').required = false;
+                document.getElementById('rok_za_feedback').required = false;
+            }
+        });
     </script>
 </body>
 </html>
