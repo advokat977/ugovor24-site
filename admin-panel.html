@@ -135,10 +135,11 @@
     </footer>
     
     <script>
+        // Supabase ce biti dostupan kao globalni objekat nakon ucitavanja
         const supabaseUrl = 'https://jgkllsxeuoozpglzwxwg.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc';
-        const supabase = supabase_js.createClient(supabaseUrl, supabaseKey);
-
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        
         document.addEventListener('DOMContentLoaded', fetchOrders);
 
         async function fetchOrders() {
