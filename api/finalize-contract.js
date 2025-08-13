@@ -21,7 +21,7 @@ function formatOrderNumber(number) {
   return `${leadingZeros}${numString}`;
 }
 
-async function sendFinalEmailToClient(order, finalDocumentUrl) {
+async function sendFinalEmailToClient(order, finalDocumentUrl, documentName) {
     try {
         const ugovorType = order.ugovor_type;
         const formattedOrderNumber = formatOrderNumber(order.order_number);
@@ -40,6 +40,9 @@ async function sendFinalEmailToClient(order, finalDocumentUrl) {
         } else {
             clientName = order.client_email;
         }
+
+        const fileResponse = await fetch(finalDocumentUrl);
+        const fileContent = await fileResponse.arrayBuffer();
         
         await resend.emails.send({
             from: 'noreply@ugovor24.com',
@@ -48,11 +51,16 @@ async function sendFinalEmailToClient(order, finalDocumentUrl) {
             html: `
                 <p>Postovani/a ${removeDiacritics(clientName)},</p>
                 <p>Cestitamo! Vasa uplata je proknjizena i Vas ugovor je odobren.</p>
-                <p>Finalna verzija Vaseg ugovora je spremna za preuzimanje na linku ispod.</p>
-                <p>Ugovor: **<a href="${finalDocumentUrl}">Preuzmi finalni dokument</a>**</p>
+                <p>Finalna verzija Vaseg ugovora je u prilogu ovog e-maila.</p>
                 <p>Srdacan pozdrav,</p>
                 <p>Tim ugovor24.com</p>
             `,
+            attachments: [
+                {
+                    filename: documentName,
+                    content: Buffer.from(fileContent)
+                }
+            ]
         });
         return { success: true };
     } catch (error) {
@@ -61,23 +69,31 @@ async function sendFinalEmailToClient(order, finalDocumentUrl) {
     }
 }
 
-async function sendFinalEmailToAdmin(order, finalDocumentUrl) {
+async function sendFinalEmailToAdmin(order, finalDocumentUrl, documentName) {
     try {
         const ugovorType = order.ugovor_type;
         const formattedOrderNumber = formatOrderNumber(order.order_number);
         
+        const fileResponse = await fetch(finalDocumentUrl);
+        const fileContent = await fileResponse.arrayBuffer();
+
         await resend.emails.send({
             from: 'noreply@ugovor24.com',
-            to: 'titograd977@gmail.com', // Tvoja e-mail adresa
+            to: 'titograd977@gmail.com',
             subject: `KOPIJA: Poslat finalni ugovor (${removeDiacritics(ugovorType)} #${formattedOrderNumber})`,
             html: `
                 <p>Dobar dan, Dejane,</p>
                 <p>Kopija e-maila poslatog klijentu **${order.client_email}**.</p>
                 <p>Ugovor za **${removeDiacritics(ugovorType)}** pod brojem **#${formattedOrderNumber}** je uspesno poslat.</p>
-                <p>Link za preuzimanje: **<a href="${finalDocumentUrl}">Preuzmi finalni dokument</a>**</p>
                 <p>Srdacan pozdrav,</p>
                 <p>Sistem ugovor24.com</p>
             `,
+            attachments: [
+                {
+                    filename: documentName,
+                    content: Buffer.from(fileContent)
+                }
+            ]
         });
         return { success: true };
     } catch (error) {
@@ -96,6 +112,14 @@ export default async function handler(req, res) {
   if (!order_id || !action) {
     return res.status(400).json({ error: 'Missing order ID or action' });
   }
+  
+  const client_table = {
+    'Ugovor o djelu': 'orders_ugovor_o_djelu',
+    'Ugovor o zakupu': 'orders_ugovor_o_zakupu',
+    'Ugovor o radu': 'orders_ugovor_o_radu',
+    'Ugovor o povjerljivosti (NDA)': 'orders_ugovor_o_povjerljivosti_nda',
+    'Set dokumenata za registraciju firme (DOO)': 'orders_set_za_firmu_doo'
+  };
 
   try {
     if (action === 'verify_payment') {
@@ -116,15 +140,11 @@ export default async function handler(req, res) {
         .from('orders')
         .select(`
           *,
-          orders_ugovor_o_djelu(naziv_narucioca),
-          orders_ugovor_o_zakupu(naziv_zakupca),
-          orders_ugovor_o_radu(ime_i_prezime_zaposlenog),
-          orders_ugovor_o_povjerljivosti_nda(tip_ugovora, naziv_strane_a, naziv_strane_koja_prima),
-          orders_set_za_firmu_doo(ime_osnivaca_1)
+          ${client_table[order.ugovor_type]}(*)
         `)
         .eq('id', order_id)
         .single();
-
+      
       if (orderError || !order) {
         return res.status(404).json({ error: 'Order not found' });
       }
@@ -133,8 +153,10 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Order not paid or final document not uploaded' });
       }
 
-      const clientEmailResult = await sendFinalEmailToClient(order, order.final_document_url);
-      const adminEmailResult = await sendFinalEmailToAdmin(order, order.final_document_url);
+      const documentName = order.final_document_url.split('/').pop();
+      
+      const clientEmailResult = await sendFinalEmailToClient(order, order.final_document_url, documentName);
+      const adminEmailResult = await sendFinalEmailToAdmin(order, order.final_document_url, documentName);
 
       if (clientEmailResult.error || adminEmailResult.error) {
         return res.status(500).json({ error: 'Failed to send final email' });
