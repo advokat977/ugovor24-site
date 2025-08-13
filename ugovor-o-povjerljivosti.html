@@ -53,6 +53,9 @@
             color: var(--text-color);
             text-decoration: none;
         }
+        .logo-24 {
+            color: var(--primary-color);
+        }
         .content-section {
             padding: 4rem 0;
             flex-grow: 1;
@@ -186,7 +189,7 @@
 
     <header>
         <div class="container">
-            <a href="index.html" class="logo">ugovor24.com</a>
+            <a href="index.html" class="logo">ugovor<span class="logo-24">24</span>.com</a>
             <nav>
                 <a href="index.html#kako-radi">Kako radi</a>
                 <a href="index.html#faq">FAQ</a>
@@ -202,7 +205,7 @@
                     <h1>Ugovor o Povjerljivosti (NDA)</h1>
                     <p class="form-description">Molimo Vas da popunite sljedeća polja kako biste dobili nacrt ugovora. Svi podaci su povjerljivi i obrađuju se u skladu sa našom Politikom privatnosti.</p>
 
-                    <form id="nda-form">
+                    <form id="nda-form" action="/api/submit-ugovor-o-povjerljivosti" method="post">
                         
                         <h2>SEKCIJA 1: Tip Ugovora</h2>
                         <p class="disclaimer-text">Ovo je najvažnije pitanje koje određuje strukturu ugovora.</p>
@@ -321,7 +324,7 @@
                                 <label><input type="radio" name="ugovorena_kazna" value="Ne" checked onclick="toggleKazna(false)"> Ne</label>
                             </div>
                             <div id="kazna_field" style="display: none; margin-top: 1rem;">
-                                <label for="iznos_ugovorene_kazne">Iznos ugovorne kazne (u eurima):</label>
+                                <label for="iznos_ugovorene_kazne">Iznos ugovorne kazne (u €):</label>
                                 <input type="number" id="iznos_ugovorene_kazne" name="iznos_ugovorene_kazne">
                             </div>
                         </div>
@@ -331,12 +334,18 @@
                         </div>
 
                         <div class="terms-checkbox">
-                            <input type="checkbox" id="terms-acceptance" name="terms-acceptance" required>
-                            <label for="terms-acceptance">Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
+                            <label>
+                                <input type="checkbox" name="terms_acceptance" required>
+                                Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta ugovora.
                             </label>
                         </div>
+
+                        <div class="form-group">
+                            <label for="client_email">Email adresa:</label>
+                            <input type="email" id="client_email" name="client_email" required>
+                        </div>
                         
-                        <button type="submit">Pošalji i Plati (29 EUR)</button>
+                        <button type="submit">Pošalji i Plati (29 €)</button>
                     </form>
                 </div>
             </div>
@@ -356,7 +365,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('datum_zakljucenja').value = today;
+            const dateInput = document.getElementById('datum_zakljucenja');
+            if (dateInput) {
+                dateInput.value = today;
+            }
 
             // Inicijalno postavljanje `required` atributa
             const jednostraniInputs = document.querySelectorAll('#jednostrani_fields input');
@@ -391,13 +403,6 @@
             field.style.display = show ? 'block' : 'none';
             document.getElementById('iznos_ugovorene_kazne').required = show;
         }
-
-        document.getElementById('nda-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const cijena = "29";
-            const ugovor = "Ugovor o povjerljivosti (NDA)";
-            window.location.href = `placanje.html?cijena=${cijena}&ugovor=${encodeURIComponent(ugovor)}`;
-        });
     </script>
 </body>
 </html>
