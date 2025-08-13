@@ -325,3 +325,112 @@ function determineTableName(ugovorType) {
             return 'orders';
     }
 }
+
+export async function sendFinalEmailToClient(order, finalDocumentUrl, documentName) {
+    try {
+        const ugovorType = order.ugovor_type;
+        const formattedOrderNumber = formatOrderNumber(order.order_number);
+        
+        let clientName = '';
+        if (ugovorType === 'Ugovor o djelu' && order.orders_ugovor_o_djelu.length > 0) {
+            clientName = order.orders_ugovor_o_djelu[0].naziv_narucioca;
+        } else if (ugovorType === 'Ugovor o zakupu' && order.orders_ugovor_o_zakupu.length > 0) {
+            clientName = order.orders_ugovor_o_zakupu[0].naziv_zakupca;
+        } else if (ugovorType === 'Ugovor o radu' && order.orders_ugovor_o_radu.length > 0) {
+            clientName = order.orders_ugovor_o_radu[0].ime_i_prezime_zaposlenog;
+        } else if (ugovorType === 'Ugovor o povjerljivosti (NDA)' && order.orders_ugovor_o_povjerljivosti_nda.length > 0) {
+            clientName = order.orders_ugovor_o_povjerljivosti_nda[0].tip_ugovora === 'Jednostrani' ? order.orders_ugovor_o_povjerljivosti_nda[0].naziv_strane_koja_prima : order.orders_ugovor_o_povjerljivosti_nda[0].naziv_strane_a;
+        } else if (ugovorType === 'Set dokumenata za registraciju firme (DOO)' && order.orders_set_za_firmu_doo.length > 0) {
+            clientName = order.orders_set_za_firmu_doo[0].ime_osnivaca_1;
+        } else {
+            clientName = order.client_email;
+        }
+        
+        const fileResponse = await fetch(finalDocumentUrl);
+        const fileContent = await fileResponse.arrayBuffer();
+        
+        const emailHtml = `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; padding: 20px; color: #333;">
+                <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="padding: 20px; text-align: center; border-bottom: 1px solid #eee;">
+                        <img src="https://ugovor24-site.vercel.app/logo.png" alt="ugovor24.com Logo" style="width: 150px;">
+                    </div>
+                    <div style="padding: 20px;">
+                        <p style="font-size: 16px;">Poštovani/a ${clientName},</p>
+                        <p style="font-size: 16px;">Čestitamo! Vaša uplata je proknjižena i Vaš ugovor je odobren.</p>
+                        <p style="font-size: 16px;">Finalna verzija Vašeg ugovora je u prilogu ovog e-maila.</p>
+                        <p style="font-size: 16px; margin-top: 30px;">Srdačan pozdrav,</p>
+                        <p style="font-size: 16px;">Tim ugovor24.com</p>
+                    </div>
+                    <div style="padding: 20px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee;">
+                        <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        await resend.emails.send({
+            from: 'noreply@ugovor24.com',
+            to: order.client_email,
+            subject: `Vas ugovor je spreman za preuzimanje: ${removeDiacritics(ugovorType)} (#${formattedOrderNumber})`,
+            html: emailHtml,
+            attachments: [
+                {
+                    filename: documentName,
+                    content: Buffer.from(fileContent)
+                }
+            ]
+        });
+        return { success: true };
+    } catch (error) {
+        console.error('Greska pri slanju finalnog e-maila:', error);
+        return { success: false, error: 'Failed to send final email' };
+    }
+}
+
+export async function sendFinalEmailToAdmin(order, finalDocumentUrl, documentName) {
+    try {
+        const ugovorType = order.ugovor_type;
+        const formattedOrderNumber = formatOrderNumber(order.order_number);
+        
+        const fileResponse = await fetch(finalDocumentUrl);
+        const fileContent = await fileResponse.arrayBuffer();
+
+        const emailHtml = `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; padding: 20px; color: #333;">
+                <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="padding: 20px; text-align: center; border-bottom: 1px solid #eee;">
+                        <img src="https://ugovor24-site.vercel.app/logo.png" alt="ugovor24.com Logo" style="width: 150px;">
+                    </div>
+                    <div style="padding: 20px;">
+                        <p style="font-size: 16px;">Dobar dan, Dejane,</p>
+                        <p style="font-size: 16px;">Kopija e-maila poslatog klijentu <b>${order.client_email}</b>.</p>
+                        <p style="font-size: 16px;">Ugovor za <b>${ugovorType}</b> pod brojem <b>#${formattedOrderNumber}</b> je uspesno poslat.</p>
+                        <p style="font-size: 16px; margin-top: 30px;">Srdačan pozdrav,</p>
+                        <p style="font-size: 16px;">Sistem ugovor24.com</p>
+                    </div>
+                    <div style="padding: 20px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #eee;">
+                        <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        await resend.emails.send({
+            from: 'noreply@ugovor24.com',
+            to: 'titograd977@gmail.com',
+            subject: `KOPIJA: Poslat finalni ugovor (${removeDiacritics(ugovorType)} #${formattedOrderNumber})`,
+            html: emailHtml,
+            attachments: [
+                {
+                    filename: documentName,
+                    content: Buffer.from(fileContent)
+                }
+            ]
+        });
+        return { success: true };
+    } catch (error) {
+        console.error('Greska pri slanju kopije e-maila administratoru:', error);
+        return { success: false, error: 'Failed to send copy email' };
+    }
+}
