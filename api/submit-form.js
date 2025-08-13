@@ -10,6 +10,25 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Lista svih polja koja treba konvertovati iz "Da"/"Ne" u boolean
+const booleanFields = [
+    'ugovorena_kazna',
+    'isporuka_definisana',
+    'je_autorsko_djelo',
+    'pristup_povjerljivim_info',
+    'definisan_proces_revizije',
+    'definisan_depozit',
+    'definisana_indeksacija',
+    'dozvoljen_podzakup',
+    'rad_na_daljinu',
+    'definisan_probni_rad',
+    'definisana_zabrana_konkurencije',
+    'zelite_li_spoljnotrgovinske_poslove',
+    'samostalni_direktor',
+    'zelite_li_odb_dir',
+    'prokurista'
+];
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -26,6 +45,20 @@ export default async function handler(req, res) {
   if (!ugovor_type) {
     return res.status(400).json({ error: 'Missing ugovor_type field' });
   }
+
+  // Pre konverzije, kreiramo kopiju objekta da ne modifikujemo original
+  const specificData = { ...formData };
+
+  // Konvertujemo stringove "Da" i "Ne" u boolean vrednosti
+  booleanFields.forEach(field => {
+      if (specificData.hasOwnProperty(field)) {
+          if (specificData[field] === 'Da') {
+              specificData[field] = true;
+          } else if (specificData[field] === 'Ne') {
+              specificData[field] = false;
+          }
+      }
+  });
 
   // Odredjivanje cene, tabele i klijentovih podataka na osnovu tipa ugovora
   switch (ugovor_type) {
@@ -96,11 +129,11 @@ export default async function handler(req, res) {
     const order_number = orderData[0].order_number;
     
     // 2. Unos u specificnu tabelu na osnovu ugovor_type
-    const specificData = { order_id, ...formData };
+    specificData.order_id = order_id;
     delete specificData['ugovor_type'];
     delete specificData['client_email'];
     delete specificData['e_mail_adresa'];
-    delete specificData['terms_acceptance']; // *** NOVA LINIJA JE DODATA ZBOG NOVE GRESKE ***
+    delete specificData['terms_acceptance'];
 
     const { error: specificError } = await supabase
       .from(specificTable)
