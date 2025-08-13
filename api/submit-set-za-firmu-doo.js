@@ -1,7 +1,6 @@
 // api/submit-set-za-firmu-doo.js
 
 import { createClient } from '@supabase/supabase-js';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Resend } from 'resend';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
@@ -11,15 +10,14 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
+// Funkcija za uklanjanje dijakritickih znakova iz teksta
 function removeDiacritics(text) {
     if (!text) return '';
     return text.replace(/č/g, 'c').replace(/ć/g, 'c').replace(/š/g, 's').replace(/ž/g, 'z').replace(/đ/g, 'dj')
                .replace(/Č/g, 'C').replace(/Ć/g, 'C').replace(/Š/g, 'S').replace(/Ž/g, 'Z').replace(/Đ/g, 'Dj');
 }
 
+// Funkcija za formatiranje JSON objekta u citljiv tekst
 function formatFormData(formData) {
     let formattedText = '';
     const translations = {
@@ -48,7 +46,6 @@ function formatFormData(formData) {
         ime_i_id_prokuriste: 'Ime i ID prokuriste',
         dodatne_odredbe_statuta: 'Dodatne odredbe statuta',
         procijenjeni_troskovi_osnivanja: 'Procijenjeni troskovi osnivanja',
-        client_email: 'Email klijenta',
         terms_acceptance: 'Prihvatio uslove'
     };
 
@@ -69,52 +66,6 @@ function formatOrderNumber(number) {
   const leadingZeros = '00000'.substring(0, 5 - numString.length);
   return `${leadingZeros}${numString}`;
 }
-
-const masterTemplates = {
-    'Set dokumenata za registraciju firme (DOO)': `
-    Ugovor24.com - Revidirani upitnik za osnivanje i registraciju DOO (199 EUR paket)
-    Molimo Vas da popunite ovaj upitnik sa svim potrebnim informacijama.
-    Vasi odgovori omogucice nam da automatski generisemo sve neophodne dokumente za osnivanje Vaseg drustva sa ogranicenom odgovornoscu (DOO), u skladu sa relevantnim propisima i najboljim praksama.
-    
-    SEKCIJA 1: OSNOVNI PODACI O FIRMI
-    Naziv privrednog drustva:
-    Puni naziv: {{naziv_firme}}
-    Skraceni naziv (opciono): {{skraceni_naziv_firme}}
-    Adrese firme u Crnoj Gori:
-    Adresa sjedista: {{adresa_sjedista}}
-    Adresa za sluzbeni prijem poste (opciono, moze biti ista kao sjediste): {{adresa_za_postu}}
-    Adresa za prijem elektronske poste (obavezno): {{e_mail_adresa}}
-    Djelatnosti drustva:
-    Opis pretezne djelatnosti: {{opis_pretezne_djelatnosti}}
-    Da li zelite da se firma bavi i spoljnotrgovinskim prometom i drugim srodnim djelatnostima (posredovanje, komisioni poslovi, zastupanje stranih firmi, itd.)?: {{zelite_li_spoljnotrgovinske_poslove}}
-    Osnovni kapital:
-    Zeljeni iznos osnovnog kapitala: {{iznos_kapitala}} EUR
-    
-    SEKCIJA 2: PODACI O OSNIVACIMA
-    Osnivac 1:
-    Tip osnivaca: {{tip_osnivaca_1}}
-    Ime i prezime / Pun naziv firme: {{ime_osnivaca_1}}
-    Identifikacioni broj: {{id_osnivaca_1}}
-    Adresa prebivalista / Adresa sjedista: {{adresa_osnivaca_1}}
-    Vrsta uloga: {{vrsta_uloga_1}}
-    Vrijednost uloga: {{vrijednost_uloga_1}} EUR
-    Opis nenovcanog uloga: {{opis_nenovcanog_uloga_1}}
-    
-    SEKCIJA 3: PODACI O IZVRSNOM DIREKTORU I ODBORU DIREKTORA
-    Ime i prezime izvrsnog direktora: {{ime_direktora}}
-    Identifikacioni broj izvrsnog direktora: {{id_direktora}}
-    Da li zelite da izvrsni direktor zastupa firmu samostalno, neograniceno i bez Odbora direktora? (DA/NE): {{samostalni_direktor}}
-    Ukoliko ne, molimo Vas da navedete ovlascenja za zastupanje: {{detalji_ovlascenja}}
-    Da li zelite da firma ima Odbor direktora? (DA/NE): {{zelite_li_odb_dir}}
-    Ukoliko DA, molimo Vas da navedete imena i ID brojeve clanova Odbora direktora: {{clanovi_odbora_direktora}}
-    Da li zelite da imenujete prokuristu? (DA/NE): {{prokurista}}
-    Ako DA, ime i ID broj prokuriste: {{ime_i_id_prokuriste}}
-
-    SEKCIJA 4: DODATNA PITANJA
-    Da li postoji neko posebno pravilo koje zelite da uvrstimo u Statut (npr. o nacinu prenosa udjela, raspodjeli dobiti, itd.)?: {{dodatne_odredbe_statuta}}
-    Procijenjeni troskovi osnivanja koje ce drustvo isplatiti osnivacu (opciono, molimo navedite iznos): {{procijenjeni_troskovi_osnivanja}} EUR
-    `
-};
 
 async function generateInvoicePDF(orderId, ugovorType, totalPrice, orderNumber, clientName, clientAddress, clientID) {
     const pdfDoc = await PDFDocument.create();
@@ -192,13 +143,12 @@ async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice
         await resend.emails.send({
             from: 'noreply@ugovor24.com',
             to: clientEmail,
-            subject: `Potvrda zahtjeva za ${ugovorType} - ugovor24.com`,
+            subject: `Potvrda zahtjeva za ${removeDiacritics(ugovorType)} - ugovor24.com`,
             html: `
                 <p>Postovani/a ${removeDiacritics(clientName)},</p>
                 <p>Ovo je automatska potvrda da je Vas zahtjev za **${removeDiacritics(ugovorType)}** uspjesno primljen pod brojem **${formattedOrderNumber}**.</p>
-                <p>Nacrt Vaseg ugovora je vec u procesu generisanja i bice spreman za pregled cim Vasa uplata bude proknjizena.</p>
                 <p>Molimo izvrsite uplatu bankarskim transferom u iznosu od **${totalPrice} EUR**. Predracun sa instrukcijama za placanje je u prilogu.</p>
-                <p>Nakon sto uplata bude proknjizena na nasem racunu, ugovor ce biti pregledan i poslat Vam u roku od 24 casa.</p>
+                <p>Ukoliko za izradu ugovora budu potrebne dodatne informacije, kontaktiracemo Vas. Nakon sto uplata bude proknjizena na nasem racunu, ugovor ce biti pregledan i poslat Vam.</p>
                 <p>Srdacan pozdrav,</p>
                 <p>Tim ugovor24.com</p>
             `,
@@ -227,7 +177,7 @@ async function sendNotificationEmailToAdmin(ugovorType, orderId, orderNumber, fo
             subject: `NOVA NARUDZBA: ${removeDiacritics(ugovorType)} (#${formattedOrderNumber})`,
             html: `
                 <p>Dobar dan, Dejane,</p>
-                <p>Imate novu narudzbinu za **${removeDiacritics(ugovorType)}**.</p>
+                <p>Imate novu narudzbinu za **${removeDiakritics(ugovorType)}**.</p>
                 <p>Broj narudzbe: **${formattedOrderNumber}**</p>
                 <p>ID narudzbe: **${orderId}**</p>
                 <p>---</p>
@@ -245,48 +195,6 @@ async function sendNotificationEmailToAdmin(ugovorType, orderId, orderNumber, fo
     }
 }
 
-async function generateContractDraft(orderId, ugovorType, contractData) {
-    const template = masterTemplates[ugovorType];
-    
-    if (!template) {
-        return { error: 'Template for this contract type not found' };
-    }
-    
-    const prompt = `Ti si strucni advokat iz Crne Gore. Na osnovu prilozenih podataka i master templejta, generisi nacrt ugovora.
-    
-    Pravni kontekst:
-    - Pravo Crne Gore
-    - Sudska praksa Crne Gore i EU
-    - Najbolje prakse EU
-    
-    Podaci za ugovor: ${JSON.stringify(contractData)}
-    
-    Master template:
-    ${template}
-    
-    Molim te, vrati mi samo konacan tekst ugovora, sa popunjenim podacima i uklonjenim placeholderima poput {{#if...}}, u formatu pogodnom za kopiranje i finalizaciju. Ne dodaj nikakav uvodni ili zakljucni tekst, samo cisti tekst ugovora.`;
-
-    try {
-        const result = await model.generateContent(prompt);
-        const generatedDraft = result.response.text();
-        
-        const { error: updateError } = await supabase
-            .from('orders')
-            .update({ generated_draft: generatedDraft, is_draft_generated: true })
-            .eq('id', orderId);
-
-        if (updateError) {
-            console.error('Greska pri azuriranju narudzine:', updateError);
-            return { error: 'Database update error' };
-        }
-    } catch (e) {
-        console.error('Greska pri generisanju nacrta:', e);
-        return { error: 'AI generation failed' };
-    }
-    
-    return { success: true };
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -294,9 +202,9 @@ export default async function handler(req, res) {
 
   const formData = req.body;
 
-  const client_email = formData['e_mail_adresa'];
   const ugovor_type = 'Set dokumenata za registraciju firme (DOO)';
   const total_price = 199;
+  const client_email = formData['e_mail_adresa'];
   const client_name = formData['ime_osnivaca_1'];
   const client_address = formData['adresa_osnivaca_1'];
   const client_id = formData['id_osnivaca_1'];
@@ -310,7 +218,7 @@ export default async function handler(req, res) {
       .from('orders')
       .insert([
         { 
-          client_email: formData['e_mail_adresa'],
+          client_email,
           ugovor_type,
           total_price
         }
@@ -363,11 +271,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Database insertion error' });
     }
 
-    const generationResult = await generateContractDraft(order_id, ugovor_type, formData);
-    if (generationResult.error) {
-        console.error('Greska pri generisanju nacrta:', generationResult.error);
-    }
-    
     const emailResult = await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, order_number, client_name, client_address, client_id);
     if (emailResult.error) {
         console.error('Greska pri slanju e-maila klijentu:', emailResult.error);
