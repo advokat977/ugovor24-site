@@ -246,8 +246,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="iznos_kapitala">Željeni iznos osnovnog kapitala (u EUR):</label>
-                            <p class="disclaimer-text">Minimalni iznos je 1 EUR.</p>
+                            <label for="iznos_kapitala">Željeni iznos osnovnog kapitala (u €):</label>
+                            <p class="disclaimer-text">Minimalni iznos je 1 €.</p>
                             <input type="number" id="iznos_kapitala" name="iznos_kapitala" required>
                         </div>
 
@@ -285,7 +285,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="vrijednost_uloga_1">Vrijednost uloga (u EUR):</label>
+                                <label for="vrijednost_uloga_1">Vrijednost uloga (u €):</label>
                                 <input type="number" id="vrijednost_uloga_1" name="vrijednost_uloga_1" required>
                             </div>
                             <div class="form-group nenovcani-ulog-1" style="display: none;">
@@ -316,7 +316,7 @@
                         <div id="odbor_direktora_fields" style="display: none;">
                             <div class="form-group">
                                 <label for="detalji_ovlascenja">Ukoliko ne, molimo Vas da navedete ovlašćenja za zastupanje:</label>
-                                <p class="disclaimer-text">Npr. "ograničeno do 10.000 € po pravnom poslu, isključujući raspolaganje imovinom, a iznad tog iznosa kolektivno sa Odborom direktora".</p>
+                                <p class="disclaimer-text">Npr. "ograničeno do 10.000 € po pravnom poslu, a iznad tog iznosa kolektivno sa Odborom direktora".</p>
                                 <textarea id="detalji_ovlascenja" name="detalji_ovlascenja"></textarea>
                             </div>
                             <div class="form-group">
@@ -370,6 +370,11 @@
                             </label>
                         </div>
                         
+                        <div class="form-group">
+                            <label for="client_email">Email adresa:</label>
+                            <input type="email" id="client_email" name="client_email" required>
+                        </div>
+                        
                         <button type="submit">Pošalji i Plati (199 €)</button>
                     </form>
                 </div>
@@ -401,12 +406,17 @@
 
             ukloniOsnivacaBtn.addEventListener('click', () => {
                 if (osnivacCount > 1) {
+                    const lastOsnivac = document.querySelector(`.osnivac-group[data-osnivac-index="${osnivacCount}"]`);
+                    if (lastOsnivac) {
+                        lastOsnivac.remove();
+                    }
                     osnivacCount--;
-                    ukloniOsnivaca();
+                    if (osnivacCount <= 1) {
+                        ukloniOsnivacaBtn.style.display = 'none';
+                    }
                 }
             });
 
-            // Initial setup for one osnivac
             dodajOsnivaca();
         });
 
@@ -419,8 +429,7 @@
                 <h3>Osnivač ${osnivacCount}:</h3>
                 <div class="form-group">
                     <label for="tip_osnivaca_${osnivacCount}">Tip osnivača:</label>
-                    <select id="tip_osnivaca_${osnivacCount}" name="tip_osnivaca_${osnivacCount}" required>
-                        <option value="" disabled selected>Odaberite tip</option>
+                    <select id="tip_osnivaca_${osnivacCount}" name="tip_osnivaca_${osnivacCount}" required onchange="toggleNenovcaniUlog(${osnivacCount})">
                         <option value="Fizičko lice - domaće">Fizičko lice - domaće</option>
                         <option value="Fizičko lice - strano">Fizičko lice - strano</option>
                         <option value="Pravno lice - domaće">Pravno lice - domaće</option>
@@ -442,16 +451,16 @@
                 </div>
                 <div class="form-group">
                     <label for="vrsta_uloga_${osnivacCount}">Vrsta uloga:</label>
-                    <select id="vrsta_uloga_${osnivacCount}" name="vrsta_uloga_${osnivacCount}" required>
+                    <select id="vrsta_uloga_${osnivacCount}" name="vrsta_uloga_${osnivacCount}" required onchange="toggleNenovcaniUlog(${osnivacCount})">
                         <option value="Novčani">Novčani</option>
                         <option value="Nenovčani">Nenovčani</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="vrijednost_uloga_${osnivacCount}">Vrijednost uloga (u EUR):</label>
+                    <label for="vrijednost_uloga_${osnivacCount}">Vrijednost uloga (u €):</label>
                     <input type="number" id="vrijednost_uloga_${osnivacCount}" name="vrijednost_uloga_${osnivacCount}" required>
                 </div>
-                <div class="form-group nenovcani-ulog" style="display: none;">
+                <div class="form-group nenovcani-ulog-${osnivacCount}" style="display: none;">
                     <label for="opis_nenovcanog_uloga_${osnivacCount}">Opis nenovčanog uloga:</label>
                     <p class="disclaimer-text">VAŽNO: Za nenovčane uloge, Zakon o privrednim društvima zahtijeva procjenu ovlašćenog procjenjivača.</p>
                     <textarea id="opis_nenovcanog_uloga_${osnivacCount}" name="opis_nenovcanog_uloga_${osnivacCount}"></textarea>
@@ -460,23 +469,6 @@
             container.appendChild(newOsnivacDiv);
             document.getElementById(`vrsta_uloga_${osnivacCount}`).addEventListener('change', (e) => toggleNenovcaniUlog(osnivacCount, e.target.value === 'Nenovčani'));
             ukloniOsnivacaBtn.style.display = (osnivacCount > 1) ? 'block' : 'none';
-        }
-
-        function ukloniOsnivaca() {
-            const container = document.getElementById('osnivaci_container');
-            const lastOsnivac = container.querySelector(`.osnivac-group:last-child`);
-            if (lastOsnivac) {
-                container.removeChild(lastOsnivac);
-            }
-            if (osnivacCount <= 1) {
-                document.getElementById('ukloni-osnivaca-btn').style.display = 'none';
-            }
-        }
-
-        function toggleNenovcaniUlog(index, show) {
-            const nenovcaniField = document.querySelector(`.nenovcani-ulog-${index}`);
-            nenovcaniField.style.display = show ? 'block' : 'none';
-            document.getElementById(`opis_nenovcanog_uloga_${index}`).required = show;
         }
 
         function toggleOdborDirektora(show) {
@@ -494,6 +486,12 @@
             const fields = document.getElementById('prokurista_fields');
             fields.style.display = show ? 'block' : 'none';
             document.getElementById('ime_i_id_prokuriste').required = show;
+        }
+        
+        function toggleNenovcaniUlog(index, show) {
+            const nenovcaniField = document.querySelector(`.nenovcani-ulog-${index}`);
+            nenovcaniField.style.display = show ? 'block' : 'none';
+            document.getElementById(`opis_nenovcanog_uloga_${index}`).required = show;
         }
     </script>
 </body>
