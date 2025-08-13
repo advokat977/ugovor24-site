@@ -113,7 +113,7 @@
                         <tr>
                             <th>Broj narudžbe</th>
                             <th>Ugovor</th>
-                            <th>Klijent</th>
+                            <th>Klijent Email</th>
                             <th>Iznos</th>
                             <th>Uplata</th>
                             <th>Status</th>
@@ -134,9 +134,8 @@
     </footer>
     
     <script>
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-        const supabaseUrl = 'https://[tvoj_supabase_url].supabase.co'; // ZAMIJENI SA SVOJIM SUPABASE URL-om
-        const supabaseKey = 'anon_key_sa_vertelom'; // ZAMIJENI SA SVOJIM ANON_KEY KLJUCEM
+        const supabaseUrl = 'https://jgkllsxeuoozpglzwxwg.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc';
         const supabase = createClient(supabaseUrl, supabaseKey);
 
         document.addEventListener('DOMContentLoaded', fetchOrders);
@@ -187,7 +186,7 @@
                 body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
             });
             if (response.ok) {
-                fetchOrders(); // Refresh table
+                fetchOrders();
                 alert('Uplata verifikovana!');
             } else {
                 alert('Greška pri verifikaciji uplate.');
@@ -210,14 +209,18 @@
             }
 
             const fileUrl = `${supabaseUrl}/storage/v1/object/public/ugovori/${orderId}/${file.name}`;
-            await fetch('/api/finalize-contract', {
+            const response = await fetch('/api/finalize-contract', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'upload_file', order_id: orderId, fileUrl: fileUrl }),
             });
             
-            fetchOrders();
-            alert('Ugovor priložen!');
+            if (response.ok) {
+                fetchOrders();
+                alert('Ugovor priložen!');
+            } else {
+                alert('Greška pri prilaganju ugovora!');
+            }
         }
 
         async function sendFinal(orderId) {
@@ -227,7 +230,7 @@
                 body: JSON.stringify({ action: 'send_final', order_id: orderId }),
             });
             if (response.ok) {
-                fetchOrders(); // Refresh table
+                fetchOrders();
                 alert('Finalni ugovor poslat klijentu!');
             } else {
                 const errorData = await response.json();
