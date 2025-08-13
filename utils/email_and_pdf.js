@@ -206,20 +206,28 @@ export async function generateInvoicePDF(orderId, ugovorType, totalPrice, orderN
     });
 
     page.drawText('Podaci za uplatu:', { x: 50, y: 500, size: 12, font: font, color: primaryColor });
-    page.drawText('Primalac: advokat Dejan Radinović', { x: 50, y: 480, size: 12, font: font, color: black });
-    page.drawText('Adresa: Božane Vučinić 7/5, 81000 Podgorica, Crna Gora', { x: 50, y: 465, size: 12, font: font, color: black });
-    page.drawText('Banka: Erste bank AD Podgorica', { x: 50, y: 450, size: 12, font: font, color: black });
-    page.drawText('Broj računa: 540-0000000011285-46', { x: 50, y: 435, size: 12, font: font, color: black });
-    page.drawText(`Svrha uplate: Uplata za ugovor #${formattedOrderNumber}`, { x: 50, y: 420, size: 12, font: font, color: black });
+    page.drawText(removeDiacritics('Primalac: advokat Dejan Radinović'), { x: 50, y: 480, size: 12, font: font, color: black });
+    page.drawText(removeDiacritics('Adresa: Božane Vučinić 7/5, 81000 Podgorica, Crna Gora'), { x: 50, y: 465, size: 12, font: font, color: black });
+    page.drawText(removeDiacritics('Banka: Erste bank AD Podgorica'), { x: 50, y: 450, size: 12, font: font, color: black });
+    page.drawText(removeDiacritics('Broj računa: 540-0000000011285-46'), { x: 50, y: 435, size: 12, font: font, color: black });
+    page.drawText(removeDiacritics(`Svrha uplate: Uplata za ugovor #${formattedOrderNumber}`), { x: 50, y: 420, size: 12, font: font, color: black });
 
     const pdfBytes = await pdfDoc.save();
     return pdfBytes;
 }
 
 export async function sendConfirmationEmailToClient(clientEmail, ugovorType, totalPrice, orderId, orderNumber, clientName, clientAddress, clientID) {
+    let invoicePdfBytes = null;
     try {
         const formattedOrderNumber = formatOrderNumber(orderNumber);
-        const invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice, formattedOrderNumber, clientName, clientAddress, clientID);
+        invoicePdfBytes = await generateInvoicePDF(orderId, ugovorType, totalPrice, formattedOrderNumber, clientName, clientAddress, clientID);
+    } catch (pdfError) {
+        console.error(`Greska pri generisanju PDF-a za narudžbinu ${orderNumber}:`, pdfError);
+        return { success: false, error: 'Failed to generate PDF' };
+    }
+    
+    try {
+        const formattedOrderNumber = formatOrderNumber(orderNumber);
         
         const emailHtml = `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; padding: 20px; color: #333;">
@@ -242,17 +250,17 @@ export async function sendConfirmationEmailToClient(clientEmail, ugovorType, tot
             </div>
         `;
 
+        const attachments = invoicePdfBytes ? [{
+            filename: `predracun-${formattedOrderNumber}.pdf`,
+            content: Buffer.from(invoicePdfBytes)
+        }] : [];
+
         await resend.emails.send({
             from: 'noreply@ugovor24.com',
             to: clientEmail,
             subject: `Potvrda zahteva za ${removeDiacritics(ugovorType)} - ugovor24.com`,
             html: emailHtml,
-            attachments: [
-                {
-                    filename: `predracun-${formattedOrderNumber}.pdf`,
-                    content: Buffer.from(invoicePdfBytes)
-                }
-            ]
+            attachments: attachments
         });
 
         console.log(`Uspešno poslat e-mail klijentu ${clientEmail} za narudžbinu ${formattedOrderNumber}.`);
