@@ -264,7 +264,7 @@
                             <input type="text" id="ime_direktora" name="ime_direktora" required>
                         </div>
                         <div class="form-group">
-                            <label for="id_direktora">10. Identifikacioni broj izvršnog direktora (JMBG ili broj pasosa):</label>
+                            <label for="id_direktora">10. Identifikacioni broj izvršnog direktora (JMBG ili broj pasoša):</label>
                             <input type="text" id="id_direktora" name="id_direktora" required>
                         </div>
                         <div class="form-group">
@@ -289,8 +289,8 @@
                             </div>
                             <div id="clanovi_odbora_fields" style="display: none;">
                                 <div class="form-group">
-                                    <label for="clanovi_odbora_direktora">14. Imena i ID brojevi clanova Odbora direktora:</label>
-                                    <p class="disclaimer-text">Potrebno je najmanje 3 clana. Unesite ih u novom redu, odvojeno zarezom.</p>
+                                    <label for="clanovi_odbora_direktora">14. Imena i ID brojevi članova Odbora direktora:</label>
+                                    <p class="disclaimer-text">Potrebno je najmanje 3 člana. Unesite ih u novom redu, odvojeno zarezom.</p>
                                     <textarea id="clanovi_odbora_direktora" name="clanovi_odbora_direktora"></textarea>
                                 </div>
                             </div>
@@ -311,23 +311,23 @@
                         
                         <h2>SEKCIJA 4: DODATNA PITANJA</h2>
                         <div class="form-group">
-                            <label for="dodatne_odredbe_statuta">17. Da li postoji neko posebno pravilo koje zelite da uvrstimo u Statut?</label>
-                            <p class="disclaimer-text">Npr. o nacinu prenosa udjela, raspodjeli dobiti, itd.</p>
+                            <label for="dodatne_odredbe_statuta">17. Da li postoji neko posebno pravilo koje želite da uvrstimo u Statut?</label>
+                            <p class="disclaimer-text">Npr. o načinu prenosa udjela, raspodjeli dobiti, itd.</p>
                             <textarea id="dodatne_odredbe_statuta" name="dodatne_odredbe_statuta"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="procijenjeni_troskovi_osnivanja">18. Procijenjeni troskovi osnivanja koje ce drustvo isplatiti osnivacu (u €):</label>
+                            <label for="procijenjeni_troskovi_osnivanja">18. Procijenjeni troškovi osnivanja koje će društvo isplatiti osnivaču (u €):</label>
                             <input type="number" id="procijenjeni_troskovi_osnivanja" name="procijenjeni_troskovi_osnivanja">
                         </div>
 
                         <div class="disclaimer" style="margin-top: 3rem;">
-                            <p><strong>Napomena:</strong> Popunjavanjem ovog upitnika dajete podatke koji ce biti direktno unijeti u nacrt dokumenata. Molimo Vas da obratite paznju na tacnost i istinitost unijetih informacija.</p>
+                            <p><strong>Napomena:</strong> Popunjavanjem ovog upitnika dajete podatke koji će biti direktno unijeti u nacrt dokumenata. Molimo Vas da obratite pažnju na tačnost i istinitost unijetih informacija.</p>
                         </div>
 
                         <div class="terms-checkbox">
                             <label>
                                 <input type="checkbox" name="terms_acceptance" required>
-                                Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima koriscenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izricitu saglasnost da se moji podaci mogu poslati na obradu modelima vjestacke inteligencije (AI) trecih lica (npr. Google), iskljucivo u svrhu generisanja nacrta dokumenata.
+                                Saglasan/saglasna sam sa <a href="uslovi-koriscenja.html">Uslovima korišćenja</a> i <a href="politika-privatnosti.html">Politikom privatnosti</a> i dajem izričitu saglasnost da se moji podaci mogu poslati na obradu modelima vještačke inteligencije (AI) trećih lica (npr. Google), isključivo u svrhu generisanja nacrta dokumenata.
                             </label>
                         </div>
                         
@@ -345,9 +345,9 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 ugovor24.com. Sva prava zadrzana.</p>
+            <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
             <div class="links">
-                <a href="uslovi-koriscenja.html">Uslovi koriscenja</a>
+                <a href="uslovi-koriscenja.html">Uslovi korišćenja</a>
                 <a href="politika-privatnosti.html">Politika privatnosti</a>
             </div>
         </div>
@@ -389,13 +389,13 @@
             newOsnivacDiv.classList.add('osnivac-group');
             newOsnivacDiv.dataset.osnivacIndex = osnivacCount;
             newOsnivacDiv.innerHTML = `
-                <h3>Osnivac ${osnivacCount}:</h3>
+                <h3>Osnivač ${osnivacCount}:</h3>
                 <div class="form-group">
-                    <label for="tip_osnivaca_${osnivacCount}">Tip osnivaca:</label>
+                    <label for="tip_osnivaca_${osnivacCount}">Tip osnivača:</label>
                     <select id="tip_osnivaca_${osnivacCount}" name="tip_osnivaca_${osnivacCount}" required>
-                        <option value="Fizicko lice - domace">Fizicko lice - domace</option>
-                        <option value="Fizicko lice - strano">Fizicko lice - strano</option>
-                        <option value="Pravno lice - domace">Pravno lice - domace</option>
+                        <option value="Fizičko lice - domaće">Fizičko lice - domaće</option>
+                        <option value="Fizičko lice - strano">Fizičko lice - strano</option>
+                        <option value="Pravno lice - domaće">Pravno lice - domaće</option>
                         <option value="Pravno lice - strano">Pravno lice - strano</option>
                     </select>
                 </div>
@@ -405,18 +405,18 @@
                 </div>
                 <div class="form-group">
                     <label for="id_osnivaca_${osnivacCount}">Identifikacioni broj:</label>
-                    <p class="disclaimer-text">JMBG za domace fizicko lice, maticni broj za domace pravno lice, broj pasosa/registracije za strano lice.</p>
+                    <p class="disclaimer-text">JMBG za domaće fizičko lice, matični broj za domaće pravno lice, broj pasoša/registracije za strano lice.</p>
                     <input type="text" id="id_osnivaca_${osnivacCount}" name="id_osnivaca_${osnivacCount}" required>
                 </div>
                 <div class="form-group">
-                    <label for="adresa_osnivaca_${osnivacCount}">Adresa prebivalista / Adresa sjedista:</label>
+                    <label for="adresa_osnivaca_${osnivacCount}">Adresa prebivališta / Adresa sjedišta:</label>
                     <input type="text" id="adresa_osnivaca_${osnivacCount}" name="adresa_osnivaca_${osnivacCount}" required>
                 </div>
                 <div class="form-group">
                     <label for="vrsta_uloga_${osnivacCount}">Vrsta uloga:</label>
                     <select id="vrsta_uloga_${osnivacCount}" name="vrsta_uloga_${osnivacCount}" required onchange="toggleNenovcaniUlog(${osnivacCount})">
-                        <option value="Novcani">Novcani</option>
-                        <option value="Nenovcani">Nenovcani</option>
+                        <option value="Novčani">Novčani</option>
+                        <option value="Nenovčani">Nenovčani</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -424,8 +424,8 @@
                     <input type="number" id="vrijednost_uloga_${osnivacCount}" name="vrijednost_uloga_${osnivacCount}" required>
                 </div>
                 <div class="form-group nenovcani-ulog-${osnivacCount}" style="display: none;">
-                    <label for="opis_nenovcanog_uloga_${osnivacCount}">Opis nenovcanog uloga:</label>
-                    <p class="disclaimer-text">VAZNO: Za nenovcane uloge, Zakon o privrednim drustvima zahtijeva procjenu ovlascenog procjenitelja.</p>
+                    <label for="opis_nenovcanog_uloga_${osnivacCount}">Opis nenovčanog uloga:</label>
+                    <p class="disclaimer-text">VAŽNO: Za nenovčane uloge, Zakon o privrednim društvima zahtijeva procjenu ovlašćenog procjenitelja.</p>
                     <textarea id="opis_nenovcanog_uloga_${osnivacCount}" name="opis_nenovcanog_uloga_${osnivacCount}"></textarea>
                 </div>
             `;
@@ -467,7 +467,7 @@
         function toggleNenovcaniUlog(index) {
             const vrstaUloga = document.getElementById(`vrsta_uloga_${index}`).value;
             const nenovcaniField = document.querySelector(`.nenovcani-ulog-${index}`);
-            if (vrstaUloga === 'Nenovcani') {
+            if (vrstaUloga === 'Nenovčani') {
                 nenovcaniField.style.display = 'block';
                 document.getElementById(`opis_nenovcanog_uloga_${index}`).required = true;
             } else {
