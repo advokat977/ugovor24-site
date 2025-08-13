@@ -253,62 +253,22 @@
 
                         <h2>SEKCIJA 2: PODACI O OSNIVAČIMA</h2>
                         <div id="osnivaci_container">
-                            <h3>Osnivač 1:</h3>
-                            <div class="form-group">
-                                <label for="tip_osnivaca_1">9. Tip osnivača:</label>
-                                <select id="tip_osnivaca_1" name="tip_osnivaca_1" required>
-                                    <option value="" disabled selected>Odaberite tip</option>
-                                    <option value="Fizicko lice - domace">Fizicko lice - domace</option>
-                                    <option value="Fizicko lice - strano">Fizicko lice - strano</option>
-                                    <option value="Pravno lice - domace">Pravno lice - domace</option>
-                                    <option value="Pravno lice - strano">Pravno lice - strano</option>
-                                </select>
                             </div>
-                            <div class="form-group">
-                                <label for="ime_osnivaca_1">10. Ime i prezime / Pun naziv firme:</label>
-                                <input type="text" id="ime_osnivaca_1" name="ime_osnivaca_1" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="id_osnivaca_1">11. Identifikacioni broj:</label>
-                                <p class="disclaimer-text">JMBG za domace fizicko lice, maticni broj za domace pravno lice, broj pasosa/registracije za strano lice.</p>
-                                <input type="text" id="id_osnivaca_1" name="id_osnivaca_1" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="adresa_osnivaca_1">12. Adresa prebivalista / Adresa sjedista:</label>
-                                <input type="text" id="adresa_osnivaca_1" name="adresa_osnivaca_1" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="vrsta_uloga_1">13. Vrsta uloga:</label>
-                                <select id="vrsta_uloga_1" name="vrsta_uloga_1" required onchange="toggleNenovcaniUlog(1)">
-                                    <option value="Novcani">Novcani</option>
-                                    <option value="Nenovcani">Nenovcani</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="vrijednost_uloga_1">14. Vrijednost uloga (u €):</label>
-                                <input type="number" id="vrijednost_uloga_1" name="vrijednost_uloga_1" required>
-                            </div>
-                            <div class="form-group nenovcani-ulog-1" style="display: none;">
-                                <label for="opis_nenovcanog_uloga_1">15. Opis nenovcanog uloga:</label>
-                                <p class="disclaimer-text">VAZNO: Za nenovcane uloge, Zakon o privrednim drustvima zahtijeva procjenu ovlascenog procjenitelja.</p>
-                                <textarea id="opis_nenovcanog_uloga_1" name="opis_nenovcanog_uloga_1"></textarea>
-                            </div>
-                        </div>
                         <button type="button" id="dodaj-osnivaca-btn">Dodaj još jednog osnivača</button>
                         <button type="button" id="ukloni-osnivaca-btn" style="display: none;">Ukloni osnivača</button>
                         
-                        <h2>SEKCIJA 3: PODACI O IZVRSNOM DIREKTORU I ODBORU DIREKTORA</h2>
+                        <h2>SEKCIJA 3: PODACI O IZVRŠNOM DIREKTORU I ODBORU DIREKTORA</h2>
                         
                         <div class="form-group">
-                            <label for="ime_direktora">16. Ime i prezime izvrsnog direktora:</label>
+                            <label for="ime_direktora">9. Ime i prezime izvršnog direktora:</label>
                             <input type="text" id="ime_direktora" name="ime_direktora" required>
                         </div>
                         <div class="form-group">
-                            <label for="id_direktora">17. Identifikacioni broj izvrsnog direktora (JMBG ili broj pasosa):</label>
+                            <label for="id_direktora">10. Identifikacioni broj izvršnog direktora (JMBG ili broj pasosa):</label>
                             <input type="text" id="id_direktora" name="id_direktora" required>
                         </div>
                         <div class="form-group">
-                            <label>18. Da li zelite da izvrsni direktor zastupa firmu samostalno, neograniceno i bez Odbora direktora?</label>
+                            <label>11. Da li želite da izvršni direktor zastupa firmu samostalno, neograničeno i bez Odbora direktora?</label>
                             <div class="radio-group">
                                 <label><input type="radio" name="samostalni_direktor" value="Da" onclick="toggleOdborDirektora(false)" required> Da</label>
                                 <label><input type="radio" name="samostalni_direktor" value="Ne" onclick="toggleOdborDirektora(true)"> Ne</label>
@@ -316,12 +276,12 @@
                         </div>
                         <div id="odbor_direktora_fields" style="display: none;">
                             <div class="form-group">
-                                <label for="detalji_ovlascenja">19. Ukoliko ne, molimo Vas da navedete ovlascenja za zastupanje:</label>
-                                <p class="disclaimer-text">Npr. "ograniceno do 10.000 EUR po pravnom poslu, a iznad tog iznosa kolektivno sa Odborom direktora".</p>
+                                <label for="detalji_ovlascenja">12. Ukoliko ne, molimo Vas da navedete ovlašćenja za zastupanje:</label>
+                                <p class="disclaimer-text">Npr. "ograničeno do 10.000 € po pravnom poslu, a iznad tog iznosa kolektivno sa Odborom direktora".</p>
                                 <textarea id="detalji_ovlascenja" name="detalji_ovlascenja"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>20. Da li zelite da firma ima Odbor direktora?</label>
+                                <label>13. Da li želite da firma ima Odbor direktora?</label>
                                 <div class="radio-group">
                                     <label><input type="radio" name="zelite_li_odb_dir" value="Da" onclick="toggleClanoviOdbora(true)"> Da</label>
                                     <label><input type="radio" name="zelite_li_odb_dir" value="Ne" checked onclick="toggleClanoviOdbora(false)"> Ne</label>
@@ -329,21 +289,21 @@
                             </div>
                             <div id="clanovi_odbora_fields" style="display: none;">
                                 <div class="form-group">
-                                    <label for="clanovi_odbora_direktora">21. Imena i ID brojevi clanova Odbora direktora:</label>
+                                    <label for="clanovi_odbora_direktora">14. Imena i ID brojevi clanova Odbora direktora:</label>
                                     <p class="disclaimer-text">Potrebno je najmanje 3 clana. Unesite ih u novom redu, odvojeno zarezom.</p>
                                     <textarea id="clanovi_odbora_direktora" name="clanovi_odbora_direktora"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>22. Da li zelite da imenujete prokuristu?</label>
+                            <label>15. Da li želite da imenujete prokuristu?</label>
                             <div class="radio-group">
                                 <label><input type="radio" name="prokurista" value="Da" onclick="toggleProkurista(true)"> Da</label>
                                 <label><input type="radio" name="prokurista" value="Ne" checked onclick="toggleProkurista(false)"> Ne</label>
                             </div>
                             <div id="prokurista_fields" style="display: none;">
                                 <div class="form-group">
-                                    <label for="ime_i_id_prokuriste">23. Ime i ID broj prokuriste:</label>
+                                    <label for="ime_i_id_prokuriste">16. Ime i ID broj prokuriste:</label>
                                     <input type="text" id="ime_i_id_prokuriste" name="ime_i_id_prokuriste">
                                 </div>
                             </div>
@@ -351,12 +311,12 @@
                         
                         <h2>SEKCIJA 4: DODATNA PITANJA</h2>
                         <div class="form-group">
-                            <label for="dodatne_odredbe_statuta">24. Da li postoji neko posebno pravilo koje zelite da uvrstimo u Statut?</label>
+                            <label for="dodatne_odredbe_statuta">17. Da li postoji neko posebno pravilo koje zelite da uvrstimo u Statut?</label>
                             <p class="disclaimer-text">Npr. o nacinu prenosa udjela, raspodjeli dobiti, itd.</p>
                             <textarea id="dodatne_odredbe_statuta" name="dodatne_odredbe_statuta"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="procijenjeni_troskovi_osnivanja">25. Procijenjeni troskovi osnivanja koje ce drustvo isplatiti osnivacu (u EUR):</label>
+                            <label for="procijenjeni_troskovi_osnivanja">18. Procijenjeni troskovi osnivanja koje ce drustvo isplatiti osnivacu (u €):</label>
                             <input type="number" id="procijenjeni_troskovi_osnivanja" name="procijenjeni_troskovi_osnivanja">
                         </div>
 
@@ -394,7 +354,7 @@
     </footer>
     
     <script>
-        let osnivacCount = 1;
+        let osnivacCount = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             const dodajOsnivacaBtn = document.getElementById('dodaj-osnivaca-btn');
@@ -418,6 +378,8 @@
                 }
             });
 
+            // Kreiramo jednog osnivaca po default-u
+            osnivacCount++;
             dodajOsnivaca();
         });
 
@@ -458,7 +420,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="vrijednost_uloga_${osnivacCount}">Vrijednost uloga (u EUR):</label>
+                    <label for="vrijednost_uloga_${osnivacCount}">Vrijednost uloga (u €):</label>
                     <input type="number" id="vrijednost_uloga_${osnivacCount}" name="vrijednost_uloga_${osnivacCount}" required>
                 </div>
                 <div class="form-group nenovcani-ulog-${osnivacCount}" style="display: none;">
