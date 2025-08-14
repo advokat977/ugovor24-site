@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ugovor o djelu - ugovor24.com</title>
+    <title>Izrada Ugovora o Djelu Online | Pravne Usluge Crna Gora</title>
+    <meta name="description" content="Regulišite poslovnu saradnju. Zatražite profesionalnu izradu Ugovora o djelu za honorarne i freelance poslove u Crnoj Gori.">
+    <meta name="keywords" content="ugovor o djelu, freelance ugovor, honorarni posao, pravne usluge, crna gora, ugovor24">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="https://ugovor24-site.vercel.app/favicon.ico">
 </head>
@@ -192,7 +194,6 @@
             submitButton.disabled = true;
             submitButton.textContent = 'Šaljem podatke...';
 
-            // Pretvaramo podatke iz forme u format koji naša API funkcija očekuje (JSON)
             const formData = new FormData(currentForm);
             const data = Object.fromEntries(formData.entries());
 
@@ -208,10 +209,8 @@
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    // Ako je sve prošlo kako treba, preusmjeravamo korisnika na stranicu za plaćanje
                     window.location.href = result.redirectUrl;
                 } else {
-                    // U slučaju greške, prikazujemo poruku
                     alert('Došlo je do greške: ' + (result.error || 'Molimo pokušajte ponovo.'));
                     submitButton.disabled = false;
                     submitButton.textContent = originalButtonText;
