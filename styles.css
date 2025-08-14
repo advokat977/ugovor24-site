@@ -49,8 +49,16 @@ header {
     align-items: center;
 }
 
-.logo img {
-    height: 40px;
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+/* NOVI KOD ZA BOJENJE BROJA 24 */
+.logo .logo-blue {
+    color: var(--primary-color);
 }
 
 nav a {
