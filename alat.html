@@ -1,210 +1,275 @@
 <!DOCTYPE html>
-<html lang="sr-Latn">
+<html lang="sr">
 <head>
     <meta charset="UTF-8">
-    <title>Interni Alat - PDF Generator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ugovor24.com Admin Alati</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* CSS stilovi za stranicu */
         :root {
-            --primary-color: #007aff;
-            --text-color: #1d1d1f;
-            --background-color: #f5f5f7;
-            --border-color: #d2d2d7;
+            --primary-color: #007bff; /* Neutralna plava za akcije */
+            --text-color-primary: #1a1a1a;
+            --text-color-secondary: #6c757d;
+            --bg-color-main: #f8f9fa;
+            --bg-color-card: #ffffff;
+            --border-color: #dee2e6;
+            --error-color: #dc3545;
         }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--background-color);
-            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color-main);
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             min-height: 100vh;
+            margin: 0;
+            color: var(--text-color-primary);
         }
+
         .container {
-            max-width: 600px;
-            width: 100%;
-            background: #fff;
-            padding: 40px;
+            background-color: var(--bg-color-card);
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        /* Stilovi za login formu */
-        #login-form input {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-        #login-form button {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        #error-message {
-            color: #dc3545;
-            margin-top: 10px;
-            min-height: 20px;
-        }
-        /* Stilovi za alat, sakriven po defaultu */
-        #tool-content {
-            display: none;
-        }
-        .file-upload-wrapper {
-            border: 2px dashed var(--border-color);
-            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid var(--border-color); /* Suptilna ivica */
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-color-primary);
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            color: var(--text-color-secondary);
+            margin-bottom: 30px;
+        }
+
+        .dropzone-container {
+            margin-bottom: 25px;
+        }
+
+        .dropzone {
+            border: 2px dashed #a2aab3;
+            border-radius: 8px;
+            padding: 50px 30px;
             cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            position: relative;
         }
-        .file-upload-wrapper:hover {
-            background-color: #fafafa;
+
+        .dropzone:hover {
             border-color: var(--primary-color);
+            background-color: rgba(0, 123, 255, 0.05); /* Vrlo blago plavo pozadinsko */
         }
-        #status {
-            margin-top: 20px;
+
+        .dropzone.active {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .dropzone-text {
+            color: var(--text-color-secondary);
+            font-size: 1rem;
             font-weight: 500;
-            min-height: 20px;
+            margin: 0;
         }
+
+        .file-info {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .file-info.error {
+            color: var(--error-color);
+        }
+
         #file-input {
             display: none;
         }
-        #pdf-content-source {
-            display: none;
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            user-select: none;
+        }
+
+        button.primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        button.primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button.primary:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.secondary {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        button.secondary:hover {
+            background-color: #d8dbe0;
+            transform: translateY(-2px);
+        }
+
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div id="login-container">
-            <h1>Pristup Alatu</h1>
-            <form id="login-form" onsubmit="handleLogin(event)">
-                <input type="text" id="username" placeholder="Korisničko ime" required>
-                <input type="password" id="password" placeholder="Lozinka" required>
-                <button type="submit">Prijavi se</button>
-                <div id="error-message"></div>
-            </form>
+        <h1>ugovor24.com PDF Generator</h1>
+        <p class="subtitle">Otpremite .docx šablon za generisanje PDF ugovora.</p>
+
+        <div class="dropzone-container">
+            <div id="dropzone" class="dropzone">
+                <p id="dropzone-text" class="dropzone-text">Klikni ovde da izabereš .docx fajl</p>
+                <input type="file" id="file-input" accept=".docx">
+            </div>
+            <p id="file-info" class="file-info"></p>
         </div>
 
-        <div id="tool-content">
-            <h1>ugovor24.com PDF Generator</h1>
-            <input type="file" id="file-input" accept=".docx" onchange="handleFileSelect(event)">
-            <label for="file-input" class="file-upload-wrapper">
-                <p>Klikni ovdje da izabereš .docx fajl</p>
-            </label>
-            <div id="status"></div>
+        <div class="action-buttons">
+            <button id="upload-button" class="primary" disabled>Generiši PDF</button>
+            <button id="reset-button" class="secondary">Poništi</button>
         </div>
     </div>
 
-    <div id="pdf-content-source"></div>
-
     <script>
-        const { jsPDF } = window.jspdf;
+        // JavaScript kod za interakciju i validaciju
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('file-input');
+        const dropzoneText = document.getElementById('dropzone-text');
+        const fileInfo = document.getElementById('file-info');
+        const uploadButton = document.getElementById('upload-button');
+        const resetButton = document.getElementById('reset-button');
 
-        function handleLogin(event) {
-            event.preventDefault();
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            const errorDiv = document.getElementById('error-message');
+        let selectedFile = null;
 
-            // UPOZORENJE: Ovo je nesigurna metoda provjere.
-            if (user === 'dex' && pass === 'sasa76') {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('tool-content').style.display = 'block';
-            } else {
-                errorDiv.innerText = 'Pogrešni kredencijali.';
-            }
-        }
-
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerText = '';
-
-            if (!file) return;
-
-            if (!file.name.endsWith('.docx')) {
-                statusDiv.innerText = 'Greška: Molimo izaberite .docx fajl.';
-                return;
-            }
-
-            statusDiv.innerText = `Fajl "${file.name}" se obrađuje...`;
-            const reader = new FileReader();
-            
-            reader.onload = async function(e) {
-                try {
-                    const arrayBuffer = e.target.result;
-                    const result = await mammoth.convertToHtml({ arrayBuffer });
-                    await generatePdf(result.value, file.name.replace('.docx', '.pdf'));
-                    statusDiv.innerText = `PDF je uspješno generisan i preuzet!`;
-                } catch (err) {
-                    console.error("Greška pri konverziji:", err);
-                    statusDiv.innerText = 'Greška pri čitanju DOCX fajla. Fajl je možda oštećen.';
+        // Funkcija za ažuriranje UI-ja sa informacijama o fajlu
+        function updateFileInfo(file) {
+            selectedFile = file;
+            if (file) {
+                // Provera da li je fajl DOCX
+                if (file.name.endsWith('.docx')) {
+                    fileInfo.textContent = `Izabran fajl: ${file.name}`;
+                    fileInfo.classList.remove('error');
+                    uploadButton.disabled = false;
+                } else {
+                    // Greška: Pogrešan format fajla
+                    fileInfo.textContent = `Greška: Molimo izaberite .docx fajl.`;
+                    fileInfo.classList.add('error');
+                    uploadButton.disabled = true;
+                    selectedFile = null;
                 }
-            };
-            reader.readAsArrayBuffer(file);
+            } else {
+                // Nije izabran fajl
+                fileInfo.textContent = '';
+                uploadButton.disabled = true;
+            }
         }
 
-        async function generatePdf(htmlContent, fileName) {
-            const source = document.getElementById('pdf-content-source');
-            source.innerHTML = htmlContent;
-            
-            const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-            doc.setFont('Times', 'normal');
-
-            await doc.html(source, {
-                callback: function(doc) {
-                    const totalPages = doc.internal.getNumberOfPages();
-                    for (let i = 1; i <= totalPages; i++) {
-                        doc.setPage(i);
-                        const pageWidth = doc.internal.pageSize.getWidth();
-                        const pageHeight = doc.internal.pageSize.getHeight();
-                        
-                        // Heder
-                        const headerY = 18;
-                        doc.setFont('Helvetica', 'bold');
-                        doc.setTextColor('#1d1d1f');
-                        doc.text('ugovor', pageWidth - 47, headerY);
-                        doc.setTextColor('#007aff');
-                        doc.text('24', pageWidth - 30, headerY);
-                        doc.setTextColor('#1d1d1f');
-                        doc.text('.com', pageWidth - 23, headerY);
-                        doc.setDrawColor('#007aff');
-                        doc.setLineWidth(0.5);
-                        doc.line(20, headerY + 3, pageWidth - 20, headerY + 3);
-
-                        // Futer
-                        const footerY = pageHeight - 15;
-                        doc.setFont('Helvetica', 'normal');
-                        doc.setFontSize(10);
-                        doc.setTextColor('#6e6e73');
-                        doc.text('advokat@ugovor24.com', 20, footerY);
-                        const pageNumText = `Stranica ${i} / ${totalPages}`;
-                        const pageNumWidth = doc.getStringUnitWidth(pageNumText) * doc.getFontSize() / doc.internal.scaleFactor;
-                        doc.text(pageNumText, pageWidth - 20 - pageNumWidth, footerY);
-                    }
-                    doc.save(fileName);
-                },
-                x: 20,
-                y: 35,
-                width: 170,
-                windowWidth: 650,
-            });
+        // Funkcija za resetovanje stanja
+        function resetState() {
+            selectedFile = null;
+            fileInput.value = ''; // Resetuje input fajla
+            updateFileInfo(null);
+            dropzoneText.textContent = 'Klikni ovde da izabereš .docx fajl';
+            dropzone.classList.remove('active');
         }
+
+        // --- Event listenere ---
+
+        // Klik na dropzone otvara prozor za biranje fajla
+        dropzone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Prevlačenje fajla preko dropzone
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('active');
+            dropzoneText.textContent = 'Spusti .docx fajl ovde!';
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('active');
+            dropzoneText.textContent = 'Klikni ovde da izabereš .docx fajl';
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('active');
+            dropzoneText.textContent = 'Klikni ovde da izabereš .docx fajl';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                updateFileInfo(files[0]);
+            }
+        });
+
+        // Biranje fajla putem klika
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                updateFileInfo(files[0]);
+            }
+        });
+
+        // Dugme za generisanje
+        uploadButton.addEventListener('click', () => {
+            if (selectedFile) {
+                // **OVO JE KRITIČNI DEO: OBRADA FAJLA**
+                // Ovde bi se dodala logika za slanje fajla na server
+                // i pozivanje backend servisa koji ga konvertuje.
+                // Na primer:
+                // uploadFile(selectedFile);
+
+                alert(`Simulacija generisanja PDF-a sa fajlom: ${selectedFile.name}. Sledeći korak je implementacija backend logike.`);
+                // Resetuj stanje nakon obrade
+                resetState();
+            } else {
+                alert('Molimo izaberite .docx fajl.');
+            }
+        });
+
+        // Dugme za poništavanje
+        resetButton.addEventListener('click', () => {
+            resetState();
+        });
+
+        // Učitavanje stranice: postavi početno stanje
+        document.addEventListener('DOMContentLoaded', () => {
+            resetState();
+        });
     </script>
-
 </body>
 </html>
