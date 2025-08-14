@@ -33,7 +33,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const formData = await req.json();
+    // ISPRAVKA: Koristimo req.body umjesto req.json()
+    const formData = req.body;
     const ugovor_type = formData['ugovor_type'];
 
     if (!ugovor_type || !PRICES[ugovor_type]) {
@@ -47,18 +48,15 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing client email' });
     }
 
-    // Pretvaramo "Da"/"Ne" u boolean vrijednosti
     booleanFields.forEach(field => {
         if (formData.hasOwnProperty(field)) {
             formData[field] = formData[field] === 'Da';
         }
     });
 
-    // Uklanjamo tehnička polja prije spremanja u bazu
     const cleanFormData = { ...formData };
     delete cleanFormData.terms_acceptance;
 
-    // Pozivamo našu novu, pametnu database funkciju
     const { data: orderData, error: rpcError } = await supabase.rpc('create_order', {
         p_client_email: client_email,
         p_ugovor_type: ugovor_type,
@@ -73,11 +71,9 @@ export default async function handler(req, res) {
     
     const { id: order_id, order_number } = orderData[0];
     
-    // Logika za slanje emailova ostaje ista, ali se oslanja na novi utils fajl
     await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, order_number, formData);
     await sendNotificationEmailToAdmin(ugovor_type, order_id, order_number, formData);
     
-    // Šaljemo uspješan odgovor sa podacima za redirekciju
     return res.status(200).json({ 
         success: true, 
         redirectUrl: `/placanje.html?cijena=${total_price}&ugovor=${encodeURIComponent(ugovor_type)}` 
