@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="sr-Latn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predračun - ugovor24.com</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://ugovor24-site.vercel.app/favicon.ico">
+    <style>
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #555;
+            background: #fff;
+        }
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.top table td.title {
+            font-size: 28px;
+            line-height: 28px;
+            color: #333;
+            font-weight: 600;
+        }
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+        .text-right {
+            text-align: right;
+        }
+        #loading-state {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+        }
+        .logo-blue {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                ugovor<span class="logo-blue">24</span>.com
+            </a>
+            <nav>
+                <a href="index.html">Početna</a>
+                <a href="ugovori.html">Ugovori</a>
+                <a href="kontakt.html">Kontakt</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div id="loading-state">Učitavanje podataka o predračunu...</div>
+        <div id="invoice-content" class="invoice-box" style="display: none;">
+            <table>
+                <tr class="top">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td class="title">
+                                    ugovor<span class="logo-blue">24</span>.com
+                                </td>
+                                <td class="text-right">
+                                    Predračun #: <strong id="order-number"></strong><br>
+                                    Kreirano: <span id="created-date"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="information">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    Advokat Dejan Radinović<br>
+                                    Božane Vučinić 7-5<br>
+                                    81000 Podgorica, Crna Gora
+                                </td>
+                                <td class="text-right">
+                                    <strong>Za:</strong><br>
+                                    <span id="client-name"></span><br>
+                                    <span id="client-address"></span><br>
+                                    ID: <span id="client-id"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="heading">
+                    <td>Opis usluge</td>
+                    <td class="text-right">Cijena</td>
+                </tr>
+                <tr class="item">
+                    <td id="ugovor-type"></td>
+                    <td class="text-right" id="total-price"></td>
+                </tr>
+                <tr class="total">
+                    <td></td>
+                    <td class="text-right">Ukupno: <strong id="total-price-final"></strong></td>
+                </tr>
+                 <tr><td colspan="2" style="padding-top: 50px;"><strong>Podaci za uplatu:</strong></td></tr>
+                 <tr><td colspan="2">
+                     Primalac: advokat Dejan Radinović<br>
+                     Adresa: Božane Vučinić 7/5, 81000 Podgorica, Crna Gora<br>
+                     Banka: Erste bank AD Podgorica<br>
+                     Broj računa: 540-0000000011285-46<br>
+                     Svrha uplate: Uplata po predračunu #<span id="order-number-purpose"></span>
+                 </td></tr>
+            </table>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            const loadingDiv = document.getElementById('loading-state');
+            const invoiceDiv = document.getElementById('invoice-content');
+
+            if (!orderId) {
+                loadingDiv.textContent = 'Greška: ID narudžbine nije pronađen.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/get-invoice-data.js?id=${orderId}`);
+                if (!response.ok) {
+                    throw new Error('Narudžbina nije pronađena ili je došlo do greške.');
+                }
+                const data = await response.json();
+
+                // Popunjavanje podataka
+                const orderNumberFormatted = String(data.order_number).padStart(5, '0');
+                document.getElementById('order-number').textContent = orderNumberFormatted;
+                document.getElementById('order-number-purpose').textContent = orderNumberFormatted;
+                document.getElementById('created-date').textContent = new Date(data.created_at).toLocaleDateString('sr-Latn-ME');
+                
+                document.getElementById('client-name').textContent = data.client_info.client_name || '';
+                document.getElementById('client-address').textContent = data.client_info.client_address || '';
+                document.getElementById('client-id').textContent = data.client_info.client_id || '';
+
+                document.getElementById('ugovor-type').textContent = data.ugovor_type;
+                document.getElementById('total-price').textContent = `${data.total_price.toFixed(2)} EUR`;
+                document.getElementById('total-price-final').textContent = `${data.total_price.toFixed(2)} EUR`;
+
+                loadingDiv.style.display = 'none';
+                invoiceDiv.style.display = 'block';
+
+            } catch (error) {
+                loadingDiv.textContent = `Greška pri učitavanju podataka: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
