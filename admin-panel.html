@@ -267,7 +267,7 @@
             const token = await getAuthToken();
             if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
             
-            const response = await fetch('/api/finalize-contract', {
+            const response = await fetch('/api/finalize-contract.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
@@ -290,7 +290,7 @@
 
             const { data, error } = await supabase.storage
                 .from('ugovori')
-                .upload(`${orderId}/${file.name}`, file, { cacheControl: '3600', upsert: true }); // 'upsert: true' dozvoljava zamjenu fajla
+                .upload(`${orderId}/${file.name}`, file, { cacheControl: '3600', upsert: true }); 
             
             if (error) {
                 console.error('Error uploading file:', error);
@@ -299,7 +299,7 @@
             }
 
             const fileUrl = `${supabaseUrl}/storage/v1/object/public/ugovori/${data.path}`;
-            const response = await fetch('/api/finalize-contract', {
+            const response = await fetch('/api/finalize-contract.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ action: 'upload_file', order_id: orderId, fileUrl: fileUrl }),
@@ -317,7 +317,7 @@
              const token = await getAuthToken();
              if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
 
-             const response = await fetch('/api/finalize-contract', {
+             const response = await fetch('/api/finalize-contract.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ action: 'send_final', order_id: orderId }),
