@@ -7,16 +7,13 @@ import {
 } from '../utils/email_and_pdf.js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
-// Koristimo SERVICE_ROLE ključ za administrativne operacije
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY; 
 const supabaseAdmin = createClient(supabaseUrl, supabaseKey);
 
-// Pomoćna funkcija za provjeru da li je korisnik ulogovan
 const checkUser = async (req) => {
-    const token = req.headers.get('authorization')?.split('Bearer ')[1];
+    const token = req.headers.authorization?.split('Bearer ')[1];
     if (!token) return { user: null, error: { message: 'Missing token' } };
     
-    // Za provjeru tokena koristimo standardni anon klijent
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
     const { data: { user }, error } = await supabase.auth.getUser(token);
     
@@ -28,20 +25,19 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  // PRVI KORAK: Provjera autorizacije.
   const { user, error: userError } = await checkUser(req);
   if (userError || !user) {
     return res.status(401).json({ error: 'Unauthorized: ' + (userError?.message || 'No user session') });
   }
 
   try {
-    const { action, order_id, fileUrl } = await req.json();
+    // ISPRAVKA: Koristimo req.body umjesto req.json()
+    const { action, order_id, fileUrl } = req.body;
 
     if (!order_id || !action) {
       return res.status(400).json({ error: 'Missing order ID or action' });
     }
     
-    // Dohvatamo narudžbinu. Više nam ne trebaju komplikovani upiti.
     const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .select(`*`)
@@ -84,7 +80,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid action' });
 
   } catch (err) {
-    console.error('Unexpected API error:', err);
-    res.status(500).json({ error: err.message || 'Internal Server Error' });
+    console.error('Unexpected API error:', err.message, err.stack);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
