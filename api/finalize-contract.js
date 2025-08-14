@@ -7,22 +7,48 @@ import {
 } from '../utils/email_and_pdf.js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// VAŽNO: Koristimo SERVICE_ROLE ključ ovdje jer su ovo administrativne operacije
+// Ovaj ključ ima puna ovlašćenja i NIKADA se ne smije koristiti na frontendu.
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY; 
+const supabaseAdmin = createClient(supabaseUrl, supabaseKey);
+
+// Funkcija za provjeru da li je korisnik ulogovan
+const checkUser = async (req) => {
+    const token = req.headers.get('authorization')?.split('Bearer ')[1];
+    if (!token) {
+        return { user: null, error: 'Missing token' };
+    }
+    // Provjeravamo token pomoću regularnog anon klijenta
+    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    
+    if (error) {
+        return { user: null, error: 'Invalid token' };
+    }
+    return { user, error: null };
+};
+
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { action, order_id, fileUrl } = req.body;
+  // PRVI KORAK: Provjera autorizacije. Da li je admin ulogovan?
+  const { user, error: userError } = await checkUser(req);
+  if (userError || !user) {
+    return res.status(401).json({ error: 'Unauthorized: ' + (userError || 'No user session') });
+  }
+  // Od ovog trenutka, znamo da je zahtjev poslao ulogovani korisnik.
+
+  const { action, order_id, fileUrl } = await req.json();
 
   if (!order_id || !action) {
     return res.status(400).json({ error: 'Missing order ID or action' });
   }
 
   try {
-    const { data: order, error: orderError } = await supabase
+    const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .select(`
         *,
@@ -41,7 +67,7 @@ export default async function handler(req, res) {
     }
 
     if (action === 'verify_payment') {
-      const { error } = await supabase
+      const { error } = await supabaseAdmin
         .from('orders')
         .update({ is_paid: true })
         .eq('id', order_id);
@@ -59,7 +85,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Order not paid or final document not uploaded' });
       }
 
-      const documentName = order.final_document_url.split('/').pop();
+      const documentName = decodeURIComponent(order.final_document_url.split('/').pop());
       
       const clientEmailResult = await sendFinalEmailToClient(order, order.final_document_url, documentName);
       if (!clientEmailResult.success) {
@@ -68,10 +94,11 @@ export default async function handler(req, res) {
       
       const adminEmailResult = await sendFinalEmailToAdmin(order, order.final_document_url, documentName);
       if (!adminEmailResult.success) {
-        return res.status(500).json({ error: adminEmailResult.error });
+        // Ne vraćamo grešku klijentu ako admin kopija ne uspije
+        console.error('Failed to send admin copy email:', adminEmailResult.error);
       }
 
-      const { error: updateError } = await supabase
+      const { error: updateError } = await supabaseAdmin
         .from('orders')
         .update({ is_final_approved: true })
         .eq('id', order_id);
@@ -85,7 +112,7 @@ export default async function handler(req, res) {
     }
     
     if (action === 'upload_file' && fileUrl) {
-        const { error } = await supabase
+        const { error } = await supabaseAdmin
         .from('orders')
         .update({ final_document_url: fileUrl })
         .eq('id', order_id);
