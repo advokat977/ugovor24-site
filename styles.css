@@ -56,7 +56,6 @@ header {
     text-decoration: none;
 }
 
-/* NOVI KOD ZA BOJENJE BROJA 24 */
 .logo .logo-blue {
     color: var(--primary-color);
 }
@@ -253,4 +252,23 @@ footer .links a {
 
 footer .links a:hover {
     color: var(--primary-color);
+}
+
+/* NOVI KOD: Stilovi za štampu */
+@media print {
+    body {
+        background-color: #fff;
+    }
+    header, footer {
+        display: none;
+    }
+    main {
+        padding: 0;
+    }
+    .invoice-box {
+        box-shadow: none;
+        border: none;
+        max-width: 100%;
+        padding: 0;
+    }
 }
