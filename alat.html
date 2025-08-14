@@ -8,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* CSS stilovi za stranicu */
+        /* CSS stilovi za stranicu - Početak */
         :root {
-            --primary-color: #007bff; /* Neutralna plava za akcije */
+            --primary-color: #007bff;
             --text-color-primary: #1a1a1a;
             --text-color-secondary: #6c757d;
             --bg-color-main: #f8f9fa;
@@ -38,7 +38,7 @@
             width: 100%;
             max-width: 600px;
             text-align: center;
-            border: 1px solid var(--border-color); /* Suptilna ivica */
+            border: 1px solid var(--border-color);
         }
 
         h1 {
@@ -69,7 +69,7 @@
 
         .dropzone:hover {
             border-color: var(--primary-color);
-            background-color: rgba(0, 123, 255, 0.05); /* Vrlo blago plavo pozadinsko */
+            background-color: rgba(0, 123, 255, 0.05);
         }
 
         .dropzone.active {
@@ -141,7 +141,7 @@
             background-color: #d8dbe0;
             transform: translateY(-2px);
         }
-
+        /* CSS stilovi za stranicu - Kraj */
     </style>
 </head>
 <body>
@@ -165,7 +165,7 @@
     </div>
 
     <script>
-        // JavaScript kod za interakciju i validaciju
+        // JavaScript kod za interakciju i validaciju - Početak
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('file-input');
         const dropzoneText = document.getElementById('dropzone-text');
@@ -175,46 +175,37 @@
 
         let selectedFile = null;
 
-        // Funkcija za ažuriranje UI-ja sa informacijama o fajlu
         function updateFileInfo(file) {
             selectedFile = file;
             if (file) {
-                // Provera da li je fajl DOCX
                 if (file.name.endsWith('.docx')) {
                     fileInfo.textContent = `Izabran fajl: ${file.name}`;
                     fileInfo.classList.remove('error');
                     uploadButton.disabled = false;
                 } else {
-                    // Greška: Pogrešan format fajla
                     fileInfo.textContent = `Greška: Molimo izaberite .docx fajl.`;
                     fileInfo.classList.add('error');
                     uploadButton.disabled = true;
                     selectedFile = null;
                 }
             } else {
-                // Nije izabran fajl
                 fileInfo.textContent = '';
                 uploadButton.disabled = true;
             }
         }
 
-        // Funkcija za resetovanje stanja
         function resetState() {
             selectedFile = null;
-            fileInput.value = ''; // Resetuje input fajla
+            fileInput.value = '';
             updateFileInfo(null);
             dropzoneText.textContent = 'Klikni ovde da izabereš .docx fajl';
             dropzone.classList.remove('active');
         }
 
-        // --- Event listenere ---
-
-        // Klik na dropzone otvara prozor za biranje fajla
         dropzone.addEventListener('click', () => {
             fileInput.click();
         });
 
-        // Prevlačenje fajla preko dropzone
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropzone.classList.add('active');
@@ -236,7 +227,6 @@
             }
         });
 
-        // Biranje fajla putem klika
         fileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (files.length > 0) {
@@ -244,32 +234,53 @@
             }
         });
 
-        // Dugme za generisanje
         uploadButton.addEventListener('click', () => {
             if (selectedFile) {
-                // **OVO JE KRITIČNI DEO: OBRADA FAJLA**
-                // Ovde bi se dodala logika za slanje fajla na server
-                // i pozivanje backend servisa koji ga konvertuje.
-                // Na primer:
-                // uploadFile(selectedFile);
+                const formData = new FormData();
+                formData.append('docx_file', selectedFile);
 
-                alert(`Simulacija generisanja PDF-a sa fajlom: ${selectedFile.name}. Sledeći korak je implementacija backend logike.`);
-                // Resetuj stanje nakon obrade
-                resetState();
+                dropzoneText.textContent = 'Generisanje PDF-a... Molimo sačekajte.';
+                uploadButton.disabled = true;
+
+                // **PAŽNJA:** OVO JE ADRESA TVOG BACKEND SERVERA.
+                // Na lokalnom računaru je `http://localhost:8080`,
+                // ali na produkciji mora da bude javna adresa.
+                const backendUrl = 'http://localhost:8080';
+
+                fetch(backendUrl, {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Mrežna greška ili greška na serveru.');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // Prikaz rezultata sa servera (HTML stranica sa linkom za download)
+                    document.body.innerHTML = html;
+                })
+                .catch(error => {
+                    fileInfo.textContent = `Greška pri komunikaciji sa serverom: ${error.message}`;
+                    fileInfo.classList.add('error');
+                    console.error('Greška:', error);
+                    resetState();
+                });
             } else {
-                alert('Molimo izaberite .docx fajl.');
+                fileInfo.textContent = 'Molimo izaberite .docx fajl.';
+                fileInfo.classList.add('error');
             }
         });
 
-        // Dugme za poništavanje
         resetButton.addEventListener('click', () => {
             resetState();
         });
 
-        // Učitavanje stranice: postavi početno stanje
         document.addEventListener('DOMContentLoaded', () => {
             resetState();
         });
+        // JavaScript kod za interakciju i validaciju - Kraj
     </script>
 </body>
 </html>
