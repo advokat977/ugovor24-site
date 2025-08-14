@@ -15,6 +15,7 @@
             --light-text: #6c757d;
             --border-color: #e9ecef;
             --shadow-color: rgba(0, 0, 0, 0.05);
+            --error-color: #dc3545;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -37,10 +38,48 @@
             padding: 1.5rem 0;
             border-bottom: 1px solid var(--border-color);
             text-align: center;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
-        main {
-            flex-grow: 1;
+        main { flex-grow: 1; }
+        #login-section {
+            max-width: 400px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px var(--shadow-color);
         }
+        #login-section h2 { text-align: center; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .logout-button {
+            padding: 8px 16px;
+            background: var(--secondary-color);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #error-message { color: var(--error-color); text-align: center; margin-top: 1rem; }
         .table-responsive {
             overflow-x: auto;
             background-color: var(--card-background);
@@ -48,66 +87,47 @@
             box-shadow: 0 4px 6px var(--shadow-color);
             padding: 1.5rem;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-        th, td {
-            text-align: left;
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        th {
-            background-color: var(--background-color);
-            font-weight: 600;
-        }
-        tr:hover {
-            background-color: #f1f3f5;
-        }
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 0.8em;
-            color: #fff;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--background-color); font-weight: 600; }
+        tr:hover { background-color: #f1f3f5; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 0.8em; color: #fff; }
         .status-false { background-color: #e85959; }
         .status-true { background-color: #20c997; }
-        .action-buttons button, .action-buttons input {
-            font-size: 0.8em;
-            padding: 6px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 5px;
-        }
+        .action-buttons button, .action-buttons input { font-size: 0.8em; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; }
         .action-buttons button.primary { background-color: var(--primary-color); color: #fff; }
         .action-buttons button.primary:hover { background-color: #0056b3; }
         .action-buttons button.secondary { background-color: var(--secondary-color); color: #fff; }
         .action-buttons button.secondary:hover { background-color: #5a6268; }
-        .footer {
-            background: var(--text-color);
-            color: #ffffff;
-            padding: 2rem 0;
-            margin-top: 2rem;
-            text-align: center;
-        }
-        .footer p {
-            margin: 0;
-            color: #adb5bd;
-        }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>Admin Panel</h1>
-        <p>Upravljanje narudžbinama</p>
+        <button id="logout-button" class="logout-button hidden">Odjavi se</button>
     </header>
 
     <main>
-        <div class="container">
+        <div id="login-section" class="container">
+            <h2>Prijava</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Lozinka</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="login-button">Prijavi se</button>
+                <p id="error-message" class="hidden"></p>
+            </form>
+        </div>
+
+        <div id="admin-content" class="container hidden">
+            <p>Upravljanje narudžbinama</p>
             <div class="table-responsive">
                 <table id="orders-table">
                     <thead>
@@ -121,29 +141,75 @@
                             <th>Akcije</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
     </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 ugovor24.com. Sva prava zadržana.</p>
-        </div>
-    </footer>
     
     <script>
-        // Supabase ce biti dostupan kao globalni objekat nakon ucitavanja
         const supabaseUrl = 'https://jgkllsxeuoozpglzwxwg.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        const loginSection = document.getElementById('login-section');
+        const adminContent = document.getElementById('admin-content');
+        const loginForm = document.getElementById('login-form');
+        const logoutButton = document.getElementById('logout-button');
+        const errorMessage = document.getElementById('error-message');
+
+        // Funkcija za prikazivanje sadržaja za prijavljene korisnike
+        const showAdminContent = () => {
+            loginSection.classList.add('hidden');
+            adminContent.classList.remove('hidden');
+            logoutButton.classList.remove('hidden');
+            fetchOrders();
+        };
+
+        // Funkcija za prikazivanje login forme
+        const showLogin = () => {
+            loginSection.classList.remove('hidden');
+            adminContent.classList.add('hidden');
+            logoutButton.classList.add('hidden');
+        };
         
-        document.addEventListener('DOMContentLoaded', fetchOrders);
+        // Provjera sesije pri učitavanju stranice
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                showAdminContent();
+            } else {
+                showLogin();
+            }
+        });
+
+        // Rukovanje prijavom
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            errorMessage.classList.add('hidden');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                errorMessage.textContent = 'Pogrešan email ili lozinka.';
+                errorMessage.classList.remove('hidden');
+            } else {
+                showAdminContent();
+            }
+        });
+
+        // Rukovanje odjavom
+        logoutButton.addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            showLogin();
+        });
 
         async function fetchOrders() {
-            console.log('Fetching orders from Supabase...');
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) return; // Ne radi ništa ako korisnik nije prijavljen
+
             const { data, error } = await supabase
                 .from('orders')
                 .select('*')
@@ -153,7 +219,6 @@
                 console.error('Error fetching orders:', error);
                 return;
             }
-            console.log('Orders fetched successfully:', data);
 
             const tableBody = document.querySelector('#orders-table tbody');
             tableBody.innerHTML = '';
@@ -193,14 +258,22 @@
             });
         }
         
+        async function getAuthToken() {
+            const { data: { session } } = await supabase.auth.getSession();
+            return session ? session.access_token : null;
+        }
+        
         async function verifyPayment(orderId) {
+            const token = await getAuthToken();
+            if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
+            
             const response = await fetch('/api/finalize-contract', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
             });
             if (response.ok) {
-                fetchOrders(); // Refresh table
+                fetchOrders(); 
                 alert('Uplata verifikovana!');
             } else {
                 alert('Greška pri verifikaciji uplate.');
@@ -208,13 +281,16 @@
         }
         
         async function uploadFile(orderId) {
+            const token = await getAuthToken();
+            if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
+            
             const fileInput = document.getElementById(`file-${orderId}`);
             const file = fileInput.files[0];
             if (!file) return;
 
             const { data, error } = await supabase.storage
                 .from('ugovori')
-                .upload(`${orderId}/${file.name}`, file, { cacheControl: '3600', upsert: false });
+                .upload(`${orderId}/${file.name}`, file, { cacheControl: '3600', upsert: true }); // 'upsert: true' dozvoljava zamjenu fajla
             
             if (error) {
                 console.error('Error uploading file:', error);
@@ -222,10 +298,10 @@
                 return;
             }
 
-            const fileUrl = `${supabaseUrl}/storage/v1/object/public/ugovori/${orderId}/${file.name}`;
+            const fileUrl = `${supabaseUrl}/storage/v1/object/public/ugovori/${data.path}`;
             const response = await fetch('/api/finalize-contract', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ action: 'upload_file', order_id: orderId, fileUrl: fileUrl }),
             });
             
@@ -238,9 +314,12 @@
         }
 
         async function sendFinal(orderId) {
+             const token = await getAuthToken();
+             if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
+
              const response = await fetch('/api/finalize-contract', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ action: 'send_final', order_id: orderId }),
             });
             if (response.ok) {
@@ -252,6 +331,5 @@
             }
         }
     </script>
-    
 </body>
 </html>
