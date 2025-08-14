@@ -10,23 +10,21 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Lista svih polja koja treba konvertovati iz "Da"/"Ne" u boolean
+const PRICES = {
+    'Ugovor o povjerljivosti (NDA)': 29,
+    'Ugovor o djelu': 59,
+    'Ugovor o zakupu': 79,
+    'Ugovor o radu': 99,
+    'Set dokumenata za registraciju firme (DOO)': 199
+};
+
 const booleanFields = [
-    'ugovorena_kazna',
-    'isporuka_definisana',
-    'je_autorsko_djelo',
-    'pristup_povjerljivim_info',
-    'definisan_proces_revizije',
-    'definisan_depozit',
-    'definisana_indeksacija',
-    'dozvoljen_podzakup',
-    'rad_na_daljinu',
-    'definisan_probni_rad',
-    'definisana_zabrana_konkurencije',
-    'zelite_li_spoljnotrgovinske_poslove',
-    'samostalni_direktor',
-    'zelite_li_odb_dir',
-    'prokurista'
+    'ugovorena_kazna', 'isporuka_definisana', 'je_autorsko_djelo', 
+    'pristup_povjerljivim_info', 'definisan_proces_revizije', 'definisan_depozit', 
+    'definisana_indeksacija', 'dozvoljen_podzakup', 'rad_na_daljinu', 
+    'definisan_probni_rad', 'definisana_zabrana_konkurencije', 
+    'zelite_li_spoljnotrgovinske_poslove', 'samostalni_direktor', 
+    'zelite_li_odb_dir', 'prokurista'
 ];
 
 export default async function handler(req, res) {
@@ -34,136 +32,59 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const formData = req.body;
-  const ugovor_type = formData['ugovor_type'];
-  let total_price;
-  let specificTable;
-  let client_name = '';
-  let client_address = '';
-  let client_id = '';
-  
-  if (!ugovor_type) {
-    return res.status(400).json({ error: 'Missing ugovor_type field' });
-  }
-
-  // Pre konverzije, kreiramo kopiju objekta da ne modifikujemo original
-  const specificData = { ...formData };
-
-  // Konvertujemo stringove "Da" i "Ne" u boolean vrednosti
-  booleanFields.forEach(field => {
-      if (specificData.hasOwnProperty(field)) {
-          if (specificData[field] === 'Da') {
-              specificData[field] = true;
-          } else if (specificData[field] === 'Ne') {
-              specificData[field] = false;
-          }
-      }
-  });
-
-  // Odredjivanje cene, tabele i klijentovih podataka na osnovu tipa ugovora
-  switch (ugovor_type) {
-    case 'Ugovor o povjerljivosti (NDA)':
-      total_price = 29;
-      specificTable = 'orders_ugovor_o_povjerljivosti_nda';
-      if (formData['tip_ugovora'] === 'Jednostrani') {
-          client_name = formData['naziv_strane_koja_prima'];
-          client_address = formData['adresa_strane_koja_prima'];
-          client_id = formData['id_broj_strane_koja_prima'];
-      } else {
-          client_name = formData['naziv_strane_a'];
-          client_address = formData['adresa_strane_a'];
-          client_id = formData['id_broj_strane_a'];
-      }
-      break;
-    case 'Ugovor o djelu':
-      total_price = 59;
-      specificTable = 'orders_ugovor_o_djelu';
-      client_name = formData['naziv_narucioca'];
-      client_address = formData['adresa_narucioca'];
-      client_id = formData['id_broj_narucioca'];
-      break;
-    case 'Ugovor o zakupu':
-      total_price = 79;
-      specificTable = 'orders_ugovor_o_zakupu';
-      client_name = formData['naziv_zakupca'];
-      client_address = formData['adresa_zakupca'];
-      client_id = formData['id_broj_zakupca'];
-      break;
-    case 'Ugovor o radu':
-      total_price = 99;
-      specificTable = 'orders_ugovor_o_radu';
-      client_name = formData['ime_i_prezime_zaposlenog'];
-      client_address = formData['adresa_zaposlenog'];
-      client_id = formData['jmbg_zaposlenog'];
-      break;
-    case 'Set dokumenata za registraciju firme (DOO)':
-      total_price = 199;
-      specificTable = 'orders_set_za_firmu_doo';
-      client_name = formData['ime_osnivaca_1'];
-      client_address = formData['adresa_osnivaca_1'];
-      client_id = formData['id_osnivaca_1'];
-      break;
-    default:
-      return res.status(400).json({ error: 'Invalid ugovor_type' });
-  }
-  
-  const client_email = formData['client_email'] || formData['e_mail_adresa'];
-
-  if (!client_email || !ugovor_type || !total_price) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
   try {
-    // 1. Unos u glavnu orders tabelu
-    const { data: orderData, error: orderError } = await supabase
-      .from('orders')
-      .insert([{ client_email, ugovor_type, total_price }])
-      .select('id, order_number');
+    const formData = await req.json();
+    const ugovor_type = formData['ugovor_type'];
 
-    if (orderError) {
-      console.error('Greska pri unosu u orders tabelu:', orderError);
-      return res.status(500).json({ error: 'Database insertion error' });
-    }
-    
-    const order_id = orderData[0].id;
-    const order_number = orderData[0].order_number;
-    
-    // 2. Unos u specificnu tabelu na osnovu ugovor_type
-    specificData.order_id = order_id;
-    delete specificData['ugovor_type'];
-    delete specificData['client_email'];
-    delete specificData['e_mail_adresa'];
-    delete specificData['terms_acceptance'];
-
-    const { error: specificError } = await supabase
-      .from(specificTable)
-      .insert([specificData]);
-
-    if (specificError) {
-      console.error(`Greska pri unosu u ${specificTable} tabelu:`, specificError);
-      return res.status(500).json({ error: 'Database insertion error' });
+    if (!ugovor_type || !PRICES[ugovor_type]) {
+        return res.status(400).json({ error: 'Invalid or missing ugovor_type' });
     }
 
-    // 3. Slanje e-mailova (koristeći centralizovane funkcije)
-    const emailResult = await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, order_number, client_name, client_address, client_id);
-    if (!emailResult.success) {
-        console.error('Greska pri slanju e-maila klijentu:', emailResult.error);
+    const total_price = PRICES[ugovor_type];
+    const client_email = formData['client_email'] || formData['e_mail_adresa'];
+
+    if (!client_email) {
+        return res.status(400).json({ error: 'Missing client email' });
     }
 
-    const adminEmailResult = await sendNotificationEmailToAdmin(ugovor_type, order_id, order_number, formData);
-    if (!adminEmailResult.success) {
-        console.error('Greska pri slanju e-maila administratoru:', adminEmailResult.error);
-    }
-    
-    // 4. Redirect
-    res.writeHead(302, {
-      'Location': `/placanje.html?cijena=${total_price}&ugovor=${encodeURIComponent(ugovor_type)}`,
-      'Content-Type': 'text/plain',
+    // Pretvaramo "Da"/"Ne" u boolean vrijednosti
+    booleanFields.forEach(field => {
+        if (formData.hasOwnProperty(field)) {
+            formData[field] = formData[field] === 'Da';
+        }
     });
-    res.end('Redirecting to payment...');
+
+    // Uklanjamo tehnička polja prije spremanja u bazu
+    const cleanFormData = { ...formData };
+    delete cleanFormData.terms_acceptance;
+
+    // Pozivamo našu novu, pametnu database funkciju
+    const { data: orderData, error: rpcError } = await supabase.rpc('create_order', {
+        p_client_email: client_email,
+        p_ugovor_type: ugovor_type,
+        p_total_price: total_price,
+        p_form_data: cleanFormData
+    });
+
+    if (rpcError) {
+        console.error('RPC Error:', rpcError);
+        return res.status(500).json({ error: 'Database transaction failed.' });
+    }
+    
+    const { id: order_id, order_number } = orderData[0];
+    
+    // Logika za slanje emailova ostaje ista, ali se oslanja na novi utils fajl
+    await sendConfirmationEmailToClient(client_email, ugovor_type, total_price, order_id, order_number, formData);
+    await sendNotificationEmailToAdmin(ugovor_type, order_id, order_number, formData);
+    
+    // Šaljemo uspješan odgovor sa podacima za redirekciju
+    return res.status(200).json({ 
+        success: true, 
+        redirectUrl: `/placanje.html?cijena=${total_price}&ugovor=${encodeURIComponent(ugovor_type)}` 
+    });
     
   } catch (err) {
-    console.error('Neocekivana greska:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Unexpected error:', err);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
