@@ -26,7 +26,7 @@
             <h1>Ugovor o povjerljivosti (NDA)</h1>
             <p class="form-intro">Molimo popunite formular ispod kako biste generisali Vaš Ugovor o povjerljivosti. Nakon popunjavanja, bićete preusmjereni na stranicu za plaćanje.</p>
             
-            <form id="ugovor-o-povjerljivosti-form" action="/api/submit-form.js" method="POST">
+            <form id="ugovor-o-povjerljivosti-form">
                 
                 <input type="hidden" name="ugovor_type" value="Ugovor o povjerljivosti (NDA)">
 
@@ -147,21 +147,18 @@
                 jednostraniFields.style.display = 'block';
                 dvostraniFields.style.display = 'none';
                 
-                // Postavi required atribute za jednostrani, ukloni za dvostrani
                 jednostraniFields.querySelectorAll('input').forEach(input => input.required = true);
                 dvostraniFields.querySelectorAll('input').forEach(input => input.required = false);
             } else if (e.target.value === 'Dvostrani') {
                 jednostraniFields.style.display = 'none';
                 dvostraniFields.style.display = 'block';
                 
-                // Postavi required atribute za dvostrani, ukloni za jednostrani
                 jednostraniFields.querySelectorAll('input').forEach(input => input.required = false);
                 dvostraniFields.querySelectorAll('input').forEach(input => input.required = true);
             } else {
                 jednostraniFields.style.display = 'none';
                 dvostraniFields.style.display = 'none';
                 
-                // Ukloni required atribute sa oba
                 jednostraniFields.querySelectorAll('input').forEach(input => input.required = false);
                 dvostraniFields.querySelectorAll('input').forEach(input => input.required = false);
             }
@@ -177,6 +174,48 @@
             } else {
                 iznosKazneField.style.display = 'none';
                 document.getElementById('iznos_ugovorene_kazne').required = false;
+            }
+        });
+
+        // Novi kod za slanje forme
+        const currentForm = document.querySelector('form');
+        currentForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Sprečavamo standardno slanje forme
+
+            const submitButton = currentForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Šaljem podatke...';
+
+            // Pretvaramo podatke iz forme u format koji naša API funkcija očekuje (JSON)
+            const formData = new FormData(currentForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/submit-form.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // Ako je sve prošlo kako treba, preusmjeravamo korisnika na stranicu za plaćanje
+                    window.location.href = result.redirectUrl;
+                } else {
+                    // U slučaju greške, prikazujemo poruku
+                    alert('Došlo je do greške: ' + (result.error || 'Molimo pokušajte ponovo.'));
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                }
+            } catch (error) {
+                console.error('Greška pri slanju forme:', error);
+                alert('Došlo je do neočekivane greške. Molimo provjerite Vašu internet konekciju i pokušajte ponovo.');
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
             }
         });
     </script>
