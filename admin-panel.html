@@ -276,12 +276,125 @@
           </div>
         </div>
 
-        <!-- Placeholder sekcije -->
-        <div id="view-orders" class="card hidden"><h3 style="margin:0">Narudžbe — sve</h3><p class="muted">Koristi glavni prikaz na Dashboardu.</p></div>
-        <div id="view-outbox" class="card hidden"><h3 style="margin:0">Outbox</h3><p class="muted">Dnevnik poslatih emailova (dodajemo kada tabela bude spremna).</p></div>
-        <div id="view-documents" class="card hidden"><h3 style="margin:0">Dokumenti</h3><p class="muted">Pretraga finalnih ugovora i fiskalnih računa.</p></div>
-        <div id="view-analytics" class="card hidden"><h3 style="margin:0">Analitika</h3><p class="muted">Trendovi, top ugovori, segmenti.</p></div>
-        <div id="view-settings" class="card hidden"><h3 style="margin:0">Podešavanja</h3><p class="muted">Email šabloni, rok signed linkova, podsjetnici (uskoro).</p></div>
+        <!-- NARUDŽBE (full-screen tabela) -->
+        <div id="view-orders" class="card hidden">
+          <div class="toolbar">
+            <input id="ordersFilterSearch" class="input" placeholder="Filter: email / #id / tip ugovora" />
+            <select id="ordersFilterStatus" class="select">
+              <option value="">Status (sve)</option>
+              <option value="paid">Plaćene</option>
+              <option value="unpaid">Neplaćene</option>
+              <option value="sent">Final poslati</option>
+              <option value="wait">Čeka final</option>
+            </select>
+            <button id="ordersExportCsv" class="btn small" type="button">⇩ Export CSV</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px"><input type="checkbox" id="ordersCheckAll" /></th>
+                <th>#</th><th>Ugovor</th><th>Klijent</th><th>Iznos</th><th>Uplata</th><th>Final</th><th>Akcije</th>
+              </tr>
+            </thead>
+            <tbody id="ordersViewTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+          </table>
+        </div>
+
+        <!-- OUTBOX -->
+        <div id="view-outbox" class="card hidden">
+          <div class="toolbar">
+            <select id="outboxStatus" class="select">
+              <option value="">Status (sve)</option>
+              <option value="queued">queued</option>
+              <option value="sent">sent</option>
+              <option value="delivered">delivered</option>
+              <option value="failed">failed</option>
+              <option value="bounced">bounced</option>
+            </select>
+            <input id="outboxSearch" class="input" placeholder="Pretraga: email / subject" />
+            <button id="outboxRefresh" class="btn small" type="button">⟳ Osvježi</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Vrijeme</th><th>Kome</th><th>Predmet</th><th>Šablon</th><th>Status</th><th>Provider ID</th></tr>
+            </thead>
+            <tbody id="outboxTbody"><tr><td colspan="6" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+          </table>
+          <p id="outboxInfo" class="muted" style="margin:.6rem 0 0"></p>
+        </div>
+
+        <!-- DOKUMENTI -->
+        <div id="view-documents" class="card hidden">
+          <div class="toolbar">
+            <input id="docsOrderId" class="input" placeholder="ID narudžbe (broj ili UUID)" style="width:220px" />
+            <button id="docsLoad" class="btn small" type="button">Prikaži fajlove</button>
+            <span class="muted">Bucket: <code>ugovori</code></span>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Fajl</th><th>Veličina</th><th>Modifikovano</th><th></th></tr>
+            </thead>
+            <tbody id="docsTbody"><tr><td colspan="4" style="text-align:center;color:#8b95a5">Unesi ID narudžbe i klikni "Prikaži fajlove".</td></tr></tbody>
+          </table>
+        </div>
+
+        <!-- ANALITIKA -->
+        <div id="view-analytics" class="grid hidden">
+          <div class="grid cards">
+            <div class="card kpi">
+              <div class="label">Narudžbi (30d)</div>
+              <div class="value" id="anCnt30">—</div>
+            </div>
+            <div class="card kpi">
+              <div class="label">Prihod (30d)</div>
+              <div class="value" id="anRev30">—</div>
+            </div>
+            <div class="card kpi">
+              <div class="label">Prosječna cijena</div>
+              <div class="value" id="anAvg">—</div>
+            </div>
+            <div class="card kpi">
+              <div class="label">Top tip</div>
+              <div class="value" id="anTopType">—</div>
+            </div>
+          </div>
+
+          <div class="split">
+            <div class="card">
+              <h3 style="margin:0 0 .4rem">Top tipovi ugovora</h3>
+              <table>
+                <thead><tr><th>Tip</th><th>Količina</th><th>Prihod</th></tr></thead>
+                <tbody id="anTypesTbody"><tr><td colspan="3" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+              </table>
+            </div>
+            <div class="aside">
+              <div class="card">
+                <h3 style="margin:0 0 .4rem">Prihod po danu (14d)</h3>
+                <table>
+                  <thead><tr><th>Dan</th><th>Prihod</th></tr></thead>
+                  <tbody id="anDaysTbody"><tr><td colspan="2" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PODEŠAVANJA -->
+        <div id="view-settings" class="card hidden">
+          <h3 style="margin:0 0 .6rem">Podešavanja</h3>
+          <p class="muted">Email šabloni, rok signed linkova, podsjetnici (uskoro).</p>
+          <div class="grid" style="grid-template-columns:repeat(2,minmax(220px,1fr));gap:1rem;margin-top:1rem">
+            <div class="card">
+              <strong>Okruženje</strong>
+              <p class="muted" id="envInfo">—</p>
+            </div>
+            <div class="card">
+              <strong>Test konekcije</strong><br />
+              <button id="btnPing" class="btn small" type="button">Ping DB</button>
+              <span id="pingResult" class="muted" style="margin-left:.5rem">—</span>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   </div>
@@ -326,12 +439,12 @@
   <script>
     "use strict";
 
-    /***** CONFIG — tvoje vrijednosti (ISPRAVLJENO) *****/
+    /***** CONFIG — Supabase *****/
     const SUPABASE_URL = "https://jgkllsxeuoozpglzwxwg.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc";
     const API_FINALIZE = "/api/finalize-contract.js";
 
-    // SDK guard — ako CDN nije učitao supabase-js, prijavi jasnu grešku
+    // SDK guard
     if (!window.supabase || typeof window.supabase.createClient !== "function") {
       alert("Supabase SDK nije učitan. Provjeri mrežu/CSP/AdBlock i script src.");
       console.error("Supabase SDK missing: window.supabase =", window.supabase);
@@ -351,9 +464,7 @@
     const btnLogin  = document.getElementById("btnLogin");
     const btnLogout = document.getElementById("btnLogout");
     const btnRefresh= document.getElementById("btnRefresh");
-    const envBadge  = document.getElementById("envBadge");
     const loaderBar = document.getElementById("loader");
-
     const nav = document.querySelector(".nav");
     const views = {
       dashboard: document.getElementById("view-dashboard"),
@@ -371,11 +482,7 @@
     const criticalList = document.getElementById("criticalList");
 
     const kpiToday = document.getElementById("kpiToday");
-    const kpiTodayDelta = document.getElementById("kpiTodayDelta");
     const kpiRev30 = document.getElementById("kpiRev30");
-    const kpiRevDelta = document.getElementById("kpiRevDelta");
-    const kpiTTA = document.getElementById("kpiTTA");
-    const kpiF24 = document.getElementById("kpiF24");
 
     const drawer = document.getElementById("drawer");
     const drawerTitle = document.getElementById("drawerTitle");
@@ -412,11 +519,7 @@
         return diff<=30 ? s + (Number(o.total_price)||0) : s;
       },0);
       kpiToday.textContent = todayCount;
-      kpiTodayDelta.textContent = "—";
       kpiRev30.textContent = fmtMoney(revenue30);
-      kpiRevDelta.textContent = "—";
-      kpiTTA.textContent = "—";
-      kpiF24.textContent = "—";
     }
 
     function statusBadge(o){
@@ -449,13 +552,12 @@
       for(const o of filtered){
         const tr = document.createElement("tr");
         const [sPaid, sFinal] = statusBadge(o);
-        const amount = Number(o.total_price||0);
         tr.innerHTML = `
           <td><input type="checkbox" data-id="${o.id}"></td>
           <td>#${pad(o.order_number||o.id)}</td>
           <td>${o.ugovor_type||"—"}</td>
           <td>${o.client_email||"—"}</td>
-          <td>${fmtMoney(amount)}</td>
+          <td>${fmtMoney(Number(o.total_price||0))}</td>
           <td>${sPaid}</td>
           <td>${sFinal}</td>
           <td class="actions">
@@ -521,7 +623,6 @@
       loading(true);
       try{
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        console.log("login result:", { data, error });
         if(error){
           loginErr.textContent = error.message || "Greška pri prijavi.";
           loginErr.classList.remove("hidden");
@@ -557,6 +658,158 @@
       }finally{
         loading(false);
       }
+    }
+
+    /************ ORDERS VIEW (pun ekran) ************/
+    function renderOrdersView(){
+      const tbody = document.getElementById("ordersViewTbody");
+      const txt = (document.getElementById("ordersFilterSearch").value||"").toLowerCase();
+      const st  = document.getElementById("ordersFilterStatus").value;
+      const filtered = orders.filter(o=>{
+        const hit = !txt
+          || String(o.order_number).includes(txt)
+          || (o.client_email||"").toLowerCase().includes(txt)
+          || (o.ugovor_type||"").toLowerCase().includes(txt);
+        if(!hit) return false;
+        if(st==="paid" && !o.is_paid) return false;
+        if(st==="unpaid" && o.is_paid) return false;
+        if(st==="sent" && !o.is_final_approved) return false;
+        if(st==="wait" && o.is_final_approved) return false;
+        return true;
+      });
+
+      tbody.innerHTML = "";
+      for(const o of filtered){
+        const [sPaid, sFinal] = statusBadge(o);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><input type="checkbox" data-id="${o.id}"></td>
+          <td>#${pad(o.order_number||o.id)}</td>
+          <td>${o.ugovor_type||"—"}</td>
+          <td>${o.client_email||"—"}</td>
+          <td>${fmtMoney(Number(o.total_price||0))}</td>
+          <td>${sPaid}</td>
+          <td>${sFinal}</td>
+          <td class="actions">
+            ${!o.is_paid ? `<button class="btn small success" data-act="verify" data-id="${o.id}" type="button">Verifikuj</button>` : ``}
+            <button class="btn small" data-act="upload" data-id="${o.id}" type="button">Priloži</button>
+            ${(o.is_paid && !o.is_final_approved && o.final_document_url) ? `<button class="btn small primary" data-act="send" data-id="${o.id}" type="button">Pošalji</button>` : ``}
+            <button class="btn small" data-act="open" data-id="${o.id}" type="button">Detalji</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+
+    /************ OUTBOX ************/
+    async function fetchOutbox(){
+      const tbody = document.getElementById("outboxTbody");
+      const info  = document.getElementById("outboxInfo");
+      info.textContent = "";
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#8b95a5">Učitavam…</td></tr>`;
+      try{
+        const { data, error } = await supabase.from("email_outbox")
+          .select("*")
+          .order("created_at",{ascending:false})
+          .limit(200);
+        if(error){
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Outbox tabela nedostaje.</td></tr>`;
+          info.innerHTML = `Napomena: kreiraj tabelu <code>public.email_outbox</code> (vidi SQL ispod).`;
+          return;
+        }
+        const st = document.getElementById("outboxStatus").value;
+        const q  = (document.getElementById("outboxSearch").value||"").toLowerCase();
+        const rows = (data||[]).filter(r=>{
+          const ok1 = !st || r.status===st;
+          const ok2 = !q  || (String(r.to||"").toLowerCase().includes(q) || String(r.subject||"").toLowerCase().includes(q));
+          return ok1 && ok2;
+        });
+        tbody.innerHTML = rows.map(r=>`
+          <tr>
+            <td>${new Date(r.created_at).toLocaleString()}</td>
+            <td>${r.to||"—"}</td>
+            <td>${r.subject||"—"}</td>
+            <td>${r.template||"—"}</td>
+            <td>${r.status||"—"}</td>
+            <td>${r.provider_id||"—"}</td>
+          </tr>
+        `).join("") || `<tr><td colspan="6" style="text-align:center;color:#8b95a5">Nema stavki.</td></tr>`;
+      }catch(e){
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Greška pri učitavanju Outbox-a.</td></tr>`;
+      }
+    }
+
+    /************ DOKUMENTI (bucket 'ugovori') ************/
+    async function listDocs(orderId){
+      const tbody = document.getElementById("docsTbody");
+      if(!orderId){ tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#8b95a5">Unesi ID narudžbe.</td></tr>`; return; }
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#8b95a5">Učitavam…</td></tr>`;
+      try{
+        const { data, error } = await supabase.storage.from("ugovori").list(`${orderId}`, { limit: 100 });
+        if(error){ console.error(error); tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#e85959">Greška pri listanju.</td></tr>`; return; }
+        if(!data || data.length===0){ tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#8b95a5">Nema fajlova.</td></tr>`; return; }
+
+        tbody.innerHTML = data.map(f=>{
+          const path = `${orderId}/${f.name}`;
+          const { data:pub } = supabase.storage.from("ugovori").getPublicUrl(path);
+          const url = pub?.publicUrl || "#";
+          const size = (f?.metadata?.size || f?.size || 0);
+          const sizeKB = size ? Math.round(size/1024) + " KB" : "—";
+          const mod = f?.updated_at ? new Date(f.updated_at).toLocaleString() : "—";
+          return `<tr>
+            <td>${f.name}</td>
+            <td>${sizeKB}</td>
+            <td>${mod}</td>
+            <td><a class="btn small" href="${url}" target="_blank" rel="noopener">Preuzmi</a></td>
+          </tr>`;
+        }).join("");
+      }catch(e){
+        console.error(e);
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#e85959">Neočekivana greška.</td></tr>`;
+      }
+    }
+
+    /************ ANALITIKA ************/
+    function recomputeAnalytics(){
+      const now = Date.now();
+      const days = 14;
+      const byDay = new Map();
+      const byType = new Map();
+      let cnt30=0, rev30=0;
+
+      for(const o of orders){
+        const t = new Date(o.created_at).getTime();
+        const dDiff = (now - t)/86400000;
+        if(dDiff<=30){ cnt30++; rev30 += Number(o.total_price)||0; }
+
+        const d = new Date(o.created_at); const key = d.toISOString().slice(0,10);
+        byDay.set(key, (byDay.get(key)||0) + (Number(o.total_price)||0));
+
+        const type = (o.ugovor_type||"—");
+        const agg = byType.get(type)||{cnt:0,rev:0};
+        agg.cnt++; agg.rev += Number(o.total_price)||0;
+        byType.set(type, agg);
+      }
+
+      document.getElementById("anCnt30").textContent = cnt30;
+      document.getElementById("anRev30").textContent = fmtMoney(rev30);
+      document.getElementById("anAvg").textContent = cnt30? fmtMoney(rev30/cnt30) : "—";
+      const top = [...byType.entries()].sort((a,b)=>b[1].cnt-a[1].cnt)[0];
+      document.getElementById("anTopType").textContent = top? `${top[0]} (${top[1].cnt})` : "—";
+
+      const typesTbody = document.getElementById("anTypesTbody");
+      typesTbody.innerHTML = [...byType.entries()].sort((a,b)=>b[1].cnt-a[1].cnt).map(([k,v])=>`
+        <tr><td>${k}</td><td>${v.cnt}</td><td>${fmtMoney(v.rev)}</td></tr>
+      `).join("") || `<tr><td colspan="3" style="text-align:center;color:#8b95a5">Nema podataka.</td></tr>`;
+
+      const daysTbody = document.getElementById("anDaysTbody");
+      const rows = [];
+      for(let i=days-1;i>=0;i--){
+        const d = new Date(now - i*86400000).toISOString().slice(0,10);
+        rows.push(`<tr><td>${d}</td><td>${fmtMoney(byDay.get(d)||0)}</td></tr>`);
+      }
+      daysTbody.innerHTML = rows.join("");
     }
 
     /***** ACTIONS via /api *****/
@@ -605,7 +858,15 @@
       // Nav
       nav.addEventListener("click", (e)=>{
         const btn = e.target.closest("button[data-view]"); if(!btn) return;
-        setView(btn.dataset.view);
+        const v = btn.dataset.view;
+        setView(v);
+        if(v==="orders") renderOrdersView();
+        if(v==="outbox") fetchOutbox();
+        if(v==="documents") { /* čeka unos ID-a */ }
+        if(v==="analytics") recomputeAnalytics();
+        if(v==="settings") {
+          document.getElementById("envInfo").textContent = `${location.hostname} • ${SUPABASE_URL}`;
+        }
       });
 
       // Login (klik + Enter)
@@ -626,7 +887,7 @@
       // Refresh
       btnRefresh.addEventListener("click", fetchOrders);
 
-      // Filteri
+      // Filteri (dashboard)
       filterSearch.addEventListener("input", renderTable);
       filterStatus.addEventListener("change", renderTable);
       globalSearch.addEventListener("keydown", e=>{
@@ -649,7 +910,7 @@
         if(cb.checked) selectedIds.add(cb.dataset.id); else selectedIds.delete(cb.dataset.id);
       });
 
-      // Row actions
+      // Row actions (dashboard tabela)
       ordersTbody.addEventListener("click", (e)=>{
         const btn = e.target.closest("button[data-act]");
         if(!btn) return;
@@ -663,17 +924,62 @@
         if(btn.dataset.act==="open") openDrawer(order);
       });
 
+      // Row actions (orders full-screen)
+      document.getElementById("ordersViewTbody").addEventListener("click", (e)=>{
+        const btn = e.target.closest("button[data-act]");
+        if(!btn) return;
+        const id = btn.dataset.id;
+        const order = orders.find(o=>String(o.id)===String(id));
+        if(!order) return;
+
+        if(btn.dataset.act==="verify") actVerify(id);
+        if(btn.dataset.act==="upload"){ openDrawer(order); drawerFile.click(); }
+        if(btn.dataset.act==="send") actSend(id);
+        if(btn.dataset.act==="open") openDrawer(order);
+      });
+      document.getElementById("ordersFilterSearch").addEventListener("input", renderOrdersView);
+      document.getElementById("ordersFilterStatus").addEventListener("change", renderOrdersView);
+      document.getElementById("ordersExportCsv").addEventListener("click", ()=>{
+        const rows = [["id","order_number","ugovor_type","client_email","total_price","is_paid","is_final_approved","created_at"]];
+        for(const o of orders){ rows.push([o.id,o.order_number,o.ugovor_type,o.client_email,o.total_price,o.is_paid,o.is_final_approved,o.created_at]); }
+        const csv = rows.map(r=>r.map(x=>`"${String(x??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+        a.download = "orders.csv"; a.click();
+      });
+
+      // Drawer
       drawerFile.addEventListener("change", ()=>{
         if(currentOrder && drawerFile.files[0]) actUpload(currentOrder.id, drawerFile.files[0]);
       });
       btnDrawerClose.addEventListener("click", closeDrawer);
       btnDrawerSend.addEventListener("click", ()=> currentOrder && actSend(currentOrder.id));
+
+      // Settings helpers
+      document.getElementById("btnPing").addEventListener("click", async ()=>{
+        const el = document.getElementById("pingResult");
+        try{
+          const { error } = await supabase.from("orders").select("id").limit(1);
+          el.textContent = error ? "Greška" : "OK";
+        }catch{ el.textContent = "Greška"; }
+      });
+
+      // Outbox controls
+      document.getElementById("outboxRefresh").addEventListener("click", fetchOutbox);
+      document.getElementById("outboxStatus").addEventListener("change", fetchOutbox);
+      document.getElementById("outboxSearch").addEventListener("input", fetchOutbox);
+
+      // Dokumenti controls
+      document.getElementById("docsLoad").addEventListener("click", ()=>{
+        const id = document.getElementById("docsOrderId").value.trim();
+        listDocs(id);
+      });
     });
 
     function subscribeRealtime(){
       try{
         const ch = supabase.channel('orders-ch')
-          .on('postgres_changes',{event:'*', schema:'public', table:'orders'}, payload=>{
+          .on('postgres_changes',{event:'*', schema:'public', table:'orders'}, ()=>{
             showToast("Ažuriranje narudžbi"); fetchOrders();
           })
           .subscribe((status)=>{
