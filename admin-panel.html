@@ -11,7 +11,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
 
-  <!-- Supabase -->
+  <!-- Supabase SDK v2 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -177,8 +177,8 @@
       <div class="badge" id="envBadge">Live</div>
       <div class="search"><input id="globalSearch" type="search" placeholder="Pretraga (id/email/ugovor)…" /></div>
       <div class="header__actions">
-        <button id="btnRefresh" class="btn ghost">⟳ Osvježi</button>
-        <button id="btnLogout" class="btn">Odjava</button>
+        <button id="btnRefresh" class="btn ghost" type="button">⟳ Osvježi</button>
+        <button id="btnLogout" class="btn" type="button">Odjava</button>
       </div>
       <div id="loader" class="loader"></div>
     </header>
@@ -197,9 +197,9 @@
             <label for="password">Lozinka</label>
             <input id="password" type="password" placeholder="••••••••" required />
           </div>
-          <button id="btnLogin" class="btn primary" style="width:100%;margin-top:.5rem">Prijavi se</button>
+          <button id="btnLogin" class="btn primary" type="button" style="width:100%;margin-top:.5rem">Prijavi se</button>
           <div id="loginErr" class="error hidden"></div>
-          <p class="muted" style="margin-top:.8rem">Ovaj panel je privatan. Pristup samo uz Supabase nalog.</p>
+          <p class="muted" style="margin-top:.8rem">Panel je privatan. Pristup samo uz Supabase nalog.</p>
         </div>
       </section>
 
@@ -241,9 +241,9 @@
                   <option value="sent">Final poslati</option>
                   <option value="wait">Čeka final</option>
                 </select>
-                <button id="btnBulkVerify" class="btn small">✔︎ Verifikuj uplate</button>
-                <button id="btnBulkSend" class="btn small primary">➡︎ Pošalji final</button>
-                <button id="btnExportCsv" class="btn small">⇩ Export CSV</button>
+                <button id="btnBulkVerify" class="btn small" type="button">✔︎ Verifikuj uplate</button>
+                <button id="btnBulkSend" class="btn small primary" type="button">➡︎ Pošalji final</button>
+                <button id="btnExportCsv" class="btn small" type="button">⇩ Export CSV</button>
               </div>
               <table id="ordersTable">
                 <thead>
@@ -291,8 +291,8 @@
     <div class="drawer__head">
       <strong id="drawerTitle">Narudžba</strong>
       <div style="display:flex;gap:.5rem">
-        <button id="btnDrawerSend" class="btn small primary">Pošalji final</button>
-        <button id="btnDrawerClose" class="btn small">Zatvori</button>
+        <button id="btnDrawerSend" class="btn small primary" type="button">Pošalji final</button>
+        <button id="btnDrawerClose" class="btn small" type="button">Zatvori</button>
       </div>
     </div>
     <div class="drawer__body">
@@ -324,12 +324,19 @@
   <div id="toast" class="toast">Poruka</div>
 
   <script>
-    /***** CONFIG — koristiš tvoje vrijednosti *****/
+    "use strict";
+
+    /***** CONFIG — tvoje vrijednosti (ISPRAVLJENO) *****/
     const SUPABASE_URL = "https://jgkllsxeuoozpglzwxwg.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc";
     const API_FINALIZE = "/api/finalize-contract.js";
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // SDK guard — ako CDN nije učitao supabase-js, prijavi jasnu grešku
+    if (!window.supabase || typeof window.supabase.createClient !== "function") {
+      alert("Supabase SDK nije učitan. Provjeri mrežu/CSP/AdBlock i script src.");
+      console.error("Supabase SDK missing: window.supabase =", window.supabase);
+    }
+    const supabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     /***** STATE *****/
     let orders = [];
@@ -386,13 +393,13 @@
     /***** UTIL *****/
     const fmtMoney = v => Intl.NumberFormat("sr-ME",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(v||0);
     const pad = (n, w=5) => String(n).padStart(w,"0");
-    const show = el => el.classList.remove("hidden");
-    const hide = el => el.classList.add("hidden");
+    function show(el){ el.classList.remove("hidden"); }
+    function hide(el){ el.classList.add("hidden"); }
     const loading = (on)=> loaderBar.classList.toggle("on", !!on);
     function showToast(msg){ toast.textContent = msg; toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"), 1800); }
 
     function setView(name){
-      for(const [k,el] of Object.entries(views)) (k===name)?show(el):hide(el);
+      Object.entries(views).forEach(([k,el]) => (k===name)?show(el):hide(el));
       document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active", b.dataset.view===name));
     }
 
@@ -413,10 +420,8 @@
     }
 
     function statusBadge(o){
-      const paid = o.is_paid;
-      const sent = o.is_final_approved;
-      const s1 = paid ? '<span class="status paid">Uplaćeno</span>' : '<span class="status unpaid">Na čekanju</span>';
-      const s2 = sent ? '<span class="status sent">Poslato</span>' : '<span class="status wait">Čeka</span>';
+      const s1 = o.is_paid ? '<span class="status paid">Uplaćeno</span>' : '<span class="status unpaid">Na čekanju</span>';
+      const s2 = o.is_final_approved ? '<span class="status sent">Poslato</span>' : '<span class="status wait">Čeka</span>';
       return [s1,s2];
     }
 
@@ -445,7 +450,6 @@
         const tr = document.createElement("tr");
         const [sPaid, sFinal] = statusBadge(o);
         const amount = Number(o.total_price||0);
-
         tr.innerHTML = `
           <td><input type="checkbox" data-id="${o.id}"></td>
           <td>#${pad(o.order_number||o.id)}</td>
@@ -455,10 +459,10 @@
           <td>${sPaid}</td>
           <td>${sFinal}</td>
           <td class="actions">
-            ${!o.is_paid ? `<button class="btn small success" data-act="verify" data-id="${o.id}">Verifikuj</button>` : ``}
-            <button class="btn small" data-act="upload" data-id="${o.id}">Priloži</button>
-            ${(o.is_paid && !o.is_final_approved && o.final_document_url) ? `<button class="btn small primary" data-act="send" data-id="${o.id}">Pošalji</button>` : ``}
-            <button class="btn small" data-act="open" data-id="${o.id}">Detalji</button>
+            ${!o.is_paid ? `<button class="btn small success" data-act="verify" data-id="${o.id}" type="button">Verifikuj</button>` : ``}
+            <button class="btn small" data-act="upload" data-id="${o.id}" type="button">Priloži</button>
+            ${(o.is_paid && !o.is_final_approved && o.final_document_url) ? `<button class="btn small primary" data-act="send" data-id="${o.id}" type="button">Pošalji</button>` : ``}
+            <button class="btn small" data-act="open" data-id="${o.id}" type="button">Detalji</button>
           </td>
         `;
         ordersTbody.appendChild(tr);
@@ -496,31 +500,68 @@
 
     /***** AUTH *****/
     async function checkSession(){
-      const { data:{ session } } = await supabase.auth.getSession();
-      return session;
+      if(!supabase) return null;
+      try{
+        const { data:{ session } } = await supabase.auth.getSession();
+        return session;
+      }catch(e){ console.error("getSession error:", e); return null; }
     }
     async function showApp(){ hide(loginView); show(appView); setView("dashboard"); }
     async function showLogin(){ show(loginView); hide(appView); }
 
-    /***** DATA FETCH *****/
-    async function fetchOrders(){
-      loading(true);
-      const { data, error } = await supabase.from("orders").select("*").order("created_at",{ascending:false});
-      loading(false);
-      if(error){
-        console.error(error);
-        ordersTbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#e85959">Greška pri učitavanju narudžbi.</td></tr>`;
+    async function doLogin(){
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      if(!supabase){
+        loginErr.textContent = "SDK nije učitan — provjeri mrežu ili CSP.";
+        loginErr.classList.remove("hidden");
         return;
       }
-      rawOrders = data||[];
-      orders = [...rawOrders];
-      renderKPIs();
-      renderTable();
+      loginErr.classList.add("hidden");
+      loading(true);
+      try{
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        console.log("login result:", { data, error });
+        if(error){
+          loginErr.textContent = error.message || "Greška pri prijavi.";
+          loginErr.classList.remove("hidden");
+          return;
+        }
+        await showApp();
+        await fetchOrders();
+        subscribeRealtime();
+      }catch(e){
+        console.error("Login exception:", e);
+        loginErr.textContent = "Neočekivana greška pri prijavi (detalji u Console).";
+        loginErr.classList.remove("hidden");
+      }finally{
+        loading(false);
+      }
     }
 
-    /***** ACTIONS via /api (nikad direktno iz klijenta za kritične promjene) *****/
+    /***** DATA FETCH *****/
+    async function fetchOrders(){
+      if(!supabase) return;
+      loading(true);
+      try{
+        const { data, error } = await supabase.from("orders").select("*").order("created_at",{ascending:false});
+        if(error){
+          console.error(error);
+          ordersTbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#e85959">Greška pri učitavanju narudžbi.</td></tr>`;
+          return;
+        }
+        rawOrders = data||[];
+        orders = [...rawOrders];
+        renderKPIs();
+        renderTable();
+      }finally{
+        loading(false);
+      }
+    }
+
+    /***** ACTIONS via /api *****/
     async function getToken(){
-      const { data:{ session } } = await supabase.auth.getSession();
+      const session = await checkSession();
       return session ? session.access_token : null;
     }
 
@@ -537,7 +578,6 @@
       if(!file){ showToast("Izaberi fajl"); return; }
       const token = await getToken(); if(!token){ showToast("Sesija istekla"); return; }
       loading(true);
-      // Upload u bucket 'ugovori' (pretpostavka: javni bucket kao i do sada)
       const { data, error } = await supabase.storage.from("ugovori").upload(`${id}/${file.name}`, file, { cacheControl:"3600", upsert:true });
       if(error){ loading(false); console.error(error); showToast("Greška upload"); return; }
       const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/ugovori/${data.path}`;
@@ -568,21 +608,17 @@
         setView(btn.dataset.view);
       });
 
-      // Login
-      btnLogin.addEventListener("click", async ()=>{
-        loginErr.classList.add("hidden");
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-        loading(true);
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        loading(false);
-        if(error){ loginErr.textContent = "Pogrešan email ili lozinka."; loginErr.classList.remove("hidden"); return; }
-        await showApp(); await fetchOrders(); subscribeRealtime();
+      // Login (klik + Enter)
+      btnLogin.addEventListener("click", (e)=>{ e.preventDefault(); doLogin(); });
+      ["email","password"].forEach(id=>{
+        document.getElementById(id).addEventListener("keydown", (e)=>{
+          if(e.key==="Enter"){ e.preventDefault(); doLogin(); }
+        });
       });
 
       // Logout
       btnLogout.addEventListener("click", async ()=>{
-        await supabase.auth.signOut();
+        try{ await supabase?.auth.signOut(); }catch{}
         orders = rawOrders = []; selectedIds.clear(); currentOrder = null;
         await showLogin();
       });
@@ -636,7 +672,7 @@
 
     function subscribeRealtime(){
       try{
-        supabase.channel('orders-ch')
+        const ch = supabase.channel('orders-ch')
           .on('postgres_changes',{event:'*', schema:'public', table:'orders'}, payload=>{
             showToast("Ažuriranje narudžbi"); fetchOrders();
           })
@@ -648,10 +684,6 @@
         document.getElementById("sysStatus").textContent = "Realtime: offline • Cron: — • Storage: —";
       }
     }
-
-    /* helpers to toggle hidden class */
-    function hide(el){ el.classList.add("hidden"); }
-    function show(el){ el.classList.remove("hidden"); }
   </script>
 </body>
 </html>
