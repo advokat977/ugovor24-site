@@ -1,335 +1,657 @@
 <!DOCTYPE html>
-<html lang="sr">
+<html lang="sr-Latn-ME">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Ugovor24.com</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --background-color: #f8f9fa;
-            --card-background: #ffffff;
-            --text-color: #212529;
-            --light-text: #6c757d;
-            --border-color: #e9ecef;
-            --shadow-color: rgba(0, 0, 0, 0.05);
-            --error-color: #dc3545;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-        }
-        header {
-            background: var(--card-background);
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--border-color);
-            text-align: center;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        main { flex-grow: 1; }
-        #login-section {
-            max-width: 400px;
-            margin: 4rem auto;
-            padding: 2rem;
-            background: var(--card-background);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px var(--shadow-color);
-        }
-        #login-section h2 { text-align: center; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .login-button {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-color);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .logout-button {
-            padding: 8px 16px;
-            background: var(--secondary-color);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #error-message { color: var(--error-color); text-align: center; margin-top: 1rem; }
-        .table-responsive {
-            overflow-x: auto;
-            background-color: var(--card-background);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px var(--shadow-color);
-            padding: 1.5rem;
-        }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th, td { text-align: left; padding: 12px 15px; border-bottom: 1px solid var(--border-color); }
-        th { background-color: var(--background-color); font-weight: 600; }
-        tr:hover { background-color: #f1f3f5; }
-        .status-badge { padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 0.8em; color: #fff; }
-        .status-false { background-color: #e85959; }
-        .status-true { background-color: #20c997; }
-        .action-buttons button, .action-buttons input { font-size: 0.8em; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; }
-        .action-buttons button.primary { background-color: var(--primary-color); color: #fff; }
-        .action-buttons button.primary:hover { background-color: #0056b3; }
-        .action-buttons button.secondary { background-color: var(--secondary-color); color: #fff; }
-        .action-buttons button.secondary:hover { background-color: #5a6268; }
-        .hidden { display: none; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ugovor24 — Komandni Centar</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Font (Inter) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      /* Brending */
+      --brand:#007BFF;          /* OG plava */
+      --brand-2:#20c997;
+
+      /* Tema (dark UI) */
+      --bg:#0b0d10;
+      --bg-elev:#12151a;
+      --panel:#171b22;
+      --muted:#8b95a5;
+      --text:#e7edf6;
+      --warn:#ffb020;
+      --error:#e85959;
+      --ok:#2ecc71;
+      --border:#222834;
+      --shadow:0 8px 24px rgba(0,0,0,.25);
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height:1.5;display:flex;min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+
+    .app{display:grid;grid-template-columns:260px 1fr;grid-template-rows:auto 1fr;grid-template-areas:"side head" "side main";width:100%}
+
+    /* SIDEBAR */
+    .sidebar{grid-area:side;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column}
+    .brand{display:flex;align-items:center;gap:.75rem;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+    .brand__logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#42a0ff)}
+    .brand__name{font-weight:800;letter-spacing:.2px}
+    .nav{padding:.75rem}
+    .nav button{
+      width:100%;text-align:left;background:transparent;border:0;color:var(--text);padding:.65rem .85rem;border-radius:10px;
+      display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.95rem
+    }
+    .nav button:hover{background:#132540}
+    .nav button.active{background:#0f1d35;outline:1px solid #1d3b74}
+
+    .spacer{flex:1}
+    .sidebar__footer{padding:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
+
+    /* HEADER */
+    .header{grid-area:head;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem;padding:.8rem 1rem;position:relative}
+    .search{flex:1;position:relative}
+    .search input{
+      width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.7rem .9rem;outline:none
+    }
+    .header__actions{display:flex;align-items:center;gap:.5rem}
+    .btn{
+      background:#162131;border:1px solid var(--border);color:var(--text);padding:.55rem .8rem;border-radius:10px;cursor:pointer;font-weight:600
+    }
+    .btn.primary{background:var(--brand);border-color:transparent}
+    .btn.ghost{background:transparent}
+    .badge{display:inline-flex;align-items:center;gap:.35rem;background:#141c2b;border:1px solid var(--border);border-radius:999px;padding:.25rem .6rem;font-size:.8rem;color:var(--muted)}
+
+    /* Loader bar */
+    .loader{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--brand),#42a0ff);transform:scaleX(0);transform-origin:left;transition:.25s}
+    .loader.on{transform:scaleX(1)}
+
+    /* MAIN */
+    .main{grid-area:main;padding:1.25rem;overflow:auto}
+    .grid{display:grid;gap:1rem}
+    .grid.cards{grid-template-columns:repeat(4,minmax(200px,1fr))}
+    .card{
+      background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem
+    }
+    .kpi{display:flex;flex-direction:column;gap:.4rem}
+    .kpi .label{color:var(--muted);font-size:.85rem}
+    .kpi .value{font-size:1.6rem;font-weight:800}
+    .kpi .delta{font-size:.85rem}
+    .delta.up{color:var(--brand-2)} .delta.down{color:var(--error)}
+
+    /* TABLE */
+    .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 .75rem}
+    .toolbar .input, .toolbar .select{
+      background:var(--bg-elev);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.55rem .7rem;outline:none
+    }
+    table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    thead th{background:#141924;color:#aeb7c6;text-align:left;font-weight:600;padding:.75rem;border-bottom:1px solid var(--border);font-size:.9rem}
+    tbody td{padding:.75rem;border-bottom:1px solid var(--border);font-size:.95rem}
+    tbody tr:hover{background:#141a25}
+    .status{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .5rem;border-radius:8px;font-size:.8rem}
+    .status.paid{background:#0f2a23;color:#7be0c3;border:1px solid #1f4f44}
+    .status.unpaid{background:#2a0f11;color:#ffb1b1;border:1px solid #512325}
+    .status.sent{background:#11243a;color:#9ad1ff;border:1px solid #224b74}
+    .status.wait{background:#2d2a14;color:#ffe287;border:1px solid #5c5522}
+    .actions{display:flex;gap:.4rem;flex-wrap:wrap}
+    .btn.small{padding:.35rem .6rem;font-size:.85rem;border-radius:8px}
+    .btn.success{background:var(--brand-2);border-color:transparent;color:#062016}
+    .btn.warn{background:var(--warn);border-color:transparent;color:#251d00}
+    .btn.danger{background:#ff6b6b;border-color:transparent}
+
+    /* LAYOUTS */
+    .split{display:grid;grid-template-columns:2fr 1fr;gap:1rem}
+    .list{overflow:auto}
+    .aside{position:sticky;top:1rem;height:fit-content}
+
+    /* LOGIN */
+    .login-wrap{max-width:420px;margin:8vh auto;padding:1.25rem}
+    .login-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem}
+    .field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.8rem}
+    .field input{background:var(--bg-elev);border:1px solid var(--border);color:var(--text);padding:.65rem .75rem;border-radius:10px}
+    .error{color:#ff9aa2;font-size:.9rem;margin-top:.35rem}
+
+    /* DRAWER (order details) */
+    .drawer{position:fixed;inset:auto 0 0 auto;top:0;width:460px;height:100%;background:var(--panel);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .25s ease;z-index:50;display:flex;flex-direction:column}
+    .drawer.open{transform:translateX(0)}
+    .drawer__head{padding:1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .drawer__body{padding:1rem;overflow:auto;display:flex;flex-direction:column;gap:1rem}
+    .timeline{display:flex;flex-direction:column;gap:.6rem}
+    .tl-item{display:grid;grid-template-columns:18px 1fr;gap:.6rem}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--brand)}
+    .muted{color:var(--muted);font-size:.9rem}
+
+    /* TOAST */
+    .toast{position:fixed;right:16px;bottom:16px;background:#10151d;border:1px solid var(--border);color:var(--text);padding:.6rem .75rem;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.25s}
+    .toast.show{opacity:1;transform:translateY(0)}
+    .hidden{display:none !important}
+
+    /* iOS safe area */
+    @supports(padding:max(0px)) {
+      .header { padding-top: max(.8rem, env(safe-area-inset-top)); }
+      .main   { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
+    }
+    /* Fokus (a11y) */
+    button:focus-visible, .nav button:focus-visible, input:focus-visible, select:focus-visible {
+      outline:2px solid var(--brand); outline-offset:2px;
+    }
+  </style>
 </head>
 <body>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand__logo"></div>
+        <div class="brand__name">Ugovor24 • Admin</div>
+      </div>
+      <nav class="nav">
+        <button class="active" data-view="dashboard">📊 Dashboard</button>
+        <button data-view="orders">🗂️ Narudžbe</button>
+        <button data-view="outbox">✉️ Outbox</button>
+        <button data-view="documents">📁 Dokumenti</button>
+        <button data-view="analytics">📈 Analitika</button>
+        <button data-view="settings">⚙️ Podešavanja</button>
+      </nav>
+      <div class="spacer"></div>
+      <div class="sidebar__footer">
+        v1.0 • privatno<br />
+        <span class="muted">noindex • secured</span>
+      </div>
+    </aside>
 
-    <header>
-        <h1>Admin Panel</h1>
-        <button id="logout-button" class="logout-button hidden">Odjavi se</button>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="badge" id="envBadge">Live</div>
+      <div class="search"><input id="globalSearch" type="search" placeholder="Pretraga (id/email/ugovor)…" /></div>
+      <div class="header__actions">
+        <button id="btnRefresh" class="btn ghost">⟳ Osvježi</button>
+        <button id="btnLogout" class="btn">Odjava</button>
+      </div>
+      <div id="loader" class="loader"></div>
     </header>
 
-    <main>
-        <div id="login-section" class="container">
-            <h2>Prijava</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Lozinka</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="login-button">Prijavi se</button>
-                <p id="error-message" class="hidden"></p>
-            </form>
+    <!-- MAIN -->
+    <main class="main">
+      <!-- LOGIN SCREEN -->
+      <section id="loginView" class="login-wrap">
+        <div class="login-card">
+          <h2 style="margin:.25rem 0 1rem">Prijava</h2>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label for="password">Lozinka</label>
+            <input id="password" type="password" placeholder="••••••••" required />
+          </div>
+          <button id="btnLogin" class="btn primary" style="width:100%;margin-top:.5rem">Prijavi se</button>
+          <div id="loginErr" class="error hidden"></div>
+          <p class="muted" style="margin-top:.8rem">Ovaj panel je privatan. Pristup samo uz Supabase nalog.</p>
         </div>
+      </section>
 
-        <div id="admin-content" class="container hidden">
-            <p>Upravljanje narudžbinama</p>
-            <div class="table-responsive">
-                <table id="orders-table">
-                    <thead>
-                        <tr>
-                            <th>Broj narudžbe</th>
-                            <th>Ugovor</th>
-                            <th>Klijent Email</th>
-                            <th>Iznos</th>
-                            <th>Uplata</th>
-                            <th>Status</th>
-                            <th>Akcije</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+      <!-- APP CONTENT -->
+      <section id="appView" class="grid hidden">
+        <!-- DASHBOARD -->
+        <div id="view-dashboard" class="grid">
+          <div class="grid cards">
+            <div class="card kpi">
+              <div class="label">Narudžbe danas</div>
+              <div class="value" id="kpiToday">0</div>
+              <div class="delta up" id="kpiTodayDelta">—</div>
             </div>
+            <div class="card kpi">
+              <div class="label">Prihod (30d)</div>
+              <div class="value" id="kpiRev30">0 €</div>
+              <div class="delta up" id="kpiRevDelta">—</div>
+            </div>
+            <div class="card kpi">
+              <div class="label">Prosječno vrijeme do finala</div>
+              <div class="value" id="kpiTTA">—</div>
+              <div class="delta" id="kpiTtaNote" style="color:#9fb3c8">cilj &lt; 24h</div>
+            </div>
+            <div class="card kpi">
+              <div class="label">% finalizovano &lt; 24h</div>
+              <div class="value" id="kpiF24">—</div>
+              <div class="delta up" id="kpiF24Delta">—</div>
+            </div>
+          </div>
+
+          <div class="split">
+            <div class="card list">
+              <div class="toolbar">
+                <input id="filterSearch" class="input" placeholder="Filter: email / #id / tip ugovora" />
+                <select id="filterStatus" class="select">
+                  <option value="">Status (sve)</option>
+                  <option value="paid">Plaćene</option>
+                  <option value="unpaid">Neplaćene</option>
+                  <option value="sent">Final poslati</option>
+                  <option value="wait">Čeka final</option>
+                </select>
+                <button id="btnBulkVerify" class="btn small">✔︎ Verifikuj uplate</button>
+                <button id="btnBulkSend" class="btn small primary">➡︎ Pošalji final</button>
+                <button id="btnExportCsv" class="btn small">⇩ Export CSV</button>
+              </div>
+              <table id="ordersTable">
+                <thead>
+                  <tr>
+                    <th style="width:36px"><input type="checkbox" id="checkAll" /></th>
+                    <th>#</th>
+                    <th>Ugovor</th>
+                    <th>Klijent</th>
+                    <th>Iznos</th>
+                    <th>Uplata</th>
+                    <th>Final</th>
+                    <th>Akcije</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+              </table>
+            </div>
+
+            <div class="aside">
+              <div class="card">
+                <h3 style="margin:0 0 .4rem">Critical Queue</h3>
+                <p class="muted" style="margin:.2rem 0 1rem">Plaćeno, a nema finala; greške slanja; bez fiskalnog.</p>
+                <ul id="criticalList" style="margin:0;padding-left:1.1rem"></ul>
+              </div>
+              <div class="card" style="margin-top:1rem">
+                <h3 style="margin:0 0 .4rem">Sistem status</h3>
+                <p id="sysStatus" class="muted">Realtime: — • Cron: — • Storage: —</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Placeholder sekcije -->
+        <div id="view-orders" class="card hidden"><h3 style="margin:0">Narudžbe — sve</h3><p class="muted">Koristi glavni prikaz na Dashboardu.</p></div>
+        <div id="view-outbox" class="card hidden"><h3 style="margin:0">Outbox</h3><p class="muted">Dnevnik poslatih emailova (dodajemo kada tabela bude spremna).</p></div>
+        <div id="view-documents" class="card hidden"><h3 style="margin:0">Dokumenti</h3><p class="muted">Pretraga finalnih ugovora i fiskalnih računa.</p></div>
+        <div id="view-analytics" class="card hidden"><h3 style="margin:0">Analitika</h3><p class="muted">Trendovi, top ugovori, segmenti.</p></div>
+        <div id="view-settings" class="card hidden"><h3 style="margin:0">Podešavanja</h3><p class="muted">Email šabloni, rok signed linkova, podsjetnici (uskoro).</p></div>
+      </section>
     </main>
-    
-    <script>
-        const supabaseUrl = 'https://jgkllsxeuoozpglzwxwg.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc';
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  </div>
 
-        const loginSection = document.getElementById('login-section');
-        const adminContent = document.getElementById('admin-content');
-        const loginForm = document.getElementById('login-form');
-        const logoutButton = document.getElementById('logout-button');
-        const errorMessage = document.getElementById('error-message');
+  <!-- DRAWER: Order details -->
+  <div id="drawer" class="drawer" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="drawer__head">
+      <strong id="drawerTitle">Narudžba</strong>
+      <div style="display:flex;gap:.5rem">
+        <button id="btnDrawerSend" class="btn small primary">Pošalji final</button>
+        <button id="btnDrawerClose" class="btn small">Zatvori</button>
+      </div>
+    </div>
+    <div class="drawer__body">
+      <div>
+        <div class="muted">Klijent</div>
+        <div id="drawerClient">—</div>
+      </div>
+      <div>
+        <div class="muted">Tip ugovora</div>
+        <div id="drawerType">—</div>
+      </div>
+      <div>
+        <div class="muted">Iznos</div>
+        <div id="drawerAmount">—</div>
+      </div>
+      <div>
+        <div class="muted">Finalni fajl</div>
+        <input id="drawerFile" type="file" />
+      </div>
 
-        // Funkcija za prikazivanje sadržaja za prijavljene korisnike
-        const showAdminContent = () => {
-            loginSection.classList.add('hidden');
-            adminContent.classList.remove('hidden');
-            logoutButton.classList.remove('hidden');
-            fetchOrders();
-        };
+      <div>
+        <div class="muted" style="margin-bottom:.25rem">Timeline</div>
+        <div id="drawerTimeline" class="timeline"></div>
+      </div>
+    </div>
+  </div>
 
-        // Funkcija za prikazivanje login forme
-        const showLogin = () => {
-            loginSection.classList.remove('hidden');
-            adminContent.classList.add('hidden');
-            logoutButton.classList.add('hidden');
-        };
-        
-        // Provjera sesije pri učitavanju stranice
-        document.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                showAdminContent();
-            } else {
-                showLogin();
-            }
-        });
+  <!-- TOAST -->
+  <div id="toast" class="toast">Poruka</div>
 
-        // Rukovanje prijavom
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            errorMessage.classList.add('hidden');
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+  <script>
+    /***** CONFIG — koristiš tvoje vrijednosti *****/
+    const SUPABASE_URL = "https://jgkllsxeuoozpglzwxwg.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc";
+    const API_FINALIZE = "/api/finalize-contract.js";
 
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            if (error) {
-                errorMessage.textContent = 'Pogrešan email ili lozinka.';
-                errorMessage.classList.remove('hidden');
-            } else {
-                showAdminContent();
-            }
-        });
+    /***** STATE *****/
+    let orders = [];
+    let rawOrders = [];
+    let selectedIds = new Set();
+    let currentOrder = null;
 
-        // Rukovanje odjavom
-        logoutButton.addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            showLogin();
-        });
+    /***** ELEMENTS *****/
+    const loginView = document.getElementById("loginView");
+    const appView   = document.getElementById("appView");
+    const loginErr  = document.getElementById("loginErr");
+    const btnLogin  = document.getElementById("btnLogin");
+    const btnLogout = document.getElementById("btnLogout");
+    const btnRefresh= document.getElementById("btnRefresh");
+    const envBadge  = document.getElementById("envBadge");
+    const loaderBar = document.getElementById("loader");
 
-        async function fetchOrders() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) return; // Ne radi ništa ako korisnik nije prijavljen
+    const nav = document.querySelector(".nav");
+    const views = {
+      dashboard: document.getElementById("view-dashboard"),
+      orders: document.getElementById("view-orders"),
+      outbox: document.getElementById("view-outbox"),
+      documents: document.getElementById("view-documents"),
+      analytics: document.getElementById("view-analytics"),
+      settings: document.getElementById("view-settings"),
+    };
 
-            const { data, error } = await supabase
-                .from('orders')
-                .select('*')
-                .order('created_at', { ascending: false });
+    const filterSearch = document.getElementById("filterSearch");
+    const filterStatus = document.getElementById("filterStatus");
+    const ordersTbody  = document.getElementById("ordersTbody");
+    const checkAll     = document.getElementById("checkAll");
+    const criticalList = document.getElementById("criticalList");
 
-            if (error) {
-                console.error('Error fetching orders:', error);
-                return;
-            }
+    const kpiToday = document.getElementById("kpiToday");
+    const kpiTodayDelta = document.getElementById("kpiTodayDelta");
+    const kpiRev30 = document.getElementById("kpiRev30");
+    const kpiRevDelta = document.getElementById("kpiRevDelta");
+    const kpiTTA = document.getElementById("kpiTTA");
+    const kpiF24 = document.getElementById("kpiF24");
 
-            const tableBody = document.querySelector('#orders-table tbody');
-            tableBody.innerHTML = '';
-            if (data.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Nema pristiglih narudžbina.</td></tr>';
-            }
-            data.forEach(order => {
-                const row = document.createElement('tr');
-                const formattedOrderNumber = String(order.order_number).padStart(5, '0');
-                const paidStatusClass = order.is_paid ? 'status-true' : 'status-false';
-                const paidStatusText = order.is_paid ? 'Uplaćeno' : 'Na čekanju';
-                const finalStatusClass = order.is_final_approved ? 'status-true' : 'status-false';
-                const finalStatusText = order.is_final_approved ? 'Poslato' : 'Čeka odobrenje';
+    const drawer = document.getElementById("drawer");
+    const drawerTitle = document.getElementById("drawerTitle");
+    const drawerClient = document.getElementById("drawerClient");
+    const drawerType = document.getElementById("drawerType");
+    const drawerAmount = document.getElementById("drawerAmount");
+    const drawerFile = document.getElementById("drawerFile");
+    const drawerTimeline = document.getElementById("drawerTimeline");
+    const btnDrawerClose = document.getElementById("btnDrawerClose");
+    const btnDrawerSend  = document.getElementById("btnDrawerSend");
 
-                let actionButtonsHtml = '';
-                if (!order.is_paid) {
-                    actionButtonsHtml += `<button class="primary" onclick="verifyPayment('${order.id}')">Verifikuj Uplatu</button>`;
-                }
-                actionButtonsHtml += `
-                    <input type="file" id="file-${order.id}" style="display: none;" onchange="uploadFile('${order.id}')">
-                    <button class="secondary" onclick="document.getElementById('file-${order.id}').click()">Priloži Ugovor</button>
-                `;
-                if (order.is_paid && !order.is_final_approved && order.final_document_url) {
-                    actionButtonsHtml += `<button class="primary" onclick="sendFinal('${order.id}')">Pošalji Finalni Ugovor</button>`;
-                }
+    const toast = document.getElementById("toast");
+    const globalSearch = document.getElementById("globalSearch");
 
-                row.innerHTML = `
-                    <td>#${formattedOrderNumber}</td>
-                    <td>${order.ugovor_type}</td>
-                    <td>${order.client_email}</td>
-                    <td>${order.total_price} €</td>
-                    <td><span class="status-badge ${paidStatusClass}">${paidStatusText}</span></td>
-                    <td><span class="status-badge ${finalStatusClass}">${finalStatusText}</span></td>
-                    <td class="action-buttons">${actionButtonsHtml}</td>
-                `;
-                tableBody.appendChild(row);
-            });
+    /***** UTIL *****/
+    const fmtMoney = v => Intl.NumberFormat("sr-ME",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(v||0);
+    const pad = (n, w=5) => String(n).padStart(w,"0");
+    const show = el => el.classList.remove("hidden");
+    const hide = el => el.classList.add("hidden");
+    const loading = (on)=> loaderBar.classList.toggle("on", !!on);
+    function showToast(msg){ toast.textContent = msg; toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"), 1800); }
+
+    function setView(name){
+      for(const [k,el] of Object.entries(views)) (k===name)?show(el):hide(el);
+      document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active", b.dataset.view===name));
+    }
+
+    function renderKPIs(){
+      const today = new Date().toDateString();
+      const todayCount = orders.filter(o => new Date(o.created_at).toDateString()===today).length;
+      const revenue30 = orders.reduce((s,o)=>{
+        const d = new Date(o.created_at);
+        const diff = (Date.now()-d.getTime())/86400000;
+        return diff<=30 ? s + (Number(o.total_price)||0) : s;
+      },0);
+      kpiToday.textContent = todayCount;
+      kpiTodayDelta.textContent = "—";
+      kpiRev30.textContent = fmtMoney(revenue30);
+      kpiRevDelta.textContent = "—";
+      kpiTTA.textContent = "—";
+      kpiF24.textContent = "—";
+    }
+
+    function statusBadge(o){
+      const paid = o.is_paid;
+      const sent = o.is_final_approved;
+      const s1 = paid ? '<span class="status paid">Uplaćeno</span>' : '<span class="status unpaid">Na čekanju</span>';
+      const s2 = sent ? '<span class="status sent">Poslato</span>' : '<span class="status wait">Čeka</span>';
+      return [s1,s2];
+    }
+
+    function renderTable(){
+      ordersTbody.innerHTML = "";
+      selectedIds.clear();
+      checkAll.checked = false;
+
+      const txt = (filterSearch.value||"").toLowerCase();
+      const st = filterStatus.value;
+
+      const filtered = orders.filter(o=>{
+        const hit = !txt
+          || String(o.order_number).includes(txt)
+          || (o.client_email||"").toLowerCase().includes(txt)
+          || (o.ugovor_type||"").toLowerCase().includes(txt);
+        if(!hit) return false;
+        if(st==="paid" && !o.is_paid) return false;
+        if(st==="unpaid" && o.is_paid) return false;
+        if(st==="sent" && !o.is_final_approved) return false;
+        if(st==="wait" && o.is_final_approved) return false;
+        return true;
+      });
+
+      for(const o of filtered){
+        const tr = document.createElement("tr");
+        const [sPaid, sFinal] = statusBadge(o);
+        const amount = Number(o.total_price||0);
+
+        tr.innerHTML = `
+          <td><input type="checkbox" data-id="${o.id}"></td>
+          <td>#${pad(o.order_number||o.id)}</td>
+          <td>${o.ugovor_type||"—"}</td>
+          <td>${o.client_email||"—"}</td>
+          <td>${fmtMoney(amount)}</td>
+          <td>${sPaid}</td>
+          <td>${sFinal}</td>
+          <td class="actions">
+            ${!o.is_paid ? `<button class="btn small success" data-act="verify" data-id="${o.id}">Verifikuj</button>` : ``}
+            <button class="btn small" data-act="upload" data-id="${o.id}">Priloži</button>
+            ${(o.is_paid && !o.is_final_approved && o.final_document_url) ? `<button class="btn small primary" data-act="send" data-id="${o.id}">Pošalji</button>` : ``}
+            <button class="btn small" data-act="open" data-id="${o.id}">Detalji</button>
+          </td>
+        `;
+        ordersTbody.appendChild(tr);
+      }
+      renderCritical();
+    }
+
+    function renderCritical(){
+      const items = orders.filter(o => (o.is_paid && !o.is_final_approved));
+      if(items.length===0){ criticalList.innerHTML = `<li class="muted">Nema kritičnih stavki.</li>`; return;}
+      criticalList.innerHTML = items.map(o=>`<li>#${pad(o.order_number)} • ${o.client_email} • čeka final</li>`).join("");
+    }
+
+    function openDrawer(order){
+      currentOrder = order;
+      drawerTitle.textContent = `Narudžba #${pad(order.order_number||order.id)}`;
+      drawerClient.textContent = order.client_email || "—";
+      drawerType.textContent   = order.ugovor_type || "—";
+      drawerAmount.textContent = fmtMoney(Number(order.total_price||0));
+      drawerTimeline.innerHTML = `
+        <div class="tl-item"><div class="dot"></div><div>Kreirano <div class="muted">${new Date(order.created_at).toLocaleString()}</div></div></div>
+        <div class="tl-item"><div class="dot" style="background:${order.is_paid?'#20c997':'#555'}"></div><div>Uplata ${order.is_paid?'potvrđena':'na čekanju'}</div></div>
+        <div class="tl-item"><div class="dot" style="background:${order.final_document_url?'#42a0ff':'#555'}"></div><div>Finalni fajl ${order.final_document_url?'priložen':'nije priložen'}</div></div>
+        <div class="tl-item"><div class="dot" style="background:${order.is_final_approved?'#42a0ff':'#555'}"></div><div>Final poslat ${order.is_final_approved?'✓':'—'}</div></div>
+      `;
+      drawer.classList.add("open");
+      drawer.setAttribute("aria-hidden","false");
+    }
+    function closeDrawer(){
+      drawer.classList.remove("open");
+      drawer.setAttribute("aria-hidden","true");
+      currentOrder = null;
+      drawerFile.value = "";
+    }
+
+    /***** AUTH *****/
+    async function checkSession(){
+      const { data:{ session } } = await supabase.auth.getSession();
+      return session;
+    }
+    async function showApp(){ hide(loginView); show(appView); setView("dashboard"); }
+    async function showLogin(){ show(loginView); hide(appView); }
+
+    /***** DATA FETCH *****/
+    async function fetchOrders(){
+      loading(true);
+      const { data, error } = await supabase.from("orders").select("*").order("created_at",{ascending:false});
+      loading(false);
+      if(error){
+        console.error(error);
+        ordersTbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#e85959">Greška pri učitavanju narudžbi.</td></tr>`;
+        return;
+      }
+      rawOrders = data||[];
+      orders = [...rawOrders];
+      renderKPIs();
+      renderTable();
+    }
+
+    /***** ACTIONS via /api (nikad direktno iz klijenta za kritične promjene) *****/
+    async function getToken(){
+      const { data:{ session } } = await supabase.auth.getSession();
+      return session ? session.access_token : null;
+    }
+
+    async function actVerify(id){
+      const token = await getToken();
+      if(!token){ showToast("Sesija istekla"); return; }
+      loading(true);
+      const res = await fetch(API_FINALIZE,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({action:"verify_payment",order_id:id})});
+      loading(false);
+      if(res.ok){ showToast("Uplata verifikovana"); fetchOrders(); } else showToast("Greška pri verifikaciji");
+    }
+
+    async function actUpload(id, file){
+      if(!file){ showToast("Izaberi fajl"); return; }
+      const token = await getToken(); if(!token){ showToast("Sesija istekla"); return; }
+      loading(true);
+      // Upload u bucket 'ugovori' (pretpostavka: javni bucket kao i do sada)
+      const { data, error } = await supabase.storage.from("ugovori").upload(`${id}/${file.name}`, file, { cacheControl:"3600", upsert:true });
+      if(error){ loading(false); console.error(error); showToast("Greška upload"); return; }
+      const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/ugovori/${data.path}`;
+      const res = await fetch(API_FINALIZE,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({action:"upload_file",order_id:id,fileUrl})});
+      loading(false);
+      res.ok ? (showToast("Ugovor priložen"), fetchOrders()) : showToast("Greška pri prilaganju");
+    }
+
+    async function actSend(id){
+      const token = await getToken(); if(!token){ showToast("Sesija istekla"); return; }
+      loading(true);
+      const res = await fetch(API_FINALIZE,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({action:"send_final",order_id:id})});
+      loading(false);
+      if(res.ok){ showToast("Final poslat"); fetchOrders(); }
+      else{ try{ const j=await res.json(); showToast("Greška: "+(j.error||"Nepoznata")); }catch{ showToast("Greška pri slanju"); } }
+    }
+
+    /***** EVENT BINDINGS *****/
+    document.addEventListener("DOMContentLoaded", async ()=>{
+      // Sesija?
+      const session = await checkSession();
+      if(session){ await showApp(); await fetchOrders(); subscribeRealtime(); }
+      else{ await showLogin(); }
+
+      // Nav
+      nav.addEventListener("click", (e)=>{
+        const btn = e.target.closest("button[data-view]"); if(!btn) return;
+        setView(btn.dataset.view);
+      });
+
+      // Login
+      btnLogin.addEventListener("click", async ()=>{
+        loginErr.classList.add("hidden");
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        loading(true);
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        loading(false);
+        if(error){ loginErr.textContent = "Pogrešan email ili lozinka."; loginErr.classList.remove("hidden"); return; }
+        await showApp(); await fetchOrders(); subscribeRealtime();
+      });
+
+      // Logout
+      btnLogout.addEventListener("click", async ()=>{
+        await supabase.auth.signOut();
+        orders = rawOrders = []; selectedIds.clear(); currentOrder = null;
+        await showLogin();
+      });
+
+      // Refresh
+      btnRefresh.addEventListener("click", fetchOrders);
+
+      // Filteri
+      filterSearch.addEventListener("input", renderTable);
+      filterStatus.addEventListener("change", renderTable);
+      globalSearch.addEventListener("keydown", e=>{
+        if(e.key==="Enter"){ filterSearch.value = globalSearch.value; setView("dashboard"); renderTable(); }
+      });
+
+      // Selektovanje
+      checkAll.addEventListener("change", ()=>{
+        selectedIds.clear();
+        if(checkAll.checked){
+          document.querySelectorAll('#ordersTbody input[type="checkbox"]').forEach(cb=>{ cb.checked=true; selectedIds.add(cb.dataset.id); });
+        }else{
+          document.querySelectorAll('#ordersTbody input[type="checkbox"]').forEach(cb=>cb.checked=false);
         }
-        
-        async function getAuthToken() {
-            const { data: { session } } = await supabase.auth.getSession();
-            return session ? session.access_token : null;
-        }
-        
-        async function verifyPayment(orderId) {
-            const token = await getAuthToken();
-            if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
-            
-            const response = await fetch('/api/finalize-contract.js', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ action: 'verify_payment', order_id: orderId }),
-            });
-            if (response.ok) {
-                fetchOrders(); 
-                alert('Uplata verifikovana!');
-            } else {
-                alert('Greška pri verifikaciji uplate.');
-            }
-        }
-        
-        async function uploadFile(orderId) {
-            const token = await getAuthToken();
-            if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
-            
-            const fileInput = document.getElementById(`file-${orderId}`);
-            const file = fileInput.files[0];
-            if (!file) return;
+      });
 
-            const { data, error } = await supabase.storage
-                .from('ugovori')
-                .upload(`${orderId}/${file.name}`, file, { cacheControl: '3600', upsert: true }); 
-            
-            if (error) {
-                console.error('Error uploading file:', error);
-                alert('Greška pri upload-u fajla!');
-                return;
-            }
+      ordersTbody.addEventListener("change", (e)=>{
+        const cb = e.target.closest('input[type="checkbox"][data-id]');
+        if(!cb) return;
+        if(cb.checked) selectedIds.add(cb.dataset.id); else selectedIds.delete(cb.dataset.id);
+      });
 
-            const fileUrl = `${supabaseUrl}/storage/v1/object/public/ugovori/${data.path}`;
-            const response = await fetch('/api/finalize-contract.js', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ action: 'upload_file', order_id: orderId, fileUrl: fileUrl }),
-            });
-            
-            if (response.ok) {
-                fetchOrders();
-                alert('Ugovor priložen!');
-            } else {
-                alert('Greška pri prilaganju ugovora!');
-            }
-        }
+      // Row actions
+      ordersTbody.addEventListener("click", (e)=>{
+        const btn = e.target.closest("button[data-act]");
+        if(!btn) return;
+        const id = btn.dataset.id;
+        const order = orders.find(o=>String(o.id)===String(id));
+        if(!order) return;
 
-        async function sendFinal(orderId) {
-             const token = await getAuthToken();
-             if (!token) { alert('Sesija istekla, molimo prijavite se ponovo.'); return; }
+        if(btn.dataset.act==="verify") actVerify(id);
+        if(btn.dataset.act==="upload"){ openDrawer(order); drawerFile.click(); }
+        if(btn.dataset.act==="send") actSend(id);
+        if(btn.dataset.act==="open") openDrawer(order);
+      });
 
-             const response = await fetch('/api/finalize-contract.js', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ action: 'send_final', order_id: orderId }),
-            });
-            if (response.ok) {
-                fetchOrders();
-                alert('Finalni ugovor poslat klijentu!');
-            } else {
-                const errorData = await response.json();
-                alert('Greška pri slanju finalnog ugovora: ' + (errorData.error || 'Nepoznata greška.'));
-            }
-        }
-    </script>
+      drawerFile.addEventListener("change", ()=>{
+        if(currentOrder && drawerFile.files[0]) actUpload(currentOrder.id, drawerFile.files[0]);
+      });
+      btnDrawerClose.addEventListener("click", closeDrawer);
+      btnDrawerSend.addEventListener("click", ()=> currentOrder && actSend(currentOrder.id));
+    });
+
+    function subscribeRealtime(){
+      try{
+        supabase.channel('orders-ch')
+          .on('postgres_changes',{event:'*', schema:'public', table:'orders'}, payload=>{
+            showToast("Ažuriranje narudžbi"); fetchOrders();
+          })
+          .subscribe((status)=>{
+            document.getElementById("sysStatus").textContent = `Realtime: ${status || 'online'} • Cron: — • Storage: —`;
+          });
+      }catch(e){
+        console.warn("Realtime off", e);
+        document.getElementById("sysStatus").textContent = "Realtime: offline • Cron: — • Storage: —";
+      }
+    }
+
+    /* helpers to toggle hidden class */
+    function hide(el){ el.classList.add("hidden"); }
+    function show(el){ el.classList.remove("hidden"); }
+  </script>
 </body>
 </html>
