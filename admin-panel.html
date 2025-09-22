@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1"
   />
   <title>Ugovor24 — Komandni Centar</title>
   <meta name="robots" content="noindex, nofollow" />
@@ -35,235 +35,202 @@
       --border:#222834;
       --shadow:0 8px 24px rgba(0,0,0,.25);
       --radius:12px;
-
-      /* iOS safe area */
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
-
-      /* tipografija */
-      --fs-12: clamp(11px, .82rem, 12px);
-      --fs-14: clamp(12px, .9rem, 14px);
-      --fs-16: clamp(14px, 1rem, 16px);
-      --fs-20: clamp(16px, 1.15rem, 20px);
-      --fs-24: clamp(18px, 1.35rem, 24px);
     }
 
-    /* Global reset/guardovi protiv overflowa */
-    *{ box-sizing:border-box; min-width:0; }
-    html, body { height:100%; }
-    html{ -webkit-text-size-adjust:100%; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{-webkit-text-size-adjust:100%}
     body{
-      margin:0; background:var(--bg); color:var(--text);
+      margin:0;background:var(--bg);color:var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      line-height:1.5; display:flex; min-height:100vh;
-      overflow-x:hidden; /* No horizontal scroll ikad */
+      line-height:1.5;display:flex;min-height:100vh;overflow-x:hidden;
     }
-    a{ color:inherit; text-decoration:none }
-    img, svg, video { max-width:100%; height:auto; }
+    a{color:inherit;text-decoration:none}
 
-    /* App grid */
+    /* GRID APP */
     .app{
-      display:grid; grid-template-columns:260px 1fr; grid-template-rows:auto 1fr;
-      grid-template-areas:"side head" "side main"; width:100%;
+      display:grid;grid-template-columns:260px 1fr;grid-template-rows:auto 1fr;
+      grid-template-areas:"side head" "side main";width:100%;
+      min-width:0;
     }
 
     /* SIDEBAR */
     .sidebar{
-      grid-area:side; background:var(--panel); border-right:1px solid var(--border);
-      display:flex; flex-direction:column; min-height:100vh; position:relative; z-index:40;
+      grid-area:side;background:var(--panel);border-right:1px solid var(--border);
+      display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:40;
       transition:transform .25s ease;
     }
-    .brand{ display:flex; align-items:center; gap:.75rem; padding:1rem 1.25rem; border-bottom:1px solid var(--border) }
-    .brand__logo{ width:36px; height:36px; border-radius:8px; background:linear-gradient(135deg,var(--brand),#42a0ff) }
-    .brand__name{ font-weight:800; letter-spacing:.2px }
-    .nav{ padding:.75rem }
+    .brand{display:flex;align-items:center;gap:.75rem;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+    .brand__logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#42a0ff)}
+    .brand__name{font-weight:800;letter-spacing:.2px}
+    .nav{padding:.75rem}
     .nav button{
-      width:100%; text-align:left; background:transparent; border:0; color:var(--text); padding:.65rem .85rem; border-radius:10px;
-      display:flex; align-items:center; gap:.6rem; cursor:pointer; font-size:var(--fs-14);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      width:100%;text-align:left;background:transparent;border:0;color:var(--text);padding:.65rem .85rem;border-radius:10px;
+      display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.95rem
     }
-    .nav button:hover{ background:#132540 }
-    .nav button.active{ background:#0f1d35; outline:1px solid #1d3b74 }
+    .nav button:hover{background:#132540}
+    .nav button.active{background:#0f1d35;outline:1px solid #1d3b74}
 
-    .spacer{ flex:1 }
-    .sidebar__footer{ padding:1rem; border-top:1px solid var(--border); color:var(--muted); font-size:var(--fs-12) }
+    .spacer{flex:1}
+    .sidebar__footer{padding:1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
 
     /* HEADER */
     .header{
-      grid-area:head; background:var(--panel); border-bottom:1px solid var(--border);
-      display:flex; align-items:center; gap:.6rem; padding:.8rem 1rem; position:sticky; top:0; z-index:45;
-      padding-top:calc(.8rem + var(--safe-top));
+      grid-area:head;background:var(--panel);border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:.6rem;padding:.8rem 1rem;position:sticky;top:0;z-index:45
     }
-    .search{ flex:1; position:relative }
+    .search{flex:1;position:relative;min-width:0}
     .search input{
-      width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
-      border-radius:10px; padding:.7rem .9rem; outline:none; font-size:var(--fs-14);
+      width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.7rem .9rem;outline:none
     }
-    .header__actions{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap }
+    .header__actions{display:flex;align-items:center;gap:.5rem;flex-wrap:nowrap}
     .btn{
-      background:#162131; border:1px solid var(--border); color:var(--text);
-      padding:.55rem .8rem; border-radius:10px; cursor:pointer; font-weight:600; font-size:var(--fs-14);
+      background:#162131;border:1px solid var(--border);color:var(--text);padding:.55rem .8rem;border-radius:10px;cursor:pointer;font-weight:600
     }
-    .btn.primary{ background:var(--brand); border-color:transparent }
-    .btn.ghost{ background:transparent }
-    .btn.icon{ display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; padding:0; border-radius:10px }
-    .badge{ display:inline-flex; align-items:center; gap:.35rem; background:#141c2b; border:1px solid var(--border); border-radius:999px; padding:.25rem .6rem; font-size:var(--fs-12); color:var(--muted) }
+    .btn.primary{background:var(--brand);border-color:transparent}
+    .btn.ghost{background:transparent}
+    .btn.icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border-radius:10px}
+    .badge{display:inline-flex;align-items:center;gap:.35rem;background:#141c2b;border:1px solid var(--border);border-radius:999px;padding:.25rem .6rem;font-size:.8rem;color:var(--muted)}
 
     /* Mobile overlay za sidebar */
     .scrim{
-      position:fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter:saturate(80%) blur(2px);
-      opacity:0; pointer-events:none; transition:.2s; z-index:35;
+      position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:saturate(80%) blur(2px);
+      opacity:0;pointer-events:none;transition:.2s;z-index:35;
     }
-    .scrim.show{ opacity:1; pointer-events:auto }
+    .scrim.show{opacity:1;pointer-events:auto}
 
     /* Loader bar */
-    .loader{ position:absolute; left:0; right:0; bottom:-1px; height:2px; background:linear-gradient(90deg,var(--brand),#42a0ff); transform:scaleX(0); transform-origin:left; transition:.25s }
-    .loader.on{ transform:scaleX(1) }
+    .loader{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--brand),#42a0ff);transform:scaleX(0);transform-origin:left;transition:.25s}
+    .loader.on{transform:scaleX(1)}
 
     /* MAIN */
-    .main{
-      grid-area:main; padding:1.25rem; overflow:auto; padding-bottom:calc(1.25rem + var(--safe-bottom));
-      -webkit-overflow-scrolling: touch;
-    }
-    .grid{ display:grid; gap:1rem }
-    /* KPI grid -> fluid */
-    .grid.cards{ grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+    .main{grid-area:main;padding:1.25rem;overflow:auto;padding-bottom:calc(1.25rem + var(--safe-bottom))}
+    .grid{display:grid;gap:1rem;min-width:0}
+    .grid.cards{grid-template-columns:repeat(4,minmax(220px,1fr))}
     .card{
-      background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:1rem;
-      overflow:hidden;
+      background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem;min-width:0
     }
-    .kpi{ display:flex; flex-direction:column; gap:.4rem }
-    .kpi .label{ color:var(--muted); font-size:var(--fs-12) }
-    .kpi .value{ font-size:var(--fs-24); font-weight:800 }
-    .kpi .delta{ font-size:var(--fs-12) }
-    .delta.up{ color:var(--brand-2) } .delta.down{ color:var(--error) }
+    .kpi{display:flex;flex-direction:column;gap:.4rem}
+    .kpi .label{color:var(--muted);font-size:.85rem}
+    .kpi .value{font-size:1.6rem;font-weight:800}
+    .kpi .delta{font-size:.85rem}
+    .delta.up{color:var(--brand-2)} .delta.down{color:var(--error)}
 
-    /* TABLE & toolbar */
-    .toolbar{
-      display:flex; gap:.5rem; flex-wrap:wrap; margin:0 0 .75rem;
-      align-items:center;
-    }
+    /* TOOLBAR */
+    .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 .75rem}
     .toolbar .input, .toolbar .select{
-      background:var(--bg-elev); border:1px solid var(--border); color:var(--text); border-radius:10px; padding:.55rem .7rem; outline:none; font-size:var(--fs-14);
+      background:var(--bg-elev);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.55rem .7rem;outline:none
     }
 
+    /* TABLES (desktop) */
+    .table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
     table{
-      width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden;
-      table-layout:fixed; /* sprječava širenje */
+      width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+      table-layout:fixed; /* važan fix za iOS wrapping */
+      min-width:760px; /* daje širinu za sadržaj i scroll u wrapu na manjim ekranima */
     }
-    thead th{
-      background:#141924; color:#aeb7c6; text-align:left; font-weight:600; padding:.75rem; border-bottom:1px solid var(--border); font-size:var(--fs-12);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    thead th{background:#141924;color:#aeb7c6;text-align:left;font-weight:600;padding:.75rem;border-bottom:1px solid var(--border);font-size:.9rem;white-space:nowrap}
     tbody td{
-      padding:.75rem; border-bottom:1px solid var(--border); font-size:var(--fs-14);
-      word-break:break-word; overflow-wrap:anywhere;
+      padding:.75rem;border-bottom:1px solid var(--border);font-size:.95rem;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;
     }
-    tbody tr:hover{ background:#141a25 }
-    .status{ display:inline-flex; align-items:center; gap:.35rem; padding:.2rem .5rem; border-radius:8px; font-size:var(--fs-12) }
-    .status.paid{ background:#0f2a23; color:#7be0c3; border:1px solid #1f4f44 }
-    .status.unpaid{ background:#2a0f11; color:#ffb1b1; border:1px solid #512325 }
-    .status.sent{ background:#11243a; color:#9ad1ff; border:1px solid #224b74 }
-    .status.wait{ background:#2d2a14; color:#ffe287; border:1px solid #5c5522 }
-    .actions{ display:flex; gap:.4rem; flex-wrap:wrap }
-
-    .btn.small{ padding:.35rem .6rem; font-size:var(--fs-12); border-radius:8px }
-    .btn.success{ background:var(--brand-2); border-color:transparent; color:#062016 }
-    .btn.warn{ background:var(--warn); border-color:transparent; color:#251d00 }
-    .btn.danger{ background:#ff6b6b; border-color:transparent }
+    tbody tr:hover{background:#141a25}
+    .status{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .5rem;border-radius:8px;font-size:.8rem;white-space:nowrap}
+    .status.paid{background:#0f2a23;color:#7be0c3;border:1px solid #1f4f44}
+    .status.unpaid{background:#2a0f11;color:#ffb1b1;border:1px solid #512325}
+    .status.sent{background:#11243a;color:#9ad1ff;border:1px solid #224b74}
+    .status.wait{background:#2d2a14;color:#ffe287;border:1px solid #5c5522}
+    .actions{display:flex;gap:.4rem;flex-wrap:wrap}
+    .btn.small{padding:.35rem .6rem;font-size:.85rem;border-radius:8px}
+    .btn.success{background:var(--brand-2);border-color:transparent;color:#062016}
+    .btn.warn{background:var(--warn);border-color:transparent;color:#251d00}
+    .btn.danger{background:#ff6b6b;border-color:transparent}
 
     /* LAYOUTS */
-    .split{ display:grid; grid-template-columns:2fr 1fr; gap:1rem }
-    .list{ overflow:auto }
-    .aside{ position:sticky; top:1rem; height:fit-content }
+    .split{display:grid;grid-template-columns:2fr 1fr;gap:1rem}
+    .list{overflow:hidden}
+    .aside{position:sticky;top:1rem;height:fit-content}
 
     /* LOGIN */
-    .login-wrap{ max-width:420px; margin:8vh auto; padding:1.25rem }
-    .login-card{ background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:1.25rem }
-    .field{ display:flex; flex-direction:column; gap:.35rem; margin-bottom:.8rem }
-    .field input{ background:var(--bg-elev); border:1px solid var(--border); color:#fff; padding:.65rem .75rem; border-radius:10px; font-size:var(--fs-14) }
-    .error{ color:#ff9aa2; font-size:var(--fs-12); margin-top:.35rem }
+    .login-wrap{max-width:420px;margin:8vh auto;padding:1.25rem}
+    .login-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem}
+    .field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.8rem}
+    .field input{background:var(--bg-elev);border:1px solid var(--border);color:#fff;padding:.65rem .75rem;border-radius:10px}
+    .error{color:#ff9aa2;font-size:.9rem;margin-top:.35rem}
 
     /* DRAWER (order details) */
     .drawer{
-      position:fixed; inset:auto 0 0 auto; top:0; width:460px; height:100%;
-      background:var(--panel); border-left:1px solid var(--border);
-      transform:translateX(100%); transition:transform .25s ease; z-index:50; display:flex; flex-direction:column
+      position:fixed;inset:auto 0 0 auto;top:0;width:460px;height:100%;
+      background:var(--panel);border-left:1px solid var(--border);
+      transform:translateX(100%);transition:transform .25s ease;z-index:50;display:flex;flex-direction:column
     }
-    .drawer.open{ transform:translateX(0) }
-    .drawer__head{ padding:1rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center }
-    .drawer__body{ padding:1rem; overflow:auto; display:flex; flex-direction:column; gap:1rem }
-    .timeline{ display:flex; flex-direction:column; gap:.6rem }
-    .tl-item{ display:grid; grid-template-columns:18px 1fr; gap:.6rem }
-    .dot{ width:10px; height:10px; border-radius:50%; background:var(--brand) }
-    .muted{ color:var(--muted); font-size:var(--fs-12) }
+    .drawer.open{transform:translateX(0)}
+    .drawer__head{padding:1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .drawer__body{padding:1rem;overflow:auto;display:flex;flex-direction:column;gap:1rem}
+    .timeline{display:flex;flex-direction:column;gap:.6rem}
+    .tl-item{display:grid;grid-template-columns:18px 1fr;gap:.6rem}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--brand)}
+    .muted{color:var(--muted);font-size:.9rem}
 
     /* TOAST */
     .toast{
-      position:fixed; right:16px; bottom:calc(16px + var(--safe-bottom));
-      background:#10151d; border:1px solid var(--border); color:var(--text);
-      padding:.6rem .75rem; border-radius:10px; box-shadow:var(--shadow);
-      opacity:0; transform:translateY(8px); transition:.25s; z-index:60; font-size:var(--fs-14)
+      position:fixed;right:16px;bottom:calc(16px + var(--safe-bottom));
+      background:#10151d;border:1px solid var(--border);color:var(--text);
+      padding:.6rem .75rem;border-radius:10px;box-shadow:var(--shadow);
+      opacity:0;transform:translateY(8px);transition:.25s;z-index:60
     }
-    .toast.show{ opacity:1; transform:translateY(0) }
-    .hidden{ display:none !important }
+    .toast.show{opacity:1;transform:translateY(0)}
+    .hidden{display:none !important}
 
     /* ------- MOBILNE NADOGRADNJE ------- */
-    .mobile-only{ display:none }
-    .desktop-only{ display:block }
+    .mobile-only{display:none}
+    .desktop-only{display:block}
 
-    /* Kartice za narudžbe / outbox (mobilni prikaz) */
-    .orders-cards{ display:grid; gap:.6rem }
+    /* Kartice (mobilni) */
+    .cards{display:grid;gap:.75rem}
+    .card-row{display:flex;justify-content:space-between;gap:.5rem;align-items:center}
+    .pill{display:inline-block;background:#141c2b;border:1px solid var(--border);border-radius:999px;padding:.2rem .55rem;font-size:.8rem;color:#aeb7c6;white-space:nowrap}
+
+    /* Orders cards */
+    .orders-cards{display:grid;gap:.75rem}
     .order-card{
-      border:1px solid var(--border); border-radius:12px; background:var(--panel); padding:.85rem; display:grid; gap:.4rem
+      border:1px solid var(--border);border-radius:12px;background:var(--panel);padding:.9rem;display:grid;gap:.5rem
     }
-    .order-card__row{ display:flex; justify-content:space-between; gap:.5rem; align-items:center }
-    .order-card__row > *{ min-width:0 }
-    .order-card strong{ font-size:var(--fs-16) }
-    .order-card .pill{
-      display:inline-block; background:#141c2b; border:1px solid var(--border); border-radius:999px; padding:.2rem .5rem; font-size:var(--fs-12); color:#aeb7c6;
-      max-width:50%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .order-card .muted{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .order-card .actions{ margin-top:.25rem }
+    .order-card .actions{margin-top:.2rem;gap:.4rem;display:flex;flex-wrap:wrap}
 
-    /* Breakpointi */
+    /* Responsive breakpoints */
     @media (max-width: 1200px){
-      .split{ grid-template-columns:1.6fr 1fr }
+      .grid.cards{grid-template-columns:repeat(3,minmax(180px,1fr))}
     }
     @media (max-width: 1024px){
-      .split{ grid-template-columns:1fr }
-      .aside{ position:relative; top:auto }
+      .grid.cards{grid-template-columns:repeat(2,minmax(160px,1fr))}
+      .split{grid-template-columns:1fr}
+      .aside{position:relative;top:auto}
     }
     @media (max-width: 768px){
-      /* Layout: sidebar kao overlay, jedna kolona app-a */
-      .app{ grid-template-columns:1fr; grid-template-areas:"head" "main" }
+      /* Layout */
+      .app{grid-template-columns:1fr;grid-template-areas:"head" "main"}
       .sidebar{
-        position:fixed; inset:0 auto 0 0; width:86%; max-width:300px; transform:translateX(-100%);
-        box-shadow:var(--shadow); height:100vh;
+        position:fixed;inset:0 auto 0 0;width:86%;max-width:300px;transform:translateX(-100%);
+        box-shadow:var(--shadow)
       }
-      .sidebar.open{ transform:translateX(0) }
-      .desktop-only{ display:none }
-      .mobile-only{ display:block }
+      .sidebar.open{transform:translateX(0)}
+      .desktop-only{display:none}
+      .mobile-only{display:block}
 
-      .header{ gap:.5rem }
-      .search input{ padding:.6rem .8rem }
-      .main{ padding:1rem }
+      .header{gap:.5rem;padding-top:calc(.8rem + var(--safe-top))}
+      .search input{padding:.6rem .8rem}
+      .grid.cards{grid-template-columns:repeat(2,minmax(140px,1fr))}
+      .main{padding:1rem}
 
-      /* Tabela -> sakrij; kartice -> prikaži */
-      table.responsive-hide{ display:none }
-      .orders-cards{ display:grid }
+      /* Tabele sakrij na mobilnom (gdje imamo kartice) */
+      .hide-on-mobile{display:none !important}
 
-      /* Drawer full-screen sheet na mobilnom */
-      .drawer{ inset:0; width:100%; border-left:none; border-top:1px solid var(--border); transform:translateY(100%) }
-      .drawer.open{ transform:translateY(0) }
-    }
-    /* XS telefoni */
-    @media (max-width: 480px){
-      .btn, .toolbar .input, .toolbar .select{ padding:.5rem .6rem }
-      .btn.icon{ width:38px; height:38px }
-      .order-card strong{ font-size:var(--fs-14) }
-      .grid.cards{ grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      /* Drawer kao bottom-sheet */
+      .drawer{inset:0;width:100%;border-left:none;border-top:1px solid var(--border);transform:translateY(100%)}
+      .drawer.open{transform:translateY(0)}
     }
 
     /* Fokus (a11y) */
@@ -373,21 +340,23 @@
               </div>
 
               <!-- Tabela (desktop) -->
-              <table id="ordersTable" class="responsive-hide">
-                <thead>
-                  <tr>
-                    <th style="width:36px"><input type="checkbox" id="checkAll" /></th>
-                    <th>#</th>
-                    <th>Ugovor</th>
-                    <th>Klijent</th>
-                    <th>Iznos</th>
-                    <th>Uplata</th>
-                    <th>Final</th>
-                    <th>Akcije</th>
-                  </tr>
-                </thead>
-                <tbody id="ordersTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-              </table>
+              <div class="table-wrap desktop-only">
+                <table id="ordersTable">
+                  <thead>
+                    <tr>
+                      <th style="width:42px"><input type="checkbox" id="checkAll" /></th>
+                      <th style="width:110px">#</th>
+                      <th>Ugovor</th>
+                      <th>Klijent</th>
+                      <th style="width:120px">Iznos</th>
+                      <th style="width:120px">Uplata</th>
+                      <th style="width:120px">Final</th>
+                      <th style="width:340px">Akcije</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ordersTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+                </table>
+              </div>
 
               <!-- Kartice (mobilni) -->
               <div id="ordersCards" class="orders-cards mobile-only" aria-live="polite"></div>
@@ -407,7 +376,7 @@
           </div>
         </div>
 
-        <!-- NARUDŽBE (full-screen tabela) -->
+        <!-- NARUDŽBE (full-screen) -->
         <div id="view-orders" class="card hidden">
           <div class="toolbar">
             <input id="ordersFilterSearch" class="input" placeholder="Filter: email / #id / tip ugovora" />
@@ -420,15 +389,22 @@
             </select>
             <button id="ordersExportCsv" class="btn small" type="button">⇩ Export CSV</button>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th style="width:36px"><input type="checkbox" id="ordersCheckAll" /></th>
-                <th>#</th><th>Ugovor</th><th>Klijent</th><th>Iznos</th><th>Uplata</th><th>Final</th><th>Akcije</th>
-              </tr>
-            </thead>
-            <tbody id="ordersViewTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-          </table>
+
+          <!-- Desktop tabela -->
+          <div class="table-wrap desktop-only">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:42px"><input type="checkbox" id="ordersCheckAll" /></th>
+                  <th style="width:110px">#</th><th>Ugovor</th><th>Klijent</th><th style="width:120px">Iznos</th><th style="width:120px">Uplata</th><th style="width:120px">Final</th><th style="width:340px">Akcije</th>
+                </tr>
+              </thead>
+              <tbody id="ordersViewTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+            </table>
+          </div>
+
+          <!-- Mobilne kartice -->
+          <div id="ordersViewCards" class="orders-cards mobile-only"></div>
         </div>
 
         <!-- OUTBOX -->
@@ -445,13 +421,18 @@
             <input id="outboxSearch" class="input" placeholder="Pretraga: email / subject" />
             <button id="outboxRefresh" class="btn small" type="button">⟳ Osvježi</button>
           </div>
-          <table class="responsive-hide">
-            <thead>
-              <tr><th>Vrijeme</th><th>Kome</th><th>Predmet</th><th>Šablon</th><th>Status</th><th>Provider ID</th></tr>
-            </thead>
-            <tbody id="outboxTbody"><tr><td colspan="6" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-          </table>
-          <!-- mobilni outbox (jednostavne kartice) -->
+
+          <!-- Desktop tabela -->
+          <div class="table-wrap desktop-only">
+            <table>
+              <thead>
+                <tr><th style="width:190px">Vrijeme</th><th>Kome</th><th>Predmet</th><th style="width:140px">Šablon</th><th style="width:120px">Status</th><th style="width:160px">Provider ID</th></tr>
+              </thead>
+              <tbody id="outboxTbody"><tr><td colspan="6" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+            </table>
+          </div>
+
+          <!-- mobilni outbox (kartice) -->
           <div id="outboxCards" class="orders-cards mobile-only"></div>
           <p id="outboxInfo" class="muted" style="margin:.6rem 0 0"></p>
         </div>
@@ -463,12 +444,14 @@
             <button id="docsLoad" class="btn small" type="button">Prikaži fajlove</button>
             <span class="muted">Bucket: <code>ugovori</code></span>
           </div>
-          <table>
-            <thead>
-              <tr><th>Fajl</th><th>Veličina</th><th>Modifikovano</th><th></th></tr>
-            </thead>
-            <tbody id="docsTbody"><tr><td colspan="4" style="text-align:center;color:#8b95a5">Unesi ID narudžbe i klikni "Prikaži fajlove".</td></tr></tbody>
-          </table>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Fajl</th><th style="width:120px">Veličina</th><th style="width:190px">Modifikovano</th><th style="width:120px"></th></tr>
+              </thead>
+              <tbody id="docsTbody"><tr><td colspan="4" style="text-align:center;color:#8b95a5">Unesi ID narudžbe i klikni "Prikaži fajlove".</td></tr></tbody>
+            </table>
+          </div>
         </div>
 
         <!-- ANALITIKA -->
@@ -495,18 +478,22 @@
           <div class="split">
             <div class="card">
               <h3 style="margin:0 0 .4rem">Top tipovi ugovora</h3>
-              <table>
-                <thead><tr><th>Tip</th><th>Količina</th><th>Prihod</th></tr></thead>
-                <tbody id="anTypesTbody"><tr><td colspan="3" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-              </table>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Tip</th><th style="width:120px">Količina</th><th style="width:160px">Prihod</th></tr></thead>
+                  <tbody id="anTypesTbody"><tr><td colspan="3" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+                </table>
+              </div>
             </div>
             <div class="aside">
               <div class="card">
                 <h3 style="margin:0 0 .4rem">Prihod po danu (14d)</h3>
-                <table>
-                  <thead><tr><th>Dan</th><th>Prihod</th></tr></thead>
-                  <tbody id="anDaysTbody"><tr><td colspan="2" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-                </table>
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>Dan</th><th style="width:160px">Prihod</th></tr></thead>
+                    <tbody id="anDaysTbody"><tr><td colspan="2" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -536,7 +523,7 @@
   <div id="drawer" class="drawer" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="drawer__head">
       <strong id="drawerTitle">Narudžba</strong>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <div style="display:flex;gap:.5rem">
         <button id="btnDrawerSend" class="btn small primary" type="button">Pošalji final</button>
         <button id="btnDrawerClose" class="btn small" type="button">Zatvori</button>
       </div>
@@ -704,8 +691,8 @@
         tr.innerHTML = `
           <td><input type="checkbox" data-id="${o.id}"></td>
           <td>#${pad(o.order_number||o.id)}</td>
-          <td>${o.ugovor_type||"—"}</td>
-          <td>${o.client_email||"—"}</td>
+          <td title="${o.ugovor_type||""}">${o.ugovor_type||"—"}</td>
+          <td title="${o.client_email||""}">${o.client_email||"—"}</td>
           <td>${fmtMoney(Number(o.total_price||0))}</td>
           <td>${sPaid}</td>
           <td>${sFinal}</td>
@@ -722,9 +709,12 @@
     }
 
     /***** RENDER: kartice (mobilni) *****/
-    function renderCards(){
-      const txt = (filterSearch.value||"").toLowerCase();
-      const st = filterStatus.value;
+    function renderCards(targetEl){
+      const listEl = targetEl || ordersCards;
+      const useFilters = !targetEl; // na view-orders koristimo posebne filtere
+      const txt = (useFilters ? (filterSearch.value||"") : (document.getElementById("ordersFilterSearch").value||"")).toLowerCase();
+      const st =  (useFilters ? filterStatus.value : document.getElementById("ordersFilterStatus").value);
+
       const filtered = orders.filter(o=>{
         const hit = !txt
           || String(o.order_number).includes(txt)
@@ -738,20 +728,20 @@
         return true;
       });
 
-      ordersCards.innerHTML = filtered.map(o=>{
+      listEl.innerHTML = filtered.map(o=>{
         const [sPaid, sFinal] = statusBadge(o);
         const amount = fmtMoney(Number(o.total_price||0));
         return `
           <div class="order-card" data-id="${o.id}">
-            <div class="order-card__row">
+            <div class="card-row">
               <strong>#${pad(o.order_number||o.id)}</strong>
-              <span class="pill" title="${o.ugovor_type||"—"}">${o.ugovor_type||"—"}</span>
+              <span class="pill" title="${o.ugovor_type||""}">${o.ugovor_type||"—"}</span>
             </div>
-            <div class="order-card__row">
-              <span class="muted" title="${o.client_email||"—"}">${o.client_email||"—"}</span>
+            <div class="card-row">
+              <span class="muted" title="${o.client_email||""}">${o.client_email||"—"}</span>
               <span>${amount}</span>
             </div>
-            <div class="order-card__row" style="gap:.5rem">
+            <div class="card-row" style="gap:.5rem;flex-wrap:wrap">
               <span>${sPaid}</span>
               <span>${sFinal}</span>
             </div>
@@ -856,8 +846,11 @@
     }
 
     function renderResponsiveOrders(){
-      if(isMobile){ renderCards(); }
-      else{ renderTable(); }
+      if(isMobile){
+        renderCards(ordersCards);
+      }else{
+        renderTable();
+      }
     }
 
     /************ ORDERS VIEW (pun ekran) ************/
@@ -878,6 +871,7 @@
         return true;
       });
 
+      // desktop tabela
       tbody.innerHTML = "";
       for(const o of filtered){
         const [sPaid, sFinal] = statusBadge(o);
@@ -885,8 +879,8 @@
         tr.innerHTML = `
           <td><input type="checkbox" data-id="${o.id}"></td>
           <td>#${pad(o.order_number||o.id)}</td>
-          <td>${o.ugovor_type||"—"}</td>
-          <td>${o.client_email||"—"}</td>
+          <td title="${o.ugovor_type||""}">${o.ugovor_type||"—"}</td>
+          <td title="${o.client_email||""}">${o.client_email||"—"}</td>
           <td>${fmtMoney(Number(o.total_price||0))}</td>
           <td>${sPaid}</td>
           <td>${sFinal}</td>
@@ -899,6 +893,11 @@
         `;
         tbody.appendChild(tr);
       }
+
+      // mobilne kartice
+      const cardsEl = document.getElementById("ordersViewCards");
+      cardsEl.innerHTML = ""; // biće popunjeno kroz renderCards sa targetom
+      renderCards(cardsEl);
     }
 
     /************ OUTBOX ************/
@@ -915,7 +914,7 @@
         const q  = (document.getElementById("outboxSearch").value||"").toLowerCase();
 
         if(error){
-          outboxTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Outbox tabela nedostaje.</td></tr>`;
+          if(outboxTbody) outboxTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Outbox tabela nedostaje.</td></tr>`;
           outboxCards.innerHTML = `<div class="muted">Outbox tabela nedostaje.</div>`;
           outboxInfo.innerHTML = `Napomena: kreiraj tabelu <code>public.email_outbox</code>.`;
           return;
@@ -932,11 +931,11 @@
           outboxTbody.innerHTML = rows.map(r=>`
             <tr>
               <td>${new Date(r.created_at).toLocaleString()}</td>
-              <td>${r.to||"—"}</td>
-              <td>${r.subject||"—"}</td>
+              <td title="${r.to||""}">${r.to||"—"}</td>
+              <td title="${r.subject||""}">${r.subject||"—"}</td>
               <td>${r.template||"—"}</td>
               <td>${r.status||"—"}</td>
-              <td>${r.provider_id||"—"}</td>
+              <td title="${r.provider_id||""}">${r.provider_id||"—"}</td>
             </tr>
           `).join("") || `<tr><td colspan="6" style="text-align:center;color:#8b95a5">Nema stavki.</td></tr>`;
         }
@@ -944,19 +943,19 @@
         // Mobilne kartice
         outboxCards.innerHTML = rows.map(r=>`
           <div class="order-card">
-            <div class="order-card__row">
-              <strong title="${r.subject||"—"}">${r.subject||"—"}</strong>
+            <div class="card-row">
+              <strong>${r.subject||"—"}</strong>
               <span class="pill">${r.status||"—"}</span>
             </div>
-            <div class="order-card__row"><span class="muted">${new Date(r.created_at).toLocaleString()}</span></div>
-            <div class="order-card__row"><span>Kome:</span><span class="muted" title="${r.to||"—"}">${r.to||"—"}</span></div>
-            <div class="order-card__row"><span>Šablon:</span><span class="muted" title="${r.template||"—"}">${r.template||"—"}</span></div>
-            <div class="order-card__row"><span>Provider:</span><span class="muted">${r.provider_id||"—"}</span></div>
+            <div class="card-row"><span class="muted">${new Date(r.created_at).toLocaleString()}</span></div>
+            <div class="card-row"><span>Kome:</span><span class="muted">${r.to||"—"}</span></div>
+            <div class="card-row"><span>Šablon:</span><span class="muted">${r.template||"—"}</span></div>
+            <div class="card-row"><span>Provider:</span><span class="muted">${r.provider_id||"—"}</span></div>
           </div>
         `).join("") || `<div class="muted">Nema stavki.</div>`;
       }catch(e){
         console.error(e);
-        outboxTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Greška pri učitavanju Outbox-a.</td></tr>`;
+        if(outboxTbody) outboxTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Greška pri učitavanju Outbox-a.</td></tr>`;
         outboxCards.innerHTML = `<div class="muted">Greška pri učitavanju Outbox-a.</div>`;
       }
     }
@@ -979,7 +978,7 @@
           const sizeKB = size ? Math.round(size/1024) + " KB" : "—";
           const mod = f?.updated_at ? new Date(f.updated_at).toLocaleString() : "—";
           return `<tr>
-            <td>${f.name}</td>
+            <td title="${f.name}">${f.name}</td>
             <td>${sizeKB}</td>
             <td>${mod}</td>
             <td><a class="btn small" href="${url}" target="_blank" rel="noopener">Preuzmi</a></td>
@@ -1021,7 +1020,7 @@
 
       const typesTbody = document.getElementById("anTypesTbody");
       typesTbody.innerHTML = [...byType.entries()].sort((a,b)=>b[1].cnt-a[1].cnt).map(([k,v])=>`
-        <tr><td>${k}</td><td>${v.cnt}</td><td>${fmtMoney(v.rev)}</td></tr>
+        <tr><td title="${k}">${k}</td><td>${v.cnt}</td><td>${fmtMoney(v.rev)}</td></tr>
       `).join("") || `<tr><td colspan="3" style="text-align:center;color:#8b95a5">Nema podataka.</td></tr>`;
 
       const daysTbody = document.getElementById("anDaysTbody");
@@ -1137,10 +1136,23 @@
         if(cb.checked) selectedIds.add(cb.dataset.id); else selectedIds.delete(cb.dataset.id);
       });
 
-      // Row actions (desktop tabela)
+      // Row / Card actions
+      function onRowAction(e){
+        const btn = e.target.closest("button[data-act]");
+        if(!btn) return;
+        const id = btn.dataset.id;
+        const order = orders.find(o=>String(o.id)===String(id));
+        if(!order) return;
+
+        if(btn.dataset.act==="verify") actVerify(id);
+        if(btn.dataset.act==="upload"){ openDrawer(order); drawerFile.click(); }
+        if(btn.dataset.act==="send") actSend(id);
+        if(btn.dataset.act==="open") openDrawer(order);
+      }
       ordersTbody.addEventListener("click", onRowAction);
-      // Card actions (mobilne kartice)
       ordersCards.addEventListener("click", onRowAction);
+      document.getElementById("ordersViewTbody").addEventListener("click", onRowAction);
+      document.getElementById("ordersViewCards").addEventListener("click", onRowAction);
 
       // Drawer
       drawerFile.addEventListener("change", ()=>{
@@ -1169,19 +1181,6 @@
         listDocs(id);
       });
     });
-
-    function onRowAction(e){
-      const btn = e.target.closest("button[data-act]");
-      if(!btn) return;
-      const id = btn.dataset.id;
-      const order = orders.find(o=>String(o.id)===String(id));
-      if(!order) return;
-
-      if(btn.dataset.act==="verify") actVerify(id);
-      if(btn.dataset.act==="upload"){ openDrawer(order); drawerFile.click(); }
-      if(btn.dataset.act==="send") actSend(id);
-      if(btn.dataset.act==="open") openDrawer(order);
-    }
 
     function subscribeRealtime(){
       try{
