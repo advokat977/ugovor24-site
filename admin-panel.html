@@ -1,1338 +1,313 @@
-<!DOCTYPE html>
-<html lang="sr-Latn-ME">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ugovor24 — Komandni Centar</title>
-  <meta name="robots" content="noindex, nofollow" />
-
-  <!-- Font (Inter) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
-
-  <!-- Supabase SDK v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    :root{
-      /* BRAND & THEME */
-      --brand:#0d6efd;           /* primarna (veći kontrast) */
-      --brand-2:#20c997;        /* akcije uspjeh */
-      --brand-3:#6ea8fe;        /* hover/outline */
-      --bg:#0b0d10;
-      --bg-elev:#11151b;
-      --panel:#171b22;
-      --muted:#9aa6b2;
-      --text:#e7edf6;
-      --warn:#ffb020;
-      --error:#e85959;
-      --ok:#2ecc71;
-      --blue:#3da5ff;
-      --yellow:#ffd24d;
-      --border:#222834;
-      --shadow:0 10px 30px rgba(0,0,0,.30);
-      --radius:12px;
-
-      /* SPACING SCALE (8–16–24) */
-      --s-1:8px;
-      --s-2:12px;
-      --s-3:16px;
-      --s-4:20px;
-      --s-5:24px;
-
-      /* TYPOGRAPHY */
-      --fs-title:20px;          /* naslovi */
-      --fs-sub:16px;            /* podnaslovi */
-      --fs-body:15px;           /* tekst */
-      --fs-small:13px;          /* sekundarni */
-
-      /* iOS safe area */
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-    }
-
-    /* RESET/BASICS */
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;background:var(--bg);color:var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      font-size:var(--fs-body); line-height:1.5; display:flex; min-height:100vh;
-      -webkit-tap-highlight-color: transparent;
-    }
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block}
-
-    /* UTILS (no inline styles) */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    .muted{color:var(--muted)}
-    .mt-1{margin-top:var(--s-1)} .mt-2{margin-top:var(--s-2)} .mt-3{margin-top:var(--s-3)}
-    .mb-1{margin-bottom:var(--s-1)} .mb-2{margin-bottom:var(--s-2)} .mb-3{margin-bottom:var(--s-3)}
-    .p-1{padding:var(--s-1)} .p-2{padding:var(--s-2)} .p-3{padding:var(--s-3)}
-    .w-full{width:100%}
-    .grid{display:grid;gap:var(--s-3)}
-    .flex{display:flex} .items-center{align-items:center} .justify-between{justify-content:space-between}
-    .hidden{display:none !important}
-
-    /* APP LAYOUT */
-    .app{
-      display:grid;grid-template-columns:260px 1fr;grid-template-rows:auto 1fr;
-      grid-template-areas:"side head" "side main";width:100%;
-    }
-
-    /* SIDEBAR */
-    .sidebar{
-      grid-area:side;background:var(--panel);border-right:1px solid var(--border);
-      display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:40;
-      transition:transform .25s ease;
-    }
-    .brand{display:flex;align-items:center;gap:.75rem;padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--border)}
-    .brand__logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--brand),#42a0ff)}
-    .brand__name{font-weight:800;letter-spacing:.2px;font-size:var(--fs-sub)}
-    .nav{padding:var(--s-2)}
-    .nav button{
-      width:100%;text-align:left;background:transparent;border:0;color:var(--text);
-      padding:.65rem .85rem;border-radius:10px;display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.95rem
-    }
-    .nav button:hover{background:#132540}
-    .nav button.active{background:#0f1d35;outline:1px solid #1d3b74}
-    .sidebar__footer{padding:var(--s-3);border-top:1px solid var(--border);color:var(--muted);font-size:.85rem;margin-top:auto}
-
-    /* HEADER */
-    .header{
-      grid-area:head;background:var(--panel);border-bottom:1px solid var(--border);
-      display:flex;align-items:center;gap:.6rem;padding:.8rem 1rem;position:sticky;top:0;z-index:45
-    }
-    .search{flex:1;position:relative}
-    .search input{
-      width:100%;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:.7rem .9rem;outline:none
-    }
-    .header__actions{display:flex;align-items:center;gap:.5rem}
-    .badge{display:inline-flex;align-items:center;gap:.35rem;background:#141c2b;border:1px solid var(--border);border-radius:999px;padding:.25rem .6rem;font-size:.8rem;color:var(--muted)}
-
-    /* BUTTONS (hierarchy + 44px targets) */
-    .btn{
-      --btn-h:44px;
-      min-height:var(--btn-h);
-      display:inline-flex;align-items:center;justify-content:center;
-      gap:.5rem;padding:.55rem .95rem;border-radius:12px;cursor:pointer;font-weight:700;
-      border:1px solid var(--border);background:#162131;color:var(--text);
-      transition:transform .05s ease, background .15s ease, border-color .15s ease;
-    }
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{
-      background:linear-gradient(180deg,var(--brand),#0a5ad8);border-color:transparent;color:white;
-      box-shadow:0 8px 18px rgba(13,110,253,.32);
-    }
-    .btn.primary:hover{filter:brightness(1.05)}
-    .btn.secondary{background:#192234;border-color:#2a3750}
-    .btn.ghost{background:transparent}
-    .btn.small{min-height:40px;padding:.35rem .7rem;font-size:.9rem;border-radius:10px}
-    .btn.success{background:var(--brand-2);border-color:#0e5f4e;color:#052019}
-    .btn.warn{background:var(--warn);border-color:#6c4b00;color:#251d00}
-    .btn.danger{background:#ff6b6b;border-color:#7a1a1a}
-    .btn.icon{width:44px;min-height:44px;padding:0}
-
-    /* LOADER BAR */
-    .loader{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--brand),#42a0ff);transform:scaleX(0);transform-origin:left;transition:.25s}
-    .loader.on{transform:scaleX(1)}
-
-    /* MAIN */
-    .main{grid-area:main;padding:var(--s-4);overflow:auto;padding-bottom:calc(var(--s-4) + var(--safe-bottom))}
-    .card{
-      background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--s-3)
-    }
-
-    /* KPI */
-    .kpi-grid{display:grid;gap:var(--s-3);grid-template-columns:repeat(4,minmax(200px,1fr))}
-    .kpi{display:flex;flex-direction:column;gap:.4rem}
-    .kpi .label{color:var(--muted);font-size:.9rem}
-    .kpi .value{font-feature-settings:"tnum" 1,"lnum" 1;font-size:1.7rem;font-weight:800}
-    .kpi .delta{font-size:.9rem}
-    .delta.up{color:var(--brand-2)} .delta.down{color:var(--error)}
-
-    /* TOOLBAR + FORMS */
-    .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 var(--s-2)}
-    .input, .select{
-      background:var(--bg-elev);border:1px solid var(--border);color:var(--text);
-      border-radius:12px;padding:.6rem .75rem;outline:none;min-height:44px
-    }
-    label.input-label{font-size:.9rem;color:var(--muted);display:block;margin-bottom:.35rem}
-
-    /* TABLE (desktop only) */
-    table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
-    thead th{background:#141924;color:#aeb7c6;text-align:left;font-weight:600;padding:.75rem;border-bottom:1px solid var(--border);font-size:.9rem}
-    tbody td{padding:.75rem;border-bottom:1px solid var(--border);font-size:.95rem}
-    tbody tr:hover{background:#141a25}
-    .actions{display:flex;gap:.4rem;flex-wrap:wrap}
-
-    /* STATUSES (with emojis) */
-    .status{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .55rem;border-radius:999px;font-size:.8rem;border:1px solid transparent}
-    .status.paid{background:#0f2a23;color:#7be0c3;border-color:#1f4f44}
-    .status.unpaid{background:#2a0f11;color:#ffb1b1;border-color:#512325}
-    .status.sent{background:#11243a;color:#9ad1ff;border-color:#224b74}
-    .status.wait{background:#2d2a14;color:#ffe287;border-color:#5c5522}
-
-    /* SPLIT (desktop) */
-    .split{display:grid;grid-template-columns:2fr 1fr;gap:var(--s-3)}
-    .list{overflow:auto}
-    .aside{position:sticky;top:1rem;height:fit-content}
-
-    /* LOGIN */
-    .login-wrap{max-width:420px;margin:8vh auto;padding:var(--s-3)}
-    .login-card h2{margin:0 0 var(--s-3);font-size:var(--fs-title)}
-    .field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.8rem}
-    .field input{background:var(--bg-elev);border:1px solid var(--border);color:#fff;padding:.7rem .8rem;border-radius:12px;min-height:44px}
-    .error{color:#ff9aa2;font-size:.95rem;margin-top:.35rem}
-
-    /* DRAWER (order details) */
-    .drawer{
-      position:fixed;inset:auto 0 0 auto;top:0;width:480px;height:100%;
-      background:var(--panel);border-left:1px solid var(--border);
-      transform:translateX(100%);transition:transform .25s ease;z-index:50;display:flex;flex-direction:column
-    }
-    .drawer.open{transform:translateX(0)}
-    .drawer__head{padding:var(--s-3);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .drawer__title{font-size:var(--fs-sub);font-weight:800}
-    .drawer__body{padding:var(--s-3);overflow:auto;display:flex;flex-direction:column;gap:var(--s-3)}
-
-    /* PROGRESS TRACKER */
-    .progress{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .step{display:flex;align-items:center;gap:8px}
-    .dot{width:12px;height:12px;border-radius:50%;background:#445067;border:2px solid #2b3240}
-    .step.done .dot{background:var(--brand-2);border-color:#0e5f4e}
-    .step .lbl{font-size:.9rem;color:var(--muted)}
-
-    /* MOBILE CARDS (all lists on mobile) */
-    .cards{display:grid;gap:.7rem}
-    .card-row{display:flex;justify-content:space-between;gap:.5rem}
-    .pill{display:inline-block;background:#141c2b;border:1px solid var(--border);border-radius:999px;padding:.25rem .55rem;font-size:.8rem;color:#aeb7c6}
-    .tap-card{
-      border:1px solid var(--border);border-radius:14px;background:var(--panel);padding:.9rem;
-      display:grid;gap:.5rem;cursor:pointer;transition:transform .05s ease, border-color .15s ease;
-    }
-    .tap-card:active{transform:scale(.998)}
-    .tap-card .actions{margin-top:.25rem}
-
-    /* SCRIM (mobile sidebar) */
-    .scrim{
-      position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:saturate(80%) blur(2px);
-      opacity:0;pointer-events:none;transition:.2s;z-index:35;
-    }
-    .scrim.show{opacity:1;pointer-events:auto}
-
-    /* BOTTOM NAV (mobile) */
-    .bottom-nav{
-      position:fixed;left:0;right:0;bottom:0;z-index:48;background:rgba(17,21,27,.9);
-      border-top:1px solid var(--border);backdrop-filter:saturate(120%) blur(8px);
-      display:none;grid-template-columns:repeat(3,1fr);gap:6px;padding:.35rem .6rem calc(.35rem + var(--safe-bottom));
-    }
-    .bn-btn{
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-      border-radius:12px;border:1px solid transparent;background:transparent;color:var(--muted);padding:.4rem 0;min-height:44px
-    }
-    .bn-btn.active{color:#fff;background:#141924;border-color:#2a3750}
-
-    /* BACK LINK (mobile) */
-    .back-dash{display:none; margin-bottom:var(--s-2)}
-
-    /* RESPONSIVE */
-    @media (max-width: 1200px){
-      .kpi-grid{grid-template-columns:repeat(3,minmax(160px,1fr))}
-    }
-    @media (max-width: 1024px){
-      .kpi-grid{grid-template-columns:repeat(2,minmax(140px,1fr))}
-      .split{grid-template-columns:1fr}
-      .aside{position:relative;top:auto}
-    }
-    @media (max-width: 768px){
-      .app{grid-template-columns:1fr;grid-template-areas:"head" "main"}
-      .sidebar{
-        position:fixed;inset:0 auto 0 0;width:86%;max-width:300px;transform:translateX(-100%);box-shadow:var(--shadow)
-      }
-      .sidebar.open{transform:translateX(0)}
-      .header{gap:.6rem;padding-top:calc(.8rem + var(--safe-top))}
-      .main{padding:var(--s-3)}
-      /* hide tables => show cards */
-      .responsive-hide{display:none}
-      .bottom-nav{display:grid}
-      .back-dash{display:inline-flex}
-      /* Drawer -> full screen sheet with swipe */
-      .drawer{inset:0;width:100%;border-left:none;border-top:1px solid var(--border);transform:translateY(100%)}
-      .drawer.open{transform:translateY(0)}
-    }
-
-    /* FOCUS (a11y) */
-    :focus-visible{outline:2px solid var(--brand-3);outline-offset:2px;border-radius:10px}
-  </style>
-</head>
-<body>
-  <div class="app">
-    <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <div class="brand__logo" role="img" aria-label="Ugovor24 logo"></div>
-        <div class="brand__name">Ugovor24 • Admin</div>
+<!DOCTYPE html><html lang="sr-Latn-ME"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ugovor24 — Admin</title><meta name="robots" content="noindex,nofollow"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--brand:#007BFF;--ok:#20c997;--bg:#0b0d10;--bg2:#12151a;--panel:#171b22;--muted:#8b95a5;--txt:#e7edf6;--warn:#ffb020;--err:#e85959;--br:#222834;--r:12px}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+a{color:inherit;text-decoration:none}.hidden{display:none!important}.muted{color:var(--muted)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
+.app{display:grid;grid-template-columns:260px 1fr;grid-template-rows:auto 1fr;grid-template-areas:"side head" "side main";min-height:100vh}
+.sidebar{grid-area:side;background:var(--panel);border-right:1px solid var(--br);display:flex;flex-direction:column}
+.brand{padding:1rem;border-bottom:1px solid var(--br);font-weight:800}
+.nav{padding:.6rem}.nav button{width:100%;background:0;border:0;color:inherit;padding:.6rem .7rem;border-radius:10px;text-align:left;cursor:pointer}
+.nav button:hover{background:#132540}.nav .act{background:#0f1d35;outline:1px solid #1d3b74}
+.sidebar .foot{margin-top:auto;padding:1rem;border-top:1px solid var(--br);font-size:12px;color:var(--muted)}
+.header{grid-area:head;background:var(--panel);border-bottom:1px solid var(--br);display:flex;gap:.5rem;align-items:center;padding:.7rem 1rem;position:sticky;top:0;z-index:30}
+.badge{background:#141c2b;border:1px solid var(--br);border-radius:999px;padding:.2rem .5rem;color:var(--muted);font-size:12px}
+.search{flex:1}.input,.select{width:100%;background:var(--bg2);border:1px solid var(--br);color:var(--txt);border-radius:10px;padding:.55rem .7rem}
+.btn{background:#162131;border:1px solid var(--br);color:var(--txt);padding:.5rem .75rem;border-radius:10px;cursor:pointer;font-weight:600}
+.bpri{background:var(--brand);border-color:transparent}.bsec{background:transparent}.bsm{padding:.35rem .55rem;font-size:12px;border-radius:8px}
+.bok{background:var(--ok);border:0;color:#062016}.bwarn{background:var(--warn);border:0;color:#251d00}.bdan{background:#ff6b6b;border:0}
+.loader{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--brand),#42a0ff);transform:scaleX(0);transform-origin:left;transition:.25s}.on{transform:scaleX(1)}
+.main{grid-area:main;padding:1rem;overflow:auto}
+.grid{display:grid;gap:1rem}.cards{grid-template-columns:repeat(4,minmax(160px,1fr))}
+.card{background:var(--panel);border:1px solid var(--br);border-radius:var(--r);padding:1rem}
+.kpi .lab{color:var(--muted);font-size:12px}.kpi .val{font:800 22px/1 Inter;tabular-nums:tabular-nums}.kpi .d{font-size:12px}
+.toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 .75rem}
+.table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--br);border-radius:12px;overflow:hidden}
+.table th{background:#141924;color:#aeb7c6;text-align:left;font-weight:600;padding:.6rem;border-bottom:1px solid var(--br);font-size:12px}
+.table td{padding:.6rem;border-bottom:1px solid var(--br)}
+.bad{display:inline-flex;gap:.35rem;align-items:center;padding:.2rem .5rem;border-radius:8px;font-size:12px;border:1px solid transparent}
+.st-paid{background:#0f2a23;color:#7be0c3;border-color:#1f4f44}.st-unpaid{background:#2a0f11;color:#ffb1b1;border-color:#512325}
+.st-sent{background:#11243a;color:#9ad1ff;border-color:#224b74}.st-wait{background:#2d2a14;color:#ffe287;border-color:#5c5522}
+.split{display:grid;grid-template-columns:2fr 1fr;gap:1rem}.aside{position:sticky;top:1rem;height:fit-content}
+.login{max-width:420px;margin:8vh auto}
+.drawer{position:fixed;inset:auto 0 0 auto;top:0;width:440px;height:100%;background:var(--panel);border-left:1px solid var(--br);transform:translateX(100%);transition:.25s;z-index:40;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}.dh{padding:1rem;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center}.db{padding:1rem;overflow:auto;display:grid;gap:.8rem}
+.tl{display:grid;gap:.5rem}.dot{width:10px;height:10px;border-radius:50%;background:var(--brand);display:inline-block;margin-right:.4rem}
+.toast{position:fixed;right:16px;bottom:16px;background:#10151d;border:1px solid var(--br);padding:.55rem .7rem;border-radius:10px;opacity:0;transform:translateY(8px);transition:.25s;z-index:50}
+.toast.show{opacity:1;transform:translateY(0)}
+.mob{display:none}
+@media(max-width:900px){
+  .cards{grid-template-columns:repeat(2,minmax(120px,1fr))}.split{grid-template-columns:1fr}.aside{position:static}
+  .app{grid-template-columns:1fr;grid-template-areas:"head" "main"}
+  .sidebar{position:fixed;inset:0 auto 0 0;width:86%;max-width:300px;transform:translateX(-100%);transition:.25s;z-index:45}
+  .sidebar.open{transform:translateX(0)}.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.2s;z-index:40}
+  .scrim.show{opacity:1;pointer-events:auto}.mob{display:block}.desk{display:none}
+  .drawer{inset:0;width:100%;border-left:none;border-top:1px solid var(--br);transform:translateY(100%)}.drawer.open{transform:translateY(0)}
+  .bottom{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--br);display:flex;gap:.5rem;padding:.4rem .6rem}
+  .bottom button{flex:1}.btn,.input,.select{min-height:44px}
+}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+</style>
+</head><body>
+<div class="app">
+  <aside class="sidebar" id="side">
+    <div class="brand">Ugovor24 • Admin</div>
+    <nav class="nav" id="nav">
+      <button data-v="dash" class="act">📊 Dashboard</button>
+      <button data-v="orders">🗂️ Narudžbe</button>
+      <button data-v="outbox">✉️ Outbox</button>
+      <button data-v="docs">📁 Dokumenti</button>
+      <button data-v="analytics">📈 Analitika</button>
+      <button data-v="settings">⚙️ Podešavanja</button>
+    </nav>
+    <div class="foot">v1 • privatno<br><span class="muted">noindex • secured</span></div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <header class="header">
+    <button id="menu" class="btn mob" aria-label="Meni">☰</button>
+    <span class="badge desk" id="env">Live</span>
+    <label for="q" class="sr">Globalna pretraga</label><div class="search"><input id="q" class="input" placeholder="Pretraga (id/email/ugovor)…"></div>
+    <button id="ref" class="btn bsec">⟳ Osvježi</button><button id="logout" class="btn">Odjava</button>
+    <div id="bar" class="loader"></div>
+  </header>
+  <main class="main">
+    <!-- LOGIN -->
+    <section id="v-login" class="login">
+      <div class="card">
+        <h2>Prijava</h2>
+        <label for="em">Email</label><input id="em" type="email" class="input" placeholder="you@example.com" autocomplete="username">
+        <label for="pw">Lozinka</label><input id="pw" type="password" class="input" placeholder="••••••••" autocomplete="current-password">
+        <button id="doLogin" class="btn bpri" style="width:100%;margin-top:.6rem">Prijavi se</button>
+        <div id="lerr" class="muted" style="margin-top:.5rem"></div>
       </div>
-      <nav class="nav" id="sideNav" aria-label="Glavna navigacija">
-        <button class="active" data-view="dashboard">📊 Dashboard</button>
-        <button data-view="orders">🗂️ Narudžbe</button>
-        <button data-view="outbox">✉️ Outbox</button>
-        <button data-view="documents">📁 Dokumenti</button>
-        <button data-view="analytics">📈 Analitika</button>
-        <button data-view="settings">⚙️ Podešavanja</button>
-      </nav>
-      <div class="sidebar__footer">
-        v1.1 • privatno<br />
-        <span class="muted">noindex • secured</span>
-      </div>
-    </aside>
-    <div class="scrim" id="scrim"></div>
+    </section>
 
-    <!-- HEADER -->
-    <header class="header">
-      <button id="btnMenu" class="btn icon responsive-only" aria-label="Otvori meni" style="display:none">☰</button>
-      <div class="badge" id="envBadge">Live</div>
-
-      <div class="search">
-        <label for="globalSearch" class="sr-only">Globalna pretraga</label>
-        <input id="globalSearch" type="search" placeholder="Pretraga (id/email/ugovor)…" autocomplete="off"/>
+    <!-- APP -->
+    <section id="v-app" class="hidden">
+      <!-- DASH -->
+      <div id="v-dash" class="grid">
+        <div class="grid cards">
+          <div class="card kpi"><div class="lab">Narudžbe danas</div><div id="kpiToday" class="val">0</div><div class="d muted">—</div></div>
+          <div class="card kpi"><div class="lab">Prihod (30d)</div><div id="kpiRev" class="val">0 €</div><div class="d muted">—</div></div>
+          <div class="card kpi"><div class="lab">Prosječno vrijeme</div><div id="kpiTTA" class="val">—</div><div class="d muted">cilj &lt;24h</div></div>
+          <div class="card kpi"><div class="lab">% &lt;24h</div><div id="kpiF24" class="val">—</div><div class="d muted">—</div></div>
+        </div>
+        <div class="split">
+          <div class="card">
+            <div class="toolbar">
+              <label for="fTxt" class="sr">Filter</label><input id="fTxt" class="input" placeholder="email / #id / tip">
+              <label for="fSt" class="sr">Status</label><select id="fSt" class="select"><option value="">Status (sve)</option><option value="paid">Plaćene</option><option value="unpaid">Neplaćene</option><option value="sent">Final poslati</option><option value="wait">Čeka final</option></select>
+              <button id="bCSV" class="btn bsm">⇩ CSV</button>
+            </div>
+            <div id="ordersWrap"></div>
+          </div>
+          <aside class="aside">
+            <div class="card"><strong>Critical Queue</strong><ul id="crit" style="margin:.5rem 0 0 1rem;padding:0"></ul></div>
+            <div class="card" style="margin-top:1rem"><strong>Sistem status</strong><p id="sys" class="muted">Realtime: — • Cron: — • Storage: —</p></div>
+          </aside>
+        </div>
       </div>
 
-      <div class="header__actions">
-        <button id="btnRefresh" class="btn ghost" type="button" title="Osvježi">⟳ Osvježi</button>
-        <button id="btnLogout" class="btn secondary" type="button">Odjava</button>
+      <!-- ORDERS FULL -->
+      <div id="v-orders" class="hidden card">
+        <div class="toolbar">
+          <label for="oTxt" class="sr">Filter</label><input id="oTxt" class="input" placeholder="email / #id / tip">
+          <label for="oSt" class="sr">Status</label><select id="oSt" class="select"><option value="">Status (sve)</option><option value="paid">Plaćene</option><option value="unpaid">Neplaćene</option><option value="sent">Final poslati</option><option value="wait">Čeka final</option></select>
+          <button id="oCSV" class="btn bsm">⇩ CSV</button>
+        </div>
+        <div id="ordersFull"></div>
       </div>
-      <div id="loader" class="loader"></div>
-    </header>
 
-    <!-- MAIN -->
-    <main class="main">
-      <!-- LOGIN -->
-      <section id="loginView" class="login-wrap">
-        <div class="card login-card">
-          <h2>Prijava</h2>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="you@example.com" required inputmode="email" autocomplete="username" />
-          </div>
-          <div class="field">
-            <label for="password">Lozinka</label>
-            <input id="password" type="password" placeholder="••••••••" required autocomplete="current-password" />
-          </div>
-          <button id="btnLogin" class="btn primary w-full mt-2" type="button">🔑 Prijavi se</button>
-          <div id="loginErr" class="error hidden"></div>
-          <p class="muted mt-2">Panel je privatan. Pristup samo uz Supabase nalog.</p>
+      <!-- OUTBOX -->
+      <div id="v-outbox" class="hidden card">
+        <div class="toolbar">
+          <label for="obSt" class="sr">Status</label><select id="obSt" class="select"><option value="">Status (sve)</option><option>queued</option><option>sent</option><option>delivered</option><option>failed</option><option>bounced</option></select>
+          <label for="obQ" class="sr">Pretraga</label><input id="obQ" class="input" placeholder="email / subject">
+          <button id="obRef" class="btn bsm">⟳</button>
         </div>
-      </section>
+        <div id="outboxWrap"></div><p id="obInfo" class="muted" style="margin-top:.5rem"></p>
+      </div>
 
-      <!-- APP -->
-      <section id="appView" class="grid hidden">
-        <!-- DASHBOARD -->
-        <div id="view-dashboard" class="grid">
-          <div class="kpi-grid">
-            <div class="card kpi">
-              <div class="label">Narudžbe danas</div>
-              <div class="value" id="kpiToday">0</div>
-              <div class="delta up" id="kpiTodayDelta">—</div>
-            </div>
-            <div class="card kpi">
-              <div class="label">Prihod (30d)</div>
-              <div class="value" id="kpiRev30">0 €</div>
-              <div class="delta up" id="kpiRevDelta">—</div>
-            </div>
-            <div class="card kpi">
-              <div class="label">Prosječno vrijeme do finala</div>
-              <div class="value" id="kpiTTA">—</div>
-              <div class="delta" id="kpiTtaNote" style="color:#9fb3c8">cilj &lt; 24h</div>
-            </div>
-            <div class="card kpi">
-              <div class="label">% finalizovano &lt; 24h</div>
-              <div class="value" id="kpiF24">—</div>
-              <div class="delta up" id="kpiF24Delta">—</div>
-            </div>
-          </div>
-
-          <div class="split">
-            <div class="card list">
-              <div class="toolbar" role="group" aria-label="Filteri narudžbi">
-                <div class="w-full" style="max-width:320px">
-                  <label for="filterSearch" class="input-label">Pretraga</label>
-                  <input id="filterSearch" class="input w-full" placeholder="email / #id / tip ugovora" />
-                </div>
-                <div>
-                  <label for="filterStatus" class="input-label">Status</label>
-                  <select id="filterStatus" class="select">
-                    <option value="">Sve</option>
-                    <option value="paid">Plaćene</option>
-                    <option value="unpaid">Neplaćene</option>
-                    <option value="sent">Final poslati</option>
-                    <option value="wait">Čeka final</option>
-                  </select>
-                </div>
-                <div class="flex items-center" style="gap:.5rem;flex-wrap:wrap">
-                  <button id="btnBulkVerify" class="btn small success" type="button">✅ Verifikuj uplate</button>
-                  <button id="btnBulkSend" class="btn small primary" type="button">📤 Pošalji final</button>
-                  <button id="btnExportCsv" class="btn small secondary" type="button">⇩ Export CSV</button>
-                </div>
-              </div>
-
-              <!-- DESKTOP TABLE -->
-              <table id="ordersTable" class="responsive-hide" aria-label="Tabela narudžbi">
-                <thead>
-                  <tr>
-                    <th style="width:36px"><input type="checkbox" id="checkAll" aria-label="Označi sve"/></th>
-                    <th>#</th>
-                    <th>Ugovor</th>
-                    <th>Klijent</th>
-                    <th>Iznos</th>
-                    <th>Uplata</th>
-                    <th>Final</th>
-                    <th>Akcije</th>
-                  </tr>
-                </thead>
-                <tbody id="ordersTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-              </table>
-
-              <!-- MOBILE CARDS -->
-              <div id="ordersCards" class="cards" aria-live="polite"></div>
-            </div>
-
-            <div class="aside">
-              <div class="card">
-                <h3 class="mb-1" style="font-size:var(--fs-sub);font-weight:800">Critical Queue</h3>
-                <p class="muted mb-2">Plaćeno, a nema finala; greške slanja; bez fiskalnog.</p>
-                <ul id="criticalList" class="mt-1" style="margin:0;padding-left:1.1rem"></ul>
-              </div>
-              <div class="card mt-2">
-                <h3 class="mb-1" style="font-size:var(--fs-sub);font-weight:800">Sistem status</h3>
-                <p id="sysStatus" class="muted">Realtime: — • Cron: — • Storage: —</p>
-              </div>
-            </div>
-          </div>
+      <!-- DOCS -->
+      <div id="v-docs" class="hidden card">
+        <div class="toolbar">
+          <label for="dId" class="sr">ID narudžbe</label><input id="dId" class="input" placeholder="ID narudžbe">
+          <button id="dLoad" class="btn bsm">Prikaži</button><span class="muted">Bucket: <code>ugovori</code></span>
         </div>
+        <div id="docsWrap"></div>
+      </div>
 
-        <!-- ORDERS FULL -->
-        <div id="view-orders" class="card hidden">
-          <a id="backFromOrders" class="back-dash btn secondary" href="#" data-view="dashboard">← Nazad na Dashboard</a>
-          <h3 class="mb-2" style="font-size:var(--fs-title);font-weight:800">Sve narudžbe</h3>
-          <div class="toolbar">
-            <div class="w-full" style="max-width:320px">
-              <label for="ordersFilterSearch" class="input-label">Pretraga</label>
-              <input id="ordersFilterSearch" class="input w-full" placeholder="email / #id / tip ugovora" />
-            </div>
-            <div>
-              <label for="ordersFilterStatus" class="input-label">Status</label>
-              <select id="ordersFilterStatus" class="select">
-                <option value="">Sve</option>
-                <option value="paid">Plaćene</option>
-                <option value="unpaid">Neplaćene</option>
-                <option value="sent">Final poslati</option>
-                <option value="wait">Čeka final</option>
-              </select>
-            </div>
-            <button id="ordersExportCsv" class="btn small secondary" type="button">⇩ Export CSV</button>
-          </div>
-          <table aria-label="Tabela narudžbi (full)">
-            <thead>
-              <tr>
-                <th style="width:36px"><input type="checkbox" id="ordersCheckAll" aria-label="Označi sve"/></th>
-                <th>#</th><th>Ugovor</th><th>Klijent</th><th>Iznos</th><th>Uplata</th><th>Final</th><th>Akcije</th>
-              </tr>
-            </thead>
-            <tbody id="ordersViewTbody"><tr><td colspan="8" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-          </table>
+      <!-- ANALYTICS -->
+      <div id="v-analytics" class="hidden grid">
+        <div class="grid cards">
+          <div class="card kpi"><div class="lab">Narudžbi (30d)</div><div id="anCnt" class="val">—</div></div>
+          <div class="card kpi"><div class="lab">Prihod (30d)</div><div id="anRev" class="val">—</div></div>
+          <div class="card kpi"><div class="lab">Prosj. cijena</div><div id="anAvg" class="val">—</div></div>
+          <div class="card kpi"><div class="lab">Top tip</div><div id="anTop" class="val">—</div></div>
         </div>
-
-        <!-- OUTBOX -->
-        <div id="view-outbox" class="card hidden">
-          <a class="back-dash btn secondary mb-2" href="#" data-view="dashboard">← Nazad na Dashboard</a>
-          <h3 class="mb-2" style="font-size:var(--fs-title);font-weight:800">Outbox</h3>
-          <div class="toolbar">
-            <div>
-              <label for="outboxStatus" class="input-label">Status</label>
-              <select id="outboxStatus" class="select">
-                <option value="">Sve</option>
-                <option value="queued">queued</option>
-                <option value="sent">sent</option>
-                <option value="delivered">delivered</option>
-                <option value="failed">failed</option>
-                <option value="bounced">bounced</option>
-              </select>
-            </div>
-            <div class="w-full" style="max-width:320px">
-              <label for="outboxSearch" class="input-label">Pretraga</label>
-              <input id="outboxSearch" class="input w-full" placeholder="email / subject" />
-            </div>
-            <button id="outboxRefresh" class="btn small secondary" type="button">⟳ Osvježi</button>
-          </div>
-
-          <!-- Desktop table -->
-          <table class="responsive-hide" aria-label="Tabela Outbox-a">
-            <thead>
-              <tr><th>Vrijeme</th><th>Kome</th><th>Predmet</th><th>Šablon</th><th>Status</th><th>Provider ID</th></tr>
-            </thead>
-            <tbody id="outboxTbody"><tr><td colspan="6" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-          </table>
-
-          <!-- Mobile cards -->
-          <div id="outboxCards" class="cards"></div>
-          <p id="outboxInfo" class="muted mt-2"></p>
+        <div class="split">
+          <div class="card"><strong>Top tipovi</strong><div id="anTypes" style="margin-top:.5rem"></div></div>
+          <div class="aside"><div class="card"><strong>Prihod po danu (14d)</strong><div id="anDays" style="margin-top:.5rem"></div></div></div>
         </div>
+      </div>
 
-        <!-- DOCUMENTS -->
-        <div id="view-documents" class="card hidden">
-          <a class="back-dash btn secondary mb-2" href="#" data-view="dashboard">← Nazad na Dashboard</a>
-          <h3 class="mb-2" style="font-size:var(--fs-title);font-weight:800">Dokumenti</h3>
-          <div class="toolbar">
-            <div class="w-full" style="max-width:300px">
-              <label for="docsOrderId" class="input-label">ID narudžbe</label>
-              <input id="docsOrderId" class="input w-full" placeholder="Broj ili UUID" />
-            </div>
-            <button id="docsLoad" class="btn small primary" type="button">📂 Prikaži fajlove</button>
-            <span class="muted">Bucket: <code>ugovori</code></span>
-          </div>
-          <!-- Desktop table -->
-          <table class="responsive-hide" aria-label="Dokumenti">
-            <thead>
-              <tr><th>Fajl</th><th>Veličina</th><th>Modifikovano</th><th></th></tr>
-            </thead>
-            <tbody id="docsTbody"><tr><td colspan="4" style="text-align:center;color:#8b95a5">Unesi ID narudžbe i klikni „Prikaži fajlove”.</td></tr></tbody>
-          </table>
-          <!-- Mobile cards -->
-          <div id="docsCards" class="cards"></div>
-        </div>
+      <!-- SETTINGS -->
+      <div id="v-settings" class="hidden card">
+        <strong>Okruženje</strong><p id="envInfo" class="muted">—</p>
+        <div style="margin-top:1rem"><strong>Test konekcije</strong> <button id="ping" class="btn bsm">Ping DB</button> <span id="pingRes" class="muted">—</span></div>
+        <div style="margin-top:1rem"><strong>Back to Dashboard</strong> <button class="btn bsm" data-back="dash">↩︎</button></div>
+      </div>
+    </section>
+  </main>
+</div>
 
-        <!-- ANALYTICS -->
-        <div id="view-analytics" class="grid hidden">
-          <a class="back-dash btn secondary mb-2" href="#" data-view="dashboard">← Nazad na Dashboard</a>
-          <div class="kpi-grid">
-            <div class="card kpi">
-              <div class="label">Narudžbi (30d)</div>
-              <div class="value" id="anCnt30">—</div>
-            </div>
-            <div class="card kpi">
-              <div class="label">Prihod (30d)</div>
-              <div class="value" id="anRev30">—</div>
-            </div>
-            <div class="card kpi">
-              <div class="label">Prosječna cijena</div>
-              <div class="value" id="anAvg">—</div>
-            </div>
-            <div class="card kpi">
-              <div class="label">Top tip</div>
-              <div class="value" id="anTopType">—</div>
-            </div>
-          </div>
-
-          <div class="split">
-            <div class="card">
-              <h3 class="mb-1" style="font-size:var(--fs-sub);font-weight:800">Top tipovi ugovora</h3>
-              <table aria-label="Top tipovi">
-                <thead><tr><th>Tip</th><th>Količina</th><th>Prihod</th></tr></thead>
-                <tbody id="anTypesTbody"><tr><td colspan="3" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-              </table>
-            </div>
-            <div class="aside">
-              <div class="card">
-                <h3 class="mb-1" style="font-size:var(--fs-sub);font-weight:800">Prihod po danu (14d)</h3>
-                <table aria-label="Prihod po danu">
-                  <thead><tr><th>Dan</th><th>Prihod</th></tr></thead>
-                  <tbody id="anDaysTbody"><tr><td colspan="2" style="text-align:center;color:#8b95a5">Učitavam…</td></tr></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SETTINGS -->
-        <div id="view-settings" class="card hidden">
-          <a class="back-dash btn secondary mb-2" href="#" data-view="dashboard">← Nazad na Dashboard</a>
-          <h3 class="mb-2" style="font-size:var(--fs-title);font-weight:800">Podešavanja</h3>
-          <p class="muted">Email šabloni, rok signed linkova, podsjetnici (uskoro).</p>
-          <div class="grid" style="grid-template-columns:repeat(2,minmax(220px,1fr));gap:var(--s-3);margin-top:var(--s-3)">
-            <div class="card">
-              <strong>Okruženje</strong>
-              <p class="muted" id="envInfo">—</p>
-            </div>
-            <div class="card">
-              <strong>Test konekcije</strong><br />
-              <button id="btnPing" class="btn small secondary mt-2" type="button">Ping DB</button>
-              <span id="pingResult" class="muted" style="margin-left:.5rem">—</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+<!-- DRAWER -->
+<div id="drawer" class="drawer" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="dh"><strong id="drTit">Narudžba</strong><div><button id="drSend" class="btn bsm bpri">Pošalji final</button> <button id="drClose" class="btn bsm">Zatvori</button></div></div>
+  <div class="db">
+    <div><div class="muted">Klijent</div><div id="drCli">—</div></div>
+    <div><div class="muted">Tip ugovora</div><div id="drType">—</div></div>
+    <div><div class="muted">Iznos</div><div id="drAmt">—</div></div>
+    <div><div class="muted">Finalni fajl</div><input id="drFile" type="file"></div>
+    <div><div class="muted">Timeline</div><div id="drTl" class="tl"></div></div>
   </div>
-
-  <!-- BOTTOM NAV (mobile quick access) -->
-  <nav class="bottom-nav" id="bottomNav" aria-label="Brza navigacija">
-    <button class="bn-btn active" data-view="dashboard" aria-label="Dashboard">🏠<span class="sr-only">Dashboard</span></button>
-    <button class="bn-btn" data-view="orders" aria-label="Narudžbe">🗂️<span class="sr-only">Narudžbe</span></button>
-    <button class="bn-btn" data-view="outbox" aria-label="Outbox">✉️<span class="sr-only">Outbox</span></button>
-  </nav>
-
-  <!-- DRAWER: Order details -->
-  <div id="drawer" class="drawer" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="drawer__head">
-      <strong id="drawerTitle" class="drawer__title">Narudžba</strong>
-      <div class="flex items-center" style="gap:.5rem">
-        <button id="btnDrawerSend" class="btn small primary" type="button">📤 Pošalji final</button>
-        <button id="btnDrawerClose" class="btn small secondary" type="button">Zatvori</button>
-      </div>
-    </div>
-    <div class="drawer__body">
-      <div class="progress" id="drawerProgress">
-        <!-- steps injected -->
-      </div>
-
-      <div>
-        <div class="muted">Klijent</div>
-        <div id="drawerClient">—</div>
-      </div>
-      <div>
-        <div class="muted">Tip ugovora</div>
-        <div id="drawerType">—</div>
-      </div>
-      <div>
-        <div class="muted">Iznos</div>
-        <div id="drawerAmount">—</div>
-      </div>
-      <div>
-        <div class="muted mb-1">Finalni fajl</div>
-        <input id="drawerFile" type="file" aria-label="Otpremi finalni fajl" />
-      </div>
-
-      <div>
-        <div class="muted mb-1">Timeline</div>
-        <div id="drawerTimeline" class="grid"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast" class="card" style="position:fixed;right:16px;bottom:calc(16px + var(--safe-bottom));opacity:0;transform:translateY(8px);transition:.25s;z-index:60">Poruka</div>
-
-  <script>
-    "use strict";
-
-    /***** CONFIG — Supabase *****/
-    const SUPABASE_URL = "https://jgkllsxeuoozpglzwxwg.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc";
-    const API_FINALIZE = "/api/finalize-contract.js";
-
-    // SDK guard
-    if (!window.supabase || typeof window.supabase.createClient !== "function") {
-      alert("Supabase SDK nije učitan. Provjeri mrežu/CSP/AdBlock i script src.");
-      console.error("Supabase SDK missing: window.supabase =", window.supabase);
-    }
-    const supabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    /***** STATE *****/
-    let orders = [];
-    let rawOrders = [];
-    let selectedIds = new Set();
-    let currentOrder = null;
-    let isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    /***** ELEMENTS *****/
-    const loginView = document.getElementById("loginView");
-    const appView   = document.getElementById("appView");
-    const btnLogin  = document.getElementById("btnLogin");
-    const btnLogout = document.getElementById("btnLogout");
-    const btnRefresh= document.getElementById("btnRefresh");
-    const loaderBar = document.getElementById("loader");
-    const toast     = document.getElementById("toast");
-
-    const sidebar   = document.getElementById("sidebar");
-    const btnMenu   = document.getElementById("btnMenu");
-    const scrim     = document.getElementById("scrim");
-    const bottomNav = document.getElementById("bottomNav");
-    const nav       = document.getElementById("sideNav");
-
-    const views = {
-      dashboard: document.getElementById("view-dashboard"),
-      orders: document.getElementById("view-orders"),
-      outbox: document.getElementById("view-outbox"),
-      documents: document.getElementById("view-documents"),
-      analytics: document.getElementById("view-analytics"),
-      settings: document.getElementById("view-settings"),
-    };
-
-    // Filters / tables / cards
-    const filterSearch = document.getElementById("filterSearch");
-    const filterStatus = document.getElementById("filterStatus");
-    const ordersTbody  = document.getElementById("ordersTbody");
-    const ordersCards  = document.getElementById("ordersCards");
-    const checkAll     = document.getElementById("checkAll");
-    const criticalList = document.getElementById("criticalList");
-
-    const kpiToday = document.getElementById("kpiToday");
-    const kpiRev30 = document.getElementById("kpiRev30");
-    const globalSearch = document.getElementById("globalSearch");
-
-    // Drawer
-    const drawer = document.getElementById("drawer");
-    const drawerTitle = document.getElementById("drawerTitle");
-    const drawerClient = document.getElementById("drawerClient");
-    const drawerType = document.getElementById("drawerType");
-    const drawerAmount = document.getElementById("drawerAmount");
-    const drawerFile = document.getElementById("drawerFile");
-    const drawerTimeline = document.getElementById("drawerTimeline");
-    const drawerProgress = document.getElementById("drawerProgress");
-    const btnDrawerClose = document.getElementById("btnDrawerClose");
-    const btnDrawerSend  = document.getElementById("btnDrawerSend");
-
-    // Outbox / Docs (mobile cards too)
-    const outboxTbody = document.getElementById("outboxTbody");
-    const outboxCards = document.getElementById("outboxCards");
-    const outboxInfo  = document.getElementById("outboxInfo");
-    const docsTbody   = document.getElementById("docsTbody");
-    const docsCards   = document.getElementById("docsCards");
-
-    /***** UTIL *****/
-    const fmtMoney = v => Intl.NumberFormat("sr-ME",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(v||0);
-    const pad = (n, w=5) => String(n).padStart(w,"0");
-    const loading = (on)=> loaderBar.classList.toggle("on", !!on);
-
-    function show(el){ el?.classList.remove("hidden"); }
-    function hide(el){ el?.classList.add("hidden"); }
-    function showToast(msg){ toast.textContent = msg; toast.style.opacity = 1; toast.style.transform = "translateY(0)"; setTimeout(()=>{toast.style.opacity=0;toast.style.transform="translateY(8px)";}, 1800); }
-
-    function updateBottomNav(view){
-      [...bottomNav.querySelectorAll(".bn-btn")].forEach(b=>b.classList.toggle("active", b.dataset.view===view));
-    }
-
-    function setView(name){
-      Object.entries(views).forEach(([k,el]) => (k===name)?show(el):hide(el));
-      // highlight side nav
-      document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active", b.dataset.view===name));
-      // bottom nav
-      updateBottomNav(name);
-      // close mobile menu
-      closeMenu();
-      // per-view hooks
-      if(name==="orders"){ renderOrdersView(); }
-      if(name==="outbox"){ fetchOutbox(); }
-      if(name==="documents"){ /* waits for ID */ }
-      if(name==="analytics"){ recomputeAnalytics(); }
-      if(name==="settings"){ document.getElementById("envInfo").textContent = `${location.hostname} • ${SUPABASE_URL}`; }
-    }
-
-    /* Menu (mobile) */
-    function openMenu(){ sidebar.classList.add("open"); scrim.classList.add("show"); }
-    function closeMenu(){ sidebar.classList.remove("open"); scrim.classList.remove("show"); }
-
-    /* KPIs */
-    function renderKPIs(){
-      const today = new Date().toDateString();
-      const todayCount = orders.filter(o => new Date(o.created_at).toDateString()===today).length;
-      const revenue30 = orders.reduce((s,o)=>{
-        const d = new Date(o.created_at);
-        const diff = (Date.now()-d.getTime())/86400000;
-        return diff<=30 ? s + (Number(o.total_price)||0) : s;
-      },0);
-      kpiToday.textContent = todayCount;
-      kpiRev30.textContent = fmtMoney(revenue30);
-    }
-
-    /* Status badges with emoji */
-    function statusBadge(o){
-      const paid = o.is_paid ? '<span class="status paid">✅ Uplaćeno</span>' : '<span class="status unpaid">❌ Na čekanju</span>';
-      const final= o.is_final_approved ? '<span class="status sent">📤 Poslato</span>' : '<span class="status wait">⏳ Čeka</span>';
-      return [paid, final];
-    }
-
-    /***** RENDER: DESKTOP TABLE *****/
-    function renderTable(){
-      ordersTbody.innerHTML = "";
-      selectedIds.clear();
-      if(document.getElementById("checkAll")) document.getElementById("checkAll").checked = false;
-
-      const txt = (filterSearch.value||"").toLowerCase();
-      const st = filterStatus.value;
-
-      const filtered = orders.filter(o=>{
-        const hit = !txt
-          || String(o.order_number).includes(txt)
-          || (o.client_email||"").toLowerCase().includes(txt)
-          || (o.ugovor_type||"").toLowerCase().includes(txt);
-        if(!hit) return false;
-        if(st==="paid" && !o.is_paid) return false;
-        if(st==="unpaid" && o.is_paid) return false;
-        if(st==="sent" && !o.is_final_approved) return false;
-        if(st==="wait" && o.is_final_approved) return false;
-        return true;
-      });
-
-      for(const o of filtered){
-        const tr = document.createElement("tr");
-        const [sPaid, sFinal] = statusBadge(o);
-        tr.innerHTML = `
-          <td><input type="checkbox" data-id="${o.id}" aria-label="Označi narudžbu ${o.id}"></td>
-          <td>#${pad(o.order_number||o.id)}</td>
-          <td>${o.ugovor_type||"—"}</td>
-          <td>${o.client_email||"—"}</td>
-          <td>${fmtMoney(Number(o.total_price||0))}</td>
-          <td>${sPaid}</td>
-          <td>${sFinal}</td>
-          <td class="actions">
-            ${!o.is_paid ? `<button class="btn small success" data-act="verify" data-id="${o.id}" type="button">✅ Verifikuj</button>` : ``}
-            <button class="btn small secondary" data-act="upload" data-id="${o.id}" type="button">📎 Priloži</button>
-            ${(o.is_paid && !o.is_final_approved && o.final_document_url) ? `<button class="btn small primary" data-act="send" data-id="${o.id}" type="button">📤 Pošalji</button>` : ``}
-            <button class="btn small ghost" data-act="open" data-id="${o.id}" type="button">ℹ️ Detalji</button>
-          </td>
-        `;
-        ordersTbody.appendChild(tr);
-      }
-      renderCritical();
-      renderCards(); // keep mobile in sync if user resized
-    }
-
-    /***** RENDER: MOBILE CARDS (orders) — full-tap cards *****/
-    function renderCards(){
-      const txt = (filterSearch.value||"").toLowerCase();
-      const st = filterStatus.value;
-      const filtered = orders.filter(o=>{
-        const hit = !txt
-          || String(o.order_number).includes(txt)
-          || (o.client_email||"").toLowerCase().includes(txt)
-          || (o.ugovor_type||"").toLowerCase().includes(txt);
-        if(!hit) return false;
-        if(st==="paid" && !o.is_paid) return false;
-        if(st==="unpaid" && o.is_paid) return false;
-        if(st==="sent" && !o.is_final_approved) return false;
-        if(st==="wait" && o.is_final_approved) return false;
-        return true;
-      });
-
-      ordersCards.innerHTML = filtered.map(o=>{
-        const [sPaid, sFinal] = statusBadge(o);
-        const amount = fmtMoney(Number(o.total_price||0));
-        const short = `
-          <div class="tap-card" data-id="${o.id}" data-act="open">
-            <div class="card-row">
-              <strong>#${pad(o.order_number||o.id)}</strong>
-              <span class="pill">${o.ugovor_type||"—"}</span>
-            </div>
-            <div class="card-row">
-              <span class="muted">${o.client_email||"—"}</span>
-              <span>${amount}</span>
-            </div>
-            <div class="card-row" style="gap:.5rem">
-              <span>${sPaid}</span>
-              <span>${sFinal}</span>
-            </div>
-            <div class="actions">
-              ${!o.is_paid ? `<button class="btn small success" data-act="verify" data-id="${o.id}" type="button">✅ Verifikuj</button>` : ``}
-              <button class="btn small secondary" data-act="upload" data-id="${o.id}" type="button">📎 Priloži</button>
-              ${(o.is_paid && !o.is_final_approved && o.final_document_url) ? `<button class="btn small primary" data-act="send" data-id="${o.id}" type="button">📤 Pošalji</button>` : ``}
-              <button class="btn small ghost" data-act="open" data-id="${o.id}" type="button">ℹ️ Detalji</button>
-            </div>
-          </div>
-        `;
-        return short;
-      }).join("") || `<div class="muted">Nema stavki.</div>`;
-    }
-
-    function renderCritical(){
-      const items = orders.filter(o => (o.is_paid && !o.is_final_approved));
-      if(items.length===0){ criticalList.innerHTML = `<li class="muted">Nema kritičnih stavki.</li>`; return;}
-      criticalList.innerHTML = items.map(o=>`<li>#${pad(o.order_number)} • ${o.client_email} • čeka final</li>`).join("");
-    }
-
-    function openDrawer(order){
-      currentOrder = order;
-      drawerTitle.textContent = `Narudžba #${pad(order.order_number||order.id)}`;
-      drawerClient.textContent = order.client_email || "—";
-      drawerType.textContent   = order.ugovor_type || "—";
-      drawerAmount.textContent = fmtMoney(Number(order.total_price||0));
-
-      // progress tracker
-      drawerProgress.innerHTML = `
-        <div class="step ${order.created_at ? 'done':''}"><span class="dot"></span><span class="lbl">Kreirano</span></div>
-        <div class="step ${order.is_paid ? 'done':''}"><span class="dot"></span><span class="lbl">Plaćeno</span></div>
-        <div class="step ${order.final_document_url ? 'done':''}"><span class="dot"></span><span class="lbl">Fajl</span></div>
-        <div class="step ${order.is_final_approved ? 'done':''}"><span class="dot"></span><span class="lbl">Poslato</span></div>
-      `;
-
-      // timeline
-      drawerTimeline.innerHTML = `
-        <div>📅 Kreirano <div class="muted">${order.created_at ? new Date(order.created_at).toLocaleString() : "—"}</div></div>
-        <div>💳 Uplata <div class="muted">${order.is_paid ? "potvrđena" : "na čekanju"}</div></div>
-        <div>📎 Finalni fajl <div class="muted">${order.final_document_url ? "priložen" : "nije priložen"}</div></div>
-        <div>📤 Final <div class="muted">${order.is_final_approved ? "poslat" : "—"}</div></div>
-      `;
-
-      // open drawer
-      drawer.classList.add("open");
-      drawer.setAttribute("aria-hidden","false");
-    }
-    function closeDrawer(){
-      drawer.classList.remove("open");
-      drawer.setAttribute("aria-hidden","true");
-      currentOrder = null;
-      drawerFile.value = "";
-    }
-
-    // SWIPE TO CLOSE (mobile drawer)
-    (function registerSwipe(){
-      let startY=null, delta=0;
-      drawer.addEventListener("touchstart",(e)=>{ if(!drawer.classList.contains("open")) return; startY = e.touches[0].clientY; delta=0; }, {passive:true});
-      drawer.addEventListener("touchmove",(e)=>{ if(startY===null) return; delta = e.touches[0].clientY - startY; if(delta>0){ drawer.style.transform = `translateY(${Math.min(delta, 300)}px)`; } }, {passive:true});
-      drawer.addEventListener("touchend",()=>{ if(delta>120){ closeDrawer(); drawer.style.transform=""; } else { drawer.style.transform=""; } startY=null; delta=0; });
-    })();
-
-    /***** AUTH *****/
-    async function checkSession(){
-      if(!supabase) return null;
-      try{
-        const { data:{ session } } = await supabase.auth.getSession();
-        return session;
-      }catch(e){ console.error("getSession error:", e); return null; }
-    }
-    async function showApp(){ hide(loginView); show(appView); setView("dashboard"); }
-    async function showLogin(){ show(loginView); hide(appView); }
-
-    async function doLogin(){
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      const loginErr  = document.getElementById("loginErr");
-      if(!supabase){
-        loginErr.textContent = "SDK nije učitan — provjeri mrežu ili CSP.";
-        loginErr.classList.remove("hidden");
-        return;
-      }
-      loginErr.classList.add("hidden");
-      loading(true);
-      try{
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if(error){
-          loginErr.textContent = error.message || "Greška pri prijavi.";
-          loginErr.classList.remove("hidden");
-          return;
-        }
-        await showApp();
-        await fetchOrders();
-        subscribeRealtime();
-      }catch(e){
-        console.error("Login exception:", e);
-        loginErr.textContent = "Neočekivana greška pri prijavi (detalji u Console).";
-        loginErr.classList.remove("hidden");
-      }finally{
-        loading(false);
-      }
-    }
-
-    /***** DATA FETCH *****/
-    async function fetchOrders(){
-      if(!supabase) return;
-      loading(true);
-      try{
-        const { data, error } = await supabase.from("orders").select("*").order("created_at",{ascending:false});
-        if(error){
-          console.error(error);
-          ordersTbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#e85959">Greška pri učitavanju narudžbi.</td></tr>`;
-          ordersCards.innerHTML = `<div class="muted">Greška pri učitavanju.</div>`;
-          return;
-        }
-        rawOrders = data||[];
-        orders = [...rawOrders];
-        renderKPIs();
-        renderTable(); // also sync cards
-      }finally{
-        loading(false);
-      }
-    }
-
-    /************ ORDERS VIEW (full table page) ************/
-    function renderOrdersView(){
-      const tbody = document.getElementById("ordersViewTbody");
-      const txt = (document.getElementById("ordersFilterSearch").value||"").toLowerCase();
-      const st  = document.getElementById("ordersFilterStatus").value;
-      const filtered = orders.filter(o=>{
-        const hit = !txt
-          || String(o.order_number).includes(txt)
-          || (o.client_email||"").toLowerCase().includes(txt)
-          || (o.ugovor_type||"").toLowerCase().includes(txt);
-        if(!hit) return false;
-        if(st==="paid" && !o.is_paid) return false;
-        if(st==="unpaid" && o.is_paid) return false;
-        if(st==="sent" && !o.is_final_approved) return false;
-        if(st==="wait" && o.is_final_approved) return false;
-        return true;
-      });
-
-      tbody.innerHTML = "";
-      for(const o of filtered){
-        const [sPaid, sFinal] = statusBadge(o);
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><input type="checkbox" data-id="${o.id}" aria-label="Označi narudžbu ${o.id}"></td>
-          <td>#${pad(o.order_number||o.id)}</td>
-          <td>${o.ugovor_type||"—"}</td>
-          <td>${o.client_email||"—"}</td>
-          <td>${fmtMoney(Number(o.total_price||0))}</td>
-          <td>${sPaid}</td>
-          <td>${sFinal}</td>
-          <td class="actions">
-            ${!o.is_paid ? `<button class="btn small success" data-act="verify" data-id="${o.id}" type="button">✅ Verifikuj</button>` : ``}
-            <button class="btn small secondary" data-act="upload" data-id="${o.id}" type="button">📎 Priloži</button>
-            ${(o.is_paid && !o.is_final_approved && o.final_document_url) ? `<button class="btn small primary" data-act="send" data-id="${o.id}" type="button">📤 Pošalji</button>` : ``}
-            <button class="btn small ghost" data-act="open" data-id="${o.id}" type="button">ℹ️ Detalji</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      }
-    }
-
-    /************ OUTBOX ************/
-    async function fetchOutbox(){
-      outboxInfo.textContent = "";
-      if(!supabase) return;
-      try{
-        const { data, error } = await supabase.from("email_outbox")
-          .select("*")
-          .order("created_at",{ascending:false})
-          .limit(200);
-
-        const st = document.getElementById("outboxStatus").value;
-        const q  = (document.getElementById("outboxSearch").value||"").toLowerCase();
-
-        if(error){
-          if(outboxTbody) outboxTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Outbox tabela nedostaje.</td></tr>`;
-          outboxCards.innerHTML = `<div class="muted">Outbox tabela nedostaje.</div>`;
-          outboxInfo.innerHTML = `Napomena: kreiraj tabelu <code>public.email_outbox</code>.`;
-          return;
-        }
-
-        const rows = (data||[]).filter(r=>{
-          const ok1 = !st || r.status===st;
-          const ok2 = !q  || (String(r.to||"").toLowerCase().includes(q) || String(r.subject||"").toLowerCase().includes(q));
-          return ok1 && ok2;
-        });
-
-        // Desktop tabela
-        if(outboxTbody){
-          outboxTbody.innerHTML = rows.map(r=>`
-            <tr>
-              <td>${new Date(r.created_at).toLocaleString()}</td>
-              <td>${r.to||"—"}</td>
-              <td>${r.subject||"—"}</td>
-              <td>${r.template||"—"}</td>
-              <td>${r.status||"—"}</td>
-              <td>${r.provider_id||"—"}</td>
-            </tr>
-          `).join("") || `<tr><td colspan="6" style="text-align:center;color:#8b95a5">Nema stavki.</td></tr>`;
-        }
-
-        // Mobile cards
-        outboxCards.innerHTML = rows.map(r=>`
-          <div class="tap-card">
-            <div class="card-row"><strong>${r.subject||"—"}</strong><span class="pill">${r.status||"—"}</span></div>
-            <div class="card-row"><span class="muted">${new Date(r.created_at).toLocaleString()}</span><span>${r.to||"—"}</span></div>
-            <div class="card-row"><span>Šablon:</span><span class="muted">${r.template||"—"}</span></div>
-            <div class="card-row"><span>Provider:</span><span class="muted">${r.provider_id||"—"}</span></div>
-          </div>
-        `).join("") || `<div class="muted">Nema stavki.</div>`;
-      }catch(e){
-        console.error(e);
-        if(outboxTbody) outboxTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#e85959">Greška pri učitavanju Outbox-a.</td></tr>`;
-        outboxCards.innerHTML = `<div class="muted">Greška pri učitavanju Outbox-a.</div>`;
-      }
-    }
-
-    /************ DOCUMENTS ************/
-    async function listDocs(orderId){
-      if(!orderId){
-        if(docsTbody) docsTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#8b95a5">Unesi ID narudžbe.</td></tr>`;
-        docsCards.innerHTML = ``;
-        return;
-      }
-      if(docsTbody) docsTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#8b95a5">Učitavam…</td></tr>`;
-      docsCards.innerHTML = `<div class="muted">Učitavam…</div>`;
-      try{
-        const { data, error } = await supabase.storage.from("ugovori").list(`${orderId}`, { limit: 100 });
-        if(error){
-          console.error(error);
-          if(docsTbody) docsTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#e85959">Greška pri listanju.</td></tr>`;
-          docsCards.innerHTML = `<div class="muted">Greška pri listanju.</div>`;
-          return;
-        }
-        if(!data || data.length===0){
-          if(docsTbody) docsTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#8b95a5">Nema fajlova.</td></tr>`;
-          docsCards.innerHTML = `<div class="muted">Nema fajlova.</div>`;
-          return;
-        }
-
-        // desktop
-        if(docsTbody){
-          docsTbody.innerHTML = data.map(f=>{
-            const path = `${orderId}/${f.name}`;
-            const { data:pub } = supabase.storage.from("ugovori").getPublicUrl(path);
-            const url = pub?.publicUrl || "#";
-            const size = (f?.metadata?.size || f?.size || 0);
-            const sizeKB = size ? Math.round(size/1024) + " KB" : "—";
-            const mod = f?.updated_at ? new Date(f.updated_at).toLocaleString() : "—";
-            return `<tr>
-              <td>${f.name}</td>
-              <td>${sizeKB}</td>
-              <td>${mod}</td>
-              <td><a class="btn small secondary" href="${url}" target="_blank" rel="noopener">⬇️ Preuzmi</a></td>
-            </tr>`;
-          }).join("");
-        }
-
-        // mobile cards
-        docsCards.innerHTML = data.map(f=>{
-          const path = `${orderId}/${f.name}`;
-          const { data:pub } = supabase.storage.from("ugovori").getPublicUrl(path);
-          const url = pub?.publicUrl || "#";
-          const size = (f?.metadata?.size || f?.size || 0);
-          const sizeKB = size ? Math.round(size/1024) + " KB" : "—";
-          const mod = f?.updated_at ? new Date(f.updated_at).toLocaleString() : "—";
-          return `
-            <div class="tap-card">
-              <div class="card-row"><strong>${f.name}</strong><span class="pill">${sizeKB}</span></div>
-              <div class="card-row"><span class="muted">Modifikovano:</span><span class="muted">${mod}</span></div>
-              <div class="actions"><a class="btn small secondary w-full" href="${url}" target="_blank" rel="noopener">⬇️ Preuzmi</a></div>
-            </div>
-          `;
-        }).join("");
-      }catch(e){
-        console.error(e);
-        if(docsTbody) docsTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#e85959">Neočekivana greška.</td></tr>`;
-        docsCards.innerHTML = `<div class="muted">Neočekivana greška.</div>`;
-      }
-    }
-
-    /************ ANALYTICS ************/
-    function recomputeAnalytics(){
-      const now = Date.now();
-      const days = 14;
-      const byDay = new Map();
-      const byType = new Map();
-      let cnt30=0, rev30=0;
-
-      for(const o of orders){
-        const t = new Date(o.created_at).getTime();
-        const dDiff = (now - t)/86400000;
-        if(dDiff<=30){ cnt30++; rev30 += Number(o.total_price)||0; }
-
-        const d = new Date(o.created_at); const key = d.toISOString().slice(0,10);
-        byDay.set(key, (byDay.get(key)||0) + (Number(o.total_price)||0));
-
-        const type = (o.ugovor_type||"—");
-        const agg = byType.get(type)||{cnt:0,rev:0};
-        agg.cnt++; agg.rev += Number(o.total_price)||0;
-        byType.set(type, agg);
-      }
-
-      document.getElementById("anCnt30").textContent = cnt30;
-      document.getElementById("anRev30").textContent = fmtMoney(rev30);
-      document.getElementById("anAvg").textContent = cnt30? fmtMoney(rev30/cnt30) : "—";
-      const top = [...byType.entries()].sort((a,b)=>b[1].cnt-a[1].cnt)[0];
-      document.getElementById("anTopType").textContent = top? `${top[0]} (${top[1].cnt})` : "—";
-
-      const typesTbody = document.getElementById("anTypesTbody");
-      typesTbody.innerHTML = [...byType.entries()].sort((a,b)=>b[1].cnt-a[1].cnt).map(([k,v])=>`
-        <tr><td>${k}</td><td>${v.cnt}</td><td>${fmtMoney(v.rev)}</td></tr>
-      `).join("") || `<tr><td colspan="3" style="text-align:center;color:#8b95a5">Nema podataka.</td></tr>`;
-
-      const daysTbody = document.getElementById("anDaysTbody");
-      const rows = [];
-      for(let i=days-1;i>=0;i--){
-        const d = new Date(now - i*86400000).toISOString().slice(0,10);
-        rows.push(`<tr><td>${d}</td><td>${fmtMoney(byDay.get(d)||0)}</td></tr>`);
-      }
-      daysTbody.innerHTML = rows.join("");
-    }
-
-    /***** ACTIONS via /api *****/
-    async function getToken(){
-      const session = await checkSession();
-      return session ? session.access_token : null;
-    }
-
-    async function actVerify(id){
-      const token = await getToken();
-      if(!token){ showToast("Sesija istekla"); return; }
-      loading(true);
-      const res = await fetch(API_FINALIZE,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({action:"verify_payment",order_id:id})});
-      loading(false);
-      if(res.ok){ showToast("Uplata verifikovana"); fetchOrders(); } else showToast("Greška pri verifikaciji");
-    }
-
-    async function actUpload(id, file){
-      if(!file){ showToast("Izaberi fajl"); return; }
-      const token = await getToken(); if(!token){ showToast("Sesija istekla"); return; }
-      loading(true);
-      const { data, error } = await supabase.storage.from("ugovori").upload(`${id}/${file.name}`, file, { cacheControl:"3600", upsert:true });
-      if(error){ loading(false); console.error(error); showToast("Greška upload"); return; }
-      const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/ugovori/${data.path}`;
-      const res = await fetch(API_FINALIZE,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({action:"upload_file",order_id:id,fileUrl})});
-      loading(false);
-      res.ok ? (showToast("Ugovor priložen"), fetchOrders()) : showToast("Greška pri prilaganju");
-    }
-
-    async function actSend(id){
-      const token = await getToken(); if(!token){ showToast("Sesija istekla"); return; }
-      loading(true);
-      const res = await fetch(API_FINALIZE,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({action:"send_final",order_id:id})});
-      loading(false);
-      if(res.ok){ showToast("Final poslat"); fetchOrders(); }
-      else{ try{ const j=await res.json(); showToast("Greška: "+(j.error||"Nepoznata")); }catch{ showToast("Greška pri slanju"); } }
-    }
-
-    /***** EVENTS *****/
-    document.addEventListener("DOMContentLoaded", async ()=>{
-      // Show burger only on mobile
-      const mq = window.matchMedia("(max-width: 768px)");
-      function onMedia(e){
-        isMobile = e.matches;
-        btnMenu.style.display = e.matches ? "inline-flex" : "none";
-        renderTable(); // ensures cards sync on resize
-      }
-      mq.addEventListener ? mq.addEventListener("change", onMedia) : mq.addListener(onMedia);
-      onMedia(mq); // init
-
-      // Session check
-      const session = await checkSession();
-      if(session){ await showApp(); await fetchOrders(); subscribeRealtime(); }
-      else{ await showLogin(); }
-
-      // Side nav
-      nav.addEventListener("click", (e)=>{
-        const btn = e.target.closest("button[data-view]"); if(!btn) return;
-        setView(btn.dataset.view);
-      });
-
-      // Bottom nav
-      bottomNav.addEventListener("click",(e)=>{
-        const b = e.target.closest(".bn-btn"); if(!b) return;
-        setView(b.dataset.view);
-      });
-
-      // Back-to-dashboard (mobile)
-      document.querySelectorAll(".back-dash").forEach(a=>{
-        a.addEventListener("click", (e)=>{ e.preventDefault(); setView("dashboard"); });
-      });
-
-      // Hamburger + scrim
-      btnMenu?.addEventListener("click", openMenu);
-      scrim.addEventListener("click", closeMenu);
-
-      // Login
-      btnLogin.addEventListener("click", (e)=>{ e.preventDefault(); doLogin(); });
-      ["email","password"].forEach(id=>{
-        const el = document.getElementById(id);
-        el.addEventListener("keydown", (e)=>{ if(e.key==="Enter"){ e.preventDefault(); doLogin(); }});
-      });
-
-      // Logout
-      btnLogout.addEventListener("click", async ()=>{
-        try{ await supabase?.auth.signOut(); }catch{}
-        orders = rawOrders = []; selectedIds.clear(); currentOrder = null;
-        await showLogin();
-      });
-
-      // Refresh
-      btnRefresh.addEventListener("click", fetchOrders);
-
-      // Global search => copy to dashboard filter
-      globalSearch.addEventListener("keydown", e=>{
-        if(e.key==="Enter"){
-          filterSearch.value = globalSearch.value;
-          setView("dashboard");
-          renderTable();
-        }
-      });
-
-      // Dashboard filters
-      filterSearch.addEventListener("input", renderTable);
-      filterStatus.addEventListener("change", renderTable);
-
-      // Select all (desktop table)
-      checkAll?.addEventListener("change", ()=>{
-        selectedIds.clear();
-        if(checkAll.checked){
-          document.querySelectorAll('#ordersTbody input[type="checkbox"]').forEach(cb=>{ cb.checked=true; selectedIds.add(cb.dataset.id); });
-        }else{
-          document.querySelectorAll('#ordersTbody input[type="checkbox"]').forEach(cb=>cb.checked=false);
-        }
-      });
-      ordersTbody.addEventListener("change", (e)=>{
-        const cb = e.target.closest('input[type="checkbox"][data-id]'); if(!cb) return;
-        if(cb.checked) selectedIds.add(cb.dataset.id); else selectedIds.delete(cb.dataset.id);
-      });
-
-      // Row/card actions (event delegation)
-      function onRowAction(e){
-        const btn = e.target.closest("button[data-act]");
-        const card = e.target.closest(".tap-card[data-act='open']");
-        if(card && !btn){ // full-tap open
-          const id = card.dataset.id;
-          const order = orders.find(o=>String(o.id)===String(id));
-          if(order) openDrawer(order);
-          return;
-        }
-        if(!btn) return;
-        const id = btn.dataset.id;
-        const order = orders.find(o=>String(o.id)===String(id));
-        if(!order) return;
-
-        if(btn.dataset.act==="verify") actVerify(id);
-        if(btn.dataset.act==="upload"){ openDrawer(order); drawerFile.click(); }
-        if(btn.dataset.act==="send") actSend(id);
-        if(btn.dataset.act==="open") openDrawer(order);
-      }
-      ordersTbody.addEventListener("click", onRowAction);
-      ordersCards.addEventListener("click", onRowAction);
-
-      // Drawer
-      drawerFile.addEventListener("change", ()=>{
-        if(currentOrder && drawerFile.files[0]) actUpload(currentOrder.id, drawerFile.files[0]);
-      });
-      btnDrawerClose.addEventListener("click", closeDrawer);
-      btnDrawerSend.addEventListener("click", ()=> currentOrder && actSend(currentOrder.id));
-
-      // Settings helpers
-      document.getElementById("btnPing").addEventListener("click", async ()=>{
-        const el = document.getElementById("pingResult");
-        try{
-          const { error } = await supabase.from("orders").select("id").limit(1);
-          el.textContent = error ? "Greška" : "OK";
-        }catch{ el.textContent = "Greška"; }
-      });
-
-      // Outbox controls
-      document.getElementById("outboxRefresh").addEventListener("click", fetchOutbox);
-      document.getElementById("outboxStatus").addEventListener("change", fetchOutbox);
-      document.getElementById("outboxSearch").addEventListener("input", fetchOutbox);
-
-      // Dokumenti controls
-      document.getElementById("docsLoad").addEventListener("click", ()=>{
-        const id = document.getElementById("docsOrderId").value.trim();
-        listDocs(id);
-      });
-    });
-
-    function subscribeRealtime(){
-      try{
-        const ch = supabase.channel('orders-ch')
-          .on('postgres_changes',{event:'*', schema:'public', table:'orders'}, ()=>{
-            showToast("Ažuriranje narudžbi"); fetchOrders();
-          })
-          .subscribe((status)=>{
-            document.getElementById("sysStatus").textContent = `Realtime: ${status || 'online'} • Cron: — • Storage: —`;
-          });
-      }catch(e){
-        console.warn("Realtime off", e);
-        document.getElementById("sysStatus").textContent = "Realtime: offline • Cron: — • Storage: —";
-      }
-    }
-  </script>
-</body>
-</html>
+</div>
+
+<!-- Bottom nav (mobile) -->
+<nav class="bottom mob"><button data-v="dash" class="btn bsec">🏠 Dashboard</button><button data-v="orders" class="btn bsec">🗂️ Orders</button><button data-v="outbox" class="btn bsec">✉️ Outbox</button></nav>
+
+<div id="toast" class="toast">Poruka</div>
+
+<script>
+"use strict";
+/* CONFIG */
+const SUPABASE_URL="https://jgkllsxeuoozpglzwxwg.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impna2xsc3hldW9venBnbHp3eHdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjEyNjgsImV4cCI6MjA3MDQ5NzI2OH0.vEaqZbeoVK1MOdVL6mm7CoABRuuJUcuOXT5-IfZSUsc";
+const API_FINAL="/api/finalize-contract.js";
+const sb=window.supabase?.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+/* STATE+ELS */
+let ORD=[], CUR=null, isMob=matchMedia("(max-width:900px)").matches;
+const el=id=>document.getElementById(id), $={login:el("v-login"),app:el("v-app"),dash:el("v-dash"),orders:el("v-orders"),outbox:el("v-outbox"),docs:el("v-docs"),analytics:el("v-analytics"),settings:el("v-settings")}, drawer=el("drawer");
+/* HELPERS */
+const load=b=>el("bar").classList.toggle("on",!!b), toast=t=>{const x=el("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),1600)};
+const fmtE=v=>Intl.NumberFormat("sr-ME",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(v||0), pad=(n,w=5)=>String(n).padStart(w,"0");
+const ST={paid:{c:"st-paid",t:"Uplaćeno",i:"✅"},unpaid:{c:"st-unpaid",t:"Na čekanju",i:"⏳"},sent:{c:"st-sent",t:"Poslato",i:"📤"},wait:{c:"st-wait",t:"Čeka",i:"❌"}};
+const badge=k=>`<span class="bad ${ST[k].c}">${ST[k].i} ${ST[k].t}</span>`;
+const session=()=>sb.auth.getSession().then(r=>r.data.session);
+/* VIEW */
+function setView(v){Object.values($).forEach(x=>x.classList.add("hidden"));$.app.classList.remove("hidden");({dash:$.dash,orders:$.orders,outbox:$.outbox,docs:$.docs,analytics:$.analytics,settings:$.settings}[v]||$.dash).classList.remove("hidden");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("act",b.dataset.v===v));
+  document.querySelectorAll(".bottom [data-v]").forEach(b=>b.classList.toggle("bpri",b.dataset.v===v));
+  if(v==="outbox") fetchOutbox(); if(v==="analytics") renderAnalytics(); if(v==="settings") el("envInfo").textContent=`${location.hostname} • ${SUPABASE_URL}`;
+}
+/* ORDERS */
+async function fetchOrders(){ if(!sb) return; load(1); const {data,error}=await sb.from("orders").select("*").order("created_at",{ascending:false}); load(0);
+  if(error){ el("ordersWrap").innerHTML='<div class="muted">Greška pri učitavanju.</div>'; return;}
+  ORD=data||[]; kpis(); renderOrders(); renderCritical();
+}
+function kpis(){ const t=new Date().toDateString(); const cnt=ORD.filter(o=>new Date(o.created_at).toDateString()===t).length; const rev=ORD.reduce((s,o)=>{const d=new Date(o.created_at);return (Date.now()-d)/86400000<=30?s+(+o.total_price||0):s},0);
+  el("kpiToday").textContent=cnt; el("kpiRev").textContent=fmtE(rev);
+}
+const fO=(txt,st)=>{txt=(txt||"").toLowerCase();return ORD.filter(o=>{const hit=!txt||String(o.order_number).includes(txt)||(o.client_email||"").toLowerCase().includes(txt)||(o.ugovor_type||"").toLowerCase().includes(txt);if(!hit)return false;
+  if(st==="paid"&&!o.is_paid) return false; if(st==="unpaid"&&o.is_paid) return false; if(st==="sent"&&!o.is_final_approved) return false; if(st==="wait"&&o.is_final_approved) return false; return true})};
+function renderList({wrap,rows,cols,onRow}){const m=isMob,W=el(wrap); if(!rows.length){W.innerHTML='<div class="muted">Nema stavki.</div>';return;}
+  if(!m){W.innerHTML=`<table class="table"><thead><tr>${cols.map(c=>`<th>${c.h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr data-id="${r.id}">${cols.map(c=>`<td>${c.cell(r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+    W.querySelectorAll("tr[data-id]").forEach(tr=>tr.addEventListener("click",e=>{if(e.target.closest("button,[data-act]"))return;onRow(tr.dataset.id)}));
+    W.addEventListener("click",e=>{const b=e.target.closest("[data-act]"); if(b) onAct(b.dataset.act,b.dataset.id);});
+  }else{W.innerHTML=rows.map(r=>`<div class="card" data-id="${r.id}" style="display:grid;gap:.4rem;cursor:pointer">
+    <div style="display:flex;justify-content:space-between"><strong>#${pad(r.order_number||r.id)}</strong><span class="muted">${r.ugovor_type||"—"}</span></div>
+    <div style="display:flex;justify-content:space-between"><span class="muted">${r.client_email||"—"}</span><span>${fmtE(+r.total_price||0)}</span></div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap">${r.is_paid?badge('paid'):badge('unpaid')} ${r.is_final_approved?badge('sent'):badge('wait')}</div>
+    <div style="display:flex;gap:.35rem;flex-wrap:wrap"><button class="btn bsm bok" data-act="verify" data-id="${r.id}" ${r.is_paid?'disabled':''}>Verifikuj</button><button class="btn bsm" data-act="upload" data-id="${r.id}">Priloži</button><button class="btn bsm bpri" data-act="send" data-id="${r.id}" ${(r.is_paid&&r.final_document_url&&!r.is_final_approved)?'':'disabled'}>Pošalji</button><button class="btn bsm" data-act="open" data-id="${r.id}">Detalji</button></div>
+  </div>`).join(""); W.querySelectorAll(".card").forEach(c=>c.addEventListener("click",e=>{if(e.target.closest("button"))return;onRow(c.dataset.id)})); W.addEventListener("click",e=>{const b=e.target.closest("[data-act]"); if(b) onAct(b.dataset.act,b.dataset.id);});}
+}
+function renderOrders(){const rows=fO(el("fTxt").value,el("fSt").value); renderList({wrap:"ordersWrap",rows,cols:[
+  {h:"#",cell:o=>"#"+pad(o.order_number||o.id)},{h:"Ugovor",cell:o=>o.ugovor_type||"—"},{h:"Klijent",cell:o=>o.client_email||"—"},
+  {h:"Iznos",cell:o=>fmtE(+o.total_price||0)},{h:"Uplata",cell:o=>o.is_paid?badge('paid'):badge('unpaid')},{h:"Final",cell:o=>o.is_final_approved?badge('sent'):badge('wait')},
+  {h:"Akcije",cell:o=>`<button class="btn bsm bok" data-act="verify" data-id="${o.id}" ${o.is_paid?'disabled':''}>Verifikuj</button> <button class="btn bsm" data-act="upload" data-id="${o.id}">Priloži</button> <button class="btn bsm bpri" data-act="send" data-id="${o.id}" ${(o.is_paid&&o.final_document_url&&!o.is_final_approved)?'':'disabled'}>Pošalji</button> <button class="btn bsm" data-act="open" data-id="${o.id}">Detalji</button>`}
+],onRow:id=>openDrawer(ORD.find(o=>String(o.id)===String(id)))})}
+const renderOrdersFull=()=>{const rows=fO(el("oTxt").value,el("oSt").value); renderList({wrap:"ordersFull",rows,cols:[
+  {h:"#",cell:o=>"#"+pad(o.order_number||o.id)},{h:"Ugovor",cell:o=>o.ugovor_type||"—"},{h:"Klijent",cell:o=>o.client_email||"—"},
+  {h:"Iznos",cell:o=>fmtE(+o.total_price||0)},{h:"Uplata",cell:o=>o.is_paid?badge('paid'):badge('unpaid')},{h:"Final",cell:o=>o.is_final_approved?badge('sent'):badge('wait')},
+  {h:"Akcije",cell:o=>`<button class="btn bsm bok" data-act="verify" data-id="${o.id}" ${o.is_paid?'disabled':''}>Verifikuj</button> <button class="btn bsm" data-act="upload" data-id="${o.id}">Priloži</button> <button class="btn bsm bpri" data-act="send" data-id="${o.id}" ${(o.is_paid&&o.final_document_url&&!o.is_final_approved)?'':'disabled'}>Pošalji</button> <button class="btn bsm" data-act="open" data-id="${o.id}">Detalji</button>`}
+],onRow:id=>openDrawer(ORD.find(o=>String(o.id)===String(id)))})};
+function renderCritical(){const it=ORD.filter(o=>o.is_paid&&!o.is_final_approved); el("crit").innerHTML=it.length?it.map(o=>`<li>#${pad(o.order_number)} • ${o.client_email} • čeka final</li>`).join(""):`<li class="muted">Nema kritičnih stavki.</li>`}
+/* DRAWER + ACTIONS */
+function openDrawer(o){if(!o) return; CUR=o; el("drTit").textContent=`Narudžba #${pad(o.order_number||o.id)}`; el("drCli").textContent=o.client_email||"—"; el("drType").textContent=o.ugovor_type||"—"; el("drAmt").textContent=fmtE(+o.total_price||0);
+  el("drTl").innerHTML=`<div><span class="dot"></span>Kreirano <span class="muted">${new Date(o.created_at).toLocaleString()}</span></div>
+  <div><span class="dot" style="background:${o.is_paid?'#20c997':'#555'}"></span>Uplata ${o.is_paid?'potvrđena':'na čekanju'}</div>
+  <div><span class="dot" style="background:${o.final_document_url?'#42a0ff':'#555'}"></span>Finalni fajl ${o.final_document_url?'priložen':'nije priložen'}</div>
+  <div><span class="dot" style="background:${o.is_final_approved?'#42a0ff':'#555'}"></span>Final poslat ${o.is_final_approved?'✓':'—'}</div>`;
+  drawer.classList.add("open"); drawer.setAttribute("aria-hidden","false");
+}
+function closeDrawer(){drawer.classList.remove("open");drawer.setAttribute("aria-hidden","true");CUR=null;el("drFile").value=""}
+async function token(){const s=await session();return s?.access_token||null}
+async function onAct(a,id){const o=ORD.find(x=>String(x.id)===String(id)); if(!o) return;
+  if(a==="verify"){const tk=await token(); if(!tk) return toast("Sesija istekla"); load(1); const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"verify_payment",order_id:id})}); load(0); r.ok?(toast("Uplata verifikovana"),fetchOrders()):toast("Greška verifikacije")}
+  if(a==="upload"){openDrawer(o); el("drFile").click()}
+  if(a==="send"){const tk=await token(); if(!tk) return toast("Sesija istekla"); load(1); const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"send_final",order_id:id})}); load(0); r.ok?(toast("Final poslat"),fetchOrders()):toast("Greška slanja")}
+  if(a==="open"){openDrawer(o)}
+}
+el("drFile").addEventListener("change",async()=>{if(!CUR||!el("drFile").files[0])return; const f=el("drFile").files[0]; const {data,error}=await sb.storage.from("ugovori").upload(`${CUR.id}/${f.name}`,f,{cacheControl:"3600",upsert:true}); if(error){toast("Greška upload");return}
+  const url=`${SUPABASE_URL}/storage/v1/object/public/ugovori/${data.path}`; const tk=await token(); load(1);
+  const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"upload_file",order_id:CUR.id,fileUrl:url})}); load(0);
+  r.ok?(toast("Fajl priložen"),fetchOrders()):toast("Greška prilaganja")
+});
+el("drSend").onclick=()=>CUR&&onAct("send",CUR.id); el("drClose").onclick=closeDrawer;
+/* CSV */
+function csv(rows,name){const H=["id","order_number","ugovor_type","client_email","total_price","is_paid","is_final_approved","created_at"];const all=[H,...rows.map(o=>H.map(k=>o[k]))];const s=all.map(r=>r.map(x=>`"${String(x??"").replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([s],{type:"text/csv"}));a.download=name;a.click()}
+/* OUTBOX */
+async function fetchOutbox(){const {data,error}=await sb.from("email_outbox").select("*").order("created_at",{ascending:false}).limit(200);
+  const st=el("obSt").value,q=(el("obQ").value||"").toLowerCase(); const rows=(data||[]).filter(r=>(!st||r.status===st)&&(!q||(String(r.to||"").toLowerCase().includes(q)||String(r.subject||"").toLowerCase().includes(q))));
+  const W=el("outboxWrap"); if(!rows.length){W.innerHTML='<div class="muted">Nema stavki.</div>'; if(error) el("obInfo").innerHTML='Napomena: kreiraj tabelu <code>public.email_outbox</code>.'; return}
+  if(!isMob){W.innerHTML=`<table class="table"><thead><tr><th>Vrijeme</th><th>Kome</th><th>Predmet</th><th>Šablon</th><th>Status</th><th>Provider ID</th></tr></thead><tbody>`+
+    rows.map(r=>`<tr><td>${new Date(r.created_at).toLocaleString()}</td><td>${r.to||"—"}</td><td>${r.subject||"—"}</td><td>${r.template||"—"}</td><td>${r.status||"—"}</td><td>${r.provider_id||"—"}</td></tr>`).join("")+`</tbody></table>`}
+  else{W.innerHTML=rows.map(r=>`<div class="card" style="display:grid;gap:.35rem">
+    <div style="display:flex;justify-content:space-between"><strong>${r.subject||"—"}</strong><span class="bad ${r.status==='sent'?'st-sent':r.status==='delivered'?'st-sent':r.status==='failed'?'st-unpaid':'st-wait'}">${r.status||"—"}</span></div>
+    <div class="muted">${new Date(r.created_at).toLocaleString()}</div>
+    <div style="display:flex;justify-content:space-between"><span>Kome:</span><span>${r.to||"—"}</span></div>
+    <div style="display:flex;justify-content:space-between"><span>Šablon:</span><span>${r.template||"—"}</span></div>
+    <div class="muted">Provider: ${r.provider_id||"—"}</div></div>`).join("")}
+}
+/* DOCS */
+async function listDocs(id){const W=el("docsWrap"); if(!id){W.innerHTML='<div class="muted">Unesi ID narudžbe.</div>';return}
+  const {data,error}=await sb.storage.from("ugovori").list(`${id}`,{limit:100}); if(error){W.innerHTML='<div class="muted">Greška pri listanju.</div>';return}
+  if(!data?.length){W.innerHTML='<div class="muted">Nema fajlova.</div>';return}
+  if(!isMob){W.innerHTML=`<table class="table"><thead><tr><th>Fajl</th><th>Veličina</th><th>Modifikovano</th><th></th></tr></thead><tbody>`+
+    data.map(f=>{const p=`${id}/${f.name}`;const url=sb.storage.from("ugovori").getPublicUrl(p).data?.publicUrl||"#";const s=(f?.metadata?.size||f?.size||0);return `<tr><td>${f.name}</td><td>${s?Math.round(s/1024)+" KB":"—"}</td><td>${f?.updated_at?new Date(f.updated_at).toLocaleString():"—"}</td><td><a class="btn bsm" href="${url}" target="_blank" rel="noopener">Preuzmi</a></td></tr>`}).join("")+`</tbody></table>`}
+  else{W.innerHTML=data.map(f=>{const p=`${id}/${f.name}`;const url=sb.storage.from("ugovori").getPublicUrl(p).data?.publicUrl||"#";const s=(f?.metadata?.size||f?.size||0);
+    return `<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:.5rem"><div><div><strong>${f.name}</strong></div><div class="muted">${s?Math.round(s/1024)+" KB":"—"} • ${f?.updated_at?new Date(f.updated_at).toLocaleString():"—"}</div></div><a class="btn bsm" href="${url}" target="_blank" rel="noopener">⬇︎</a></div>`}).join("")}
+}
+/* ANALYTICS */
+function renderAnalytics(){const now=Date.now(),d14=14,byD=new Map(),byT=new Map(); let cnt30=0,rev30=0;
+  for(const o of ORD){const t=new Date(o.created_at).getTime(); if((now-t)/86400000<=30){cnt30++;rev30+=(+o.total_price||0)} const day=new Date(o.created_at).toISOString().slice(0,10); byD.set(day,(byD.get(day)||0)+(+o.total_price||0)); const tp=o.ugovor_type||"—"; const a=byT.get(tp)||{c:0,r:0}; a.c++; a.r+=(+o.total_price||0); byT.set(tp,a)}
+  el("anCnt").textContent=cnt30; el("anRev").textContent=fmtE(rev30); el("anAvg").textContent=cnt30?fmtE(rev30/cnt30):"—";
+  const top=[...byT.entries()].sort((a,b)=>b[1].c-a[1].c)[0]; el("anTop").textContent=top?`${top[0]} (${top[1].c})`:"—";
+  el("anTypes").innerHTML=[...byT.entries()].sort((a,b)=>b[1].c-a[1].c).map(([k,v])=>`<div style="display:flex;justify-content:space-between"><span>${k}</span><span>${v.c} • ${fmtE(v.r)}</span></div>`).join("")||'<div class="muted">Nema pod.</div>';
+  const rows=[]; for(let i=d14-1;i>=0;i--){const d=new Date(now-i*86400000).toISOString().slice(0,10); rows.push(`<div style="display:flex;justify-content:space-between"><span>${d}</span><span>${fmtE(byD.get(d)||0)}</span></div>`)} el("anDays").innerHTML=rows.join("");
+}
+/* REALTIME */
+function subRT(){try{sb.channel('orders-ch').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>{toast("Ažuriranje narudžbi");fetchOrders()}).subscribe(s=>{el("sys").textContent=`Realtime: ${s||'online'} • Cron: — • Storage: —`})}catch(e){el("sys").textContent="Realtime: offline • Cron: — • Storage: —"}}
+/* EVENTS */
+document.addEventListener("DOMContentLoaded",async()=>{
+  matchMedia("(max-width:900px)").addEventListener?.("change",(e)=>{isMob=e.matches; renderOrders(); if(!$.outbox.classList.contains("hidden")) fetchOutbox(); if(!$.docs.classList.contains("hidden")) listDocs(el("dId").value)});
+  el("menu").onclick=()=>{el("side").classList.add("open"); el("scrim").classList.add("show")}; el("scrim").onclick=()=>{el("side").classList.remove("open"); el("scrim").classList.remove("show")};
+  document.querySelector(".bottom")?.addEventListener("click",e=>{const b=e.target.closest("button[data-v]"); if(b) setView(b.dataset.v)});
+  el("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-v]"); if(!b)return; setView(b.dataset.v); el("side").classList.remove("open"); el("scrim").classList.remove("show")});
+  el("ref").onclick=fetchOrders; el("logout").onclick=async()=>{await sb?.auth.signOut(); $.app.classList.add("hidden"); $.login.classList.remove("hidden")};
+  el("fTxt").oninput=renderOrders; el("fSt").onchange=renderOrders; el("oTxt").oninput=renderOrdersFull; el("oSt").onchange=renderOrdersFull;
+  el("bCSV").onclick=()=>csv(fO(el("fTxt").value,el("fSt").value),"orders.csv"); el("oCSV").onclick=()=>csv(fO(el("oTxt").value,el("oSt").value),"orders.csv");
+  el("obRef").onclick=fetchOutbox; el("obSt").onchange=fetchOutbox; el("obQ").oninput=fetchOutbox;
+  el("dLoad").onclick=()=>listDocs(el("dId").value);
+  el("q").addEventListener("keydown",e=>{if(e.key==="Enter"){el("fTxt").value=el("q").value; setView("dash"); renderOrders()}});
+  el("ping").onclick=async()=>{const {error}=await sb.from("orders").select("id").limit(1); el("pingRes").textContent=error?"Greška":"OK"};
+  document.querySelector('[data-back="dash"]').onclick=()=>setView("dash");
+  const s=await session(); if(s){$.login.classList.add("hidden");$.app.classList.remove("hidden"); setView("dash"); await fetchOrders(); subRT(); } else { $.login.classList.remove("hidden"); $.app.classList.add("hidden"); }
+  el("doLogin").onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:el("em").value.trim(),password:el("pw").value}); if(error){el("lerr").textContent=error.message||"Greška pri prijavi."}else{$.login.classList.add("hidden");$.app.classList.remove("hidden"); setView("dash"); fetchOrders(); subRT();}};
+});
+</script>
+</body></html>
