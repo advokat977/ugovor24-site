@@ -5,17 +5,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--brand:#007BFF;--ok:#20c997;--bg:#0b0d10;--bg2:#12151a;--panel:#171b22;--muted:#8b95a5;--txt:#e7edf6;--warn:#ffb020;--err:#e85959;--br:#222834;--r:12px}
+:root{--brand:#007BFF;--ok:#20c997;--bg:#0b0d10;--bg2:#12151a;--panel:#171b22;--mut:#8b95a5;--txt:#e7edf6;--warn:#ffb020;--err:#e85959;--br:#222834;--r:12px}
 *{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-a{color:inherit;text-decoration:none}.hidden{display:none!important}.muted{color:var(--muted)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
+a{color:inherit;text-decoration:none}.hidden{display:none!important}.muted{color:var(--mut)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(1px,1px,1px,1px)}
 .app{display:grid;grid-template-columns:260px 1fr;grid-template-rows:auto 1fr;grid-template-areas:"side head" "side main";min-height:100vh}
 .sidebar{grid-area:side;background:var(--panel);border-right:1px solid var(--br);display:flex;flex-direction:column}
 .brand{padding:1rem;border-bottom:1px solid var(--br);font-weight:800}
 .nav{padding:.6rem}.nav button{width:100%;background:0;border:0;color:inherit;padding:.6rem .7rem;border-radius:10px;text-align:left;cursor:pointer}
 .nav button:hover{background:#132540}.nav .act{background:#0f1d35;outline:1px solid #1d3b74}
-.sidebar .foot{margin-top:auto;padding:1rem;border-top:1px solid var(--br);font-size:12px;color:var(--muted)}
+.sidebar .foot{margin-top:auto;padding:1rem;border-top:1px solid var(--br);font-size:12px;color:var(--mut)}
 .header{grid-area:head;background:var(--panel);border-bottom:1px solid var(--br);display:flex;gap:.5rem;align-items:center;padding:.7rem 1rem;position:sticky;top:0;z-index:30}
-.badge{background:#141c2b;border:1px solid var(--br);border-radius:999px;padding:.2rem .5rem;color:var(--muted);font-size:12px}
+.badge{background:#141c2b;border:1px solid var(--br);border-radius:999px;padding:.2rem .5rem;color:var(--mut);font-size:12px}
 .search{flex:1}.input,.select{width:100%;background:var(--bg2);border:1px solid var(--br);color:var(--txt);border-radius:10px;padding:.55rem .7rem}
 .btn{background:#162131;border:1px solid var(--br);color:var(--txt);padding:.5rem .75rem;border-radius:10px;cursor:pointer;font-weight:600}
 .bpri{background:var(--brand);border-color:transparent}.bsec{background:transparent}.bsm{padding:.35rem .55rem;font-size:12px;border-radius:8px}
@@ -24,7 +24,7 @@ a{color:inherit;text-decoration:none}.hidden{display:none!important}.muted{color
 .main{grid-area:main;padding:1rem;overflow:auto}
 .grid{display:grid;gap:1rem}.cards{grid-template-columns:repeat(4,minmax(160px,1fr))}
 .card{background:var(--panel);border:1px solid var(--br);border-radius:var(--r);padding:1rem}
-.kpi .lab{color:var(--muted);font-size:12px}.kpi .val{font:800 22px/1 Inter;tabular-nums:tabular-nums}.kpi .d{font-size:12px}
+.kpi .lab{color:var(--mut);font-size:12px}.kpi .val{font:800 22px/1 Inter;tabular-nums:tabular-nums}.kpi .d{font-size:12px}
 .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin:0 0 .75rem}
 .table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--br);border-radius:12px;overflow:hidden}
 .table th{background:#141924;color:#aeb7c6;text-align:left;font-weight:600;padding:.6rem;border-bottom:1px solid var(--br);font-size:12px}
@@ -38,7 +38,7 @@ a{color:inherit;text-decoration:none}.hidden{display:none!important}.muted{color
 .drawer.open{transform:translateX(0)}.dh{padding:1rem;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center}.db{padding:1rem;overflow:auto;display:grid;gap:.8rem}
 .tl{display:grid;gap:.5rem}.dot{width:10px;height:10px;border-radius:50%;background:var(--brand);display:inline-block;margin-right:.4rem}
 .toast{position:fixed;right:16px;bottom:16px;background:#10151d;border:1px solid var(--br);padding:.55rem .7rem;border-radius:10px;opacity:0;transform:translateY(8px);transition:.25s;z-index:50}
-.toast.show{opacity:1;transform:translateY(0)}
+.toast.show{opacity:1;transform:translateY(0)}.toast[aria-live]{min-width:160px}
 .mob{display:none}
 @media(max-width:900px){
   .cards{grid-template-columns:repeat(2,minmax(120px,1fr))}.split{grid-template-columns:1fr}.aside{position:static}
@@ -69,7 +69,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <div class="scrim" id="scrim"></div>
   <header class="header">
     <button id="menu" class="btn mob" aria-label="Meni">☰</button>
-    <span class="badge desk" id="env">Live</span>
+    <span class="badge desk" id="env">—</span>
     <label for="q" class="sr">Globalna pretraga</label><div class="search"><input id="q" class="input" placeholder="Pretraga (id/email/ugovor)…"></div>
     <button id="ref" class="btn bsec">⟳ Osvježi</button><button id="logout" class="btn">Odjava</button>
     <div id="bar" class="loader"></div>
@@ -180,7 +180,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <!-- Bottom nav (mobile) -->
 <nav class="bottom mob"><button data-v="dash" class="btn bsec">🏠 Dashboard</button><button data-v="orders" class="btn bsec">🗂️ Orders</button><button data-v="outbox" class="btn bsec">✉️ Outbox</button></nav>
 
-<div id="toast" class="toast">Poruka</div>
+<div id="toast" class="toast" aria-live="polite" aria-atomic="true">Poruka</div>
 
 <script>
 "use strict";
@@ -190,8 +190,9 @@ const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const API_FINAL="/api/finalize-contract.js";
 const sb=window.supabase?.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 /* STATE+ELS */
-let ORD=[], CUR=null, isMob=matchMedia("(max-width:900px)").matches;
-const el=id=>document.getElementById(id), $={login:el("v-login"),app:el("v-app"),dash:el("v-dash"),orders:el("v-orders"),outbox:el("v-outbox"),docs:el("v-docs"),analytics:el("v-analytics"),settings:el("v-settings")}, drawer=el("drawer");
+let ORD=[], CUR=null, isMob=matchMedia("(max-width:900px)").matches, ch=null;
+const el=id=>document.getElementById(id);
+const $={login:el("v-login"),app:el("v-app"),dash:el("v-dash"),orders:el("v-orders"),outbox:el("v-outbox"),docs:el("v-docs"),analytics:el("v-analytics"),settings:el("v-settings")}, drawer=el("drawer");
 /* HELPERS */
 const load=b=>el("bar").classList.toggle("on",!!b), toast=t=>{const x=el("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),1600)};
 const fmtE=v=>Intl.NumberFormat("sr-ME",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(v||0), pad=(n,w=5)=>String(n).padStart(w,"0");
@@ -199,115 +200,202 @@ const ST={paid:{c:"st-paid",t:"Uplaćeno",i:"✅"},unpaid:{c:"st-unpaid",t:"Na �
 const badge=k=>`<span class="bad ${ST[k].c}">${ST[k].i} ${ST[k].t}</span>`;
 const session=()=>sb.auth.getSession().then(r=>r.data.session);
 /* VIEW */
-function setView(v){Object.values($).forEach(x=>x.classList.add("hidden"));$.app.classList.remove("hidden");({dash:$.dash,orders:$.orders,outbox:$.outbox,docs:$.docs,analytics:$.analytics,settings:$.settings}[v]||$.dash).classList.remove("hidden");
+function setView(v){
+  Object.values($).forEach(x=>x.classList.add("hidden"));
+  $.app.classList.remove("hidden");
+  ({dash:$.dash,orders:$.orders,outbox:$.outbox,docs:$.docs,analytics:$.analytics,settings:$.settings}[v]||$.dash).classList.remove("hidden");
   document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("act",b.dataset.v===v));
   document.querySelectorAll(".bottom [data-v]").forEach(b=>b.classList.toggle("bpri",b.dataset.v===v));
-  if(v==="outbox") fetchOutbox(); if(v==="analytics") renderAnalytics(); if(v==="settings") el("envInfo").textContent=`${location.hostname} • ${SUPABASE_URL}`;
+  if(v==="outbox") fetchOutbox(); if(v==="analytics") renderAnalytics();
+  if(v==="settings") el("envInfo").textContent=`${location.hostname} • ${SUPABASE_URL}`;
 }
 /* ORDERS */
-async function fetchOrders(){ if(!sb) return; load(1); const {data,error}=await sb.from("orders").select("*").order("created_at",{ascending:false}); load(0);
+async function fetchOrders(){ if(!sb) return; load(1);
+  const {data,error}=await sb.from("orders").select("*").order("created_at",{ascending:false}); load(0);
   if(error){ el("ordersWrap").innerHTML='<div class="muted">Greška pri učitavanju.</div>'; return;}
   ORD=data||[]; kpis(); renderOrders(); renderCritical();
 }
-function kpis(){ const t=new Date().toDateString(); const cnt=ORD.filter(o=>new Date(o.created_at).toDateString()===t).length; const rev=ORD.reduce((s,o)=>{const d=new Date(o.created_at);return (Date.now()-d)/86400000<=30?s+(+o.total_price||0):s},0);
+function kpis(){
+  const t=new Date().toDateString();
+  const cnt=ORD.filter(o=>new Date(o.created_at).toDateString()===t).length;
+  const rev=ORD.reduce((s,o)=>{const d=new Date(o.created_at);return (Date.now()-d)/86400000<=30?s+(+o.total_price||0):s},0);
   el("kpiToday").textContent=cnt; el("kpiRev").textContent=fmtE(rev);
+  // Ako postoje timestampi, prikaži TTA/%<24h, inače "—"
+  const haveTimes=ORD.some(o=>o.paid_at||o.final_sent_at);
+  if(haveTimes){
+    const tt=ORD.filter(o=>o.paid_at&&o.final_sent_at).map(o=>(new Date(o.final_sent_at)-new Date(o.paid_at))/36e5);
+    const avg=tt.length? (tt.reduce((a,b)=>a+b,0)/tt.length) : 0;
+    el("kpiTTA").textContent=tt.length?`${avg.toFixed(1)} h`:"—";
+    const f24=tt.length? Math.round(100*tt.filter(h=>h<=24).length/tt.length):0;
+    el("kpiF24").textContent=tt.length?`${f24}%`:"—";
+  } else { el("kpiTTA").textContent="—"; el("kpiF24").textContent="—"; }
 }
 const fO=(txt,st)=>{txt=(txt||"").toLowerCase();return ORD.filter(o=>{const hit=!txt||String(o.order_number).includes(txt)||(o.client_email||"").toLowerCase().includes(txt)||(o.ugovor_type||"").toLowerCase().includes(txt);if(!hit)return false;
   if(st==="paid"&&!o.is_paid) return false; if(st==="unpaid"&&o.is_paid) return false; if(st==="sent"&&!o.is_final_approved) return false; if(st==="wait"&&o.is_final_approved) return false; return true})};
-function renderList({wrap,rows,cols,onRow}){const m=isMob,W=el(wrap); if(!rows.length){W.innerHTML='<div class="muted">Nema stavki.</div>';return;}
-  if(!m){W.innerHTML=`<table class="table"><thead><tr>${cols.map(c=>`<th>${c.h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr data-id="${r.id}">${cols.map(c=>`<td>${c.cell(r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+function renderList({wrap,rows,cols,onRow}){
+  const m=isMob,W=el(wrap); if(!rows.length){W.innerHTML='<div class="muted">Nema stavki.</div>';return;}
+  if(!m){
+    W.innerHTML=`<table class="table"><thead><tr>${cols.map(c=>`<th>${c.h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr data-id="${r.id}">${cols.map(c=>`<td>${c.cell(r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
     W.querySelectorAll("tr[data-id]").forEach(tr=>tr.addEventListener("click",e=>{if(e.target.closest("button,[data-act]"))return;onRow(tr.dataset.id)}));
     W.addEventListener("click",e=>{const b=e.target.closest("[data-act]"); if(b) onAct(b.dataset.act,b.dataset.id);});
-  }else{W.innerHTML=rows.map(r=>`<div class="card" data-id="${r.id}" style="display:grid;gap:.4rem;cursor:pointer">
-    <div style="display:flex;justify-content:space-between"><strong>#${pad(r.order_number||r.id)}</strong><span class="muted">${r.ugovor_type||"—"}</span></div>
-    <div style="display:flex;justify-content:space-between"><span class="muted">${r.client_email||"—"}</span><span>${fmtE(+r.total_price||0)}</span></div>
-    <div style="display:flex;gap:.4rem;flex-wrap:wrap">${r.is_paid?badge('paid'):badge('unpaid')} ${r.is_final_approved?badge('sent'):badge('wait')}</div>
-    <div style="display:flex;gap:.35rem;flex-wrap:wrap"><button class="btn bsm bok" data-act="verify" data-id="${r.id}" ${r.is_paid?'disabled':''}>Verifikuj</button><button class="btn bsm" data-act="upload" data-id="${r.id}">Priloži</button><button class="btn bsm bpri" data-act="send" data-id="${r.id}" ${(r.is_paid&&r.final_document_url&&!r.is_final_approved)?'':'disabled'}>Pošalji</button><button class="btn bsm" data-act="open" data-id="${r.id}">Detalji</button></div>
-  </div>`).join(""); W.querySelectorAll(".card").forEach(c=>c.addEventListener("click",e=>{if(e.target.closest("button"))return;onRow(c.dataset.id)})); W.addEventListener("click",e=>{const b=e.target.closest("[data-act]"); if(b) onAct(b.dataset.act,b.dataset.id);});}
+  }else{
+    W.innerHTML=rows.map(r=>`<div class="card" data-id="${r.id}" style="display:grid;gap:.4rem;cursor:pointer">
+      <div style="display:flex;justify-content:space-between"><strong>#${pad(r.order_number||r.id)}</strong><span class="muted">${r.ugovor_type||"—"}</span></div>
+      <div style="display:flex;justify-content:space-between"><span class="muted">${r.client_email||"—"}</span><span>${fmtE(+r.total_price||0)}</span></div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap">${r.is_paid?badge('paid'):badge('unpaid')} ${r.is_final_approved?badge('sent'):badge('wait')}</div>
+      <div style="display:flex;gap:.35rem;flex-wrap:wrap">
+        <button class="btn bsm bok" data-act="verify" data-id="${r.id}" ${r.is_paid?'disabled':''}>Verifikuj</button>
+        <button class="btn bsm" data-act="upload" data-id="${r.id}">Priloži</button>
+        <button class="btn bsm bpri" data-act="send" data-id="${r.id}" ${(r.is_paid&&r.final_document_url&&!r.is_final_approved)?'':'disabled'}>Pošalji</button>
+        <button class="btn bsm" data-act="open" data-id="${r.id}">Detalji</button>
+      </div></div>`).join("");
+    W.querySelectorAll(".card").forEach(c=>c.addEventListener("click",e=>{if(e.target.closest("button"))return;onRow(c.dataset.id)}));
+    W.addEventListener("click",e=>{const b=e.target.closest("[data-act]"); if(b) onAct(b.dataset.act,b.dataset.id);});
+  }
 }
-function renderOrders(){const rows=fO(el("fTxt").value,el("fSt").value); renderList({wrap:"ordersWrap",rows,cols:[
-  {h:"#",cell:o=>"#"+pad(o.order_number||o.id)},{h:"Ugovor",cell:o=>o.ugovor_type||"—"},{h:"Klijent",cell:o=>o.client_email||"—"},
-  {h:"Iznos",cell:o=>fmtE(+o.total_price||0)},{h:"Uplata",cell:o=>o.is_paid?badge('paid'):badge('unpaid')},{h:"Final",cell:o=>o.is_final_approved?badge('sent'):badge('wait')},
-  {h:"Akcije",cell:o=>`<button class="btn bsm bok" data-act="verify" data-id="${o.id}" ${o.is_paid?'disabled':''}>Verifikuj</button> <button class="btn bsm" data-act="upload" data-id="${o.id}">Priloži</button> <button class="btn bsm bpri" data-act="send" data-id="${o.id}" ${(o.is_paid&&o.final_document_url&&!o.is_final_approved)?'':'disabled'}>Pošalji</button> <button class="btn bsm" data-act="open" data-id="${o.id}">Detalji</button>`}
-],onRow:id=>openDrawer(ORD.find(o=>String(o.id)===String(id)))})}
-const renderOrdersFull=()=>{const rows=fO(el("oTxt").value,el("oSt").value); renderList({wrap:"ordersFull",rows,cols:[
-  {h:"#",cell:o=>"#"+pad(o.order_number||o.id)},{h:"Ugovor",cell:o=>o.ugovor_type||"—"},{h:"Klijent",cell:o=>o.client_email||"—"},
-  {h:"Iznos",cell:o=>fmtE(+o.total_price||0)},{h:"Uplata",cell:o=>o.is_paid?badge('paid'):badge('unpaid')},{h:"Final",cell:o=>o.is_final_approved?badge('sent'):badge('wait')},
-  {h:"Akcije",cell:o=>`<button class="btn bsm bok" data-act="verify" data-id="${o.id}" ${o.is_paid?'disabled':''}>Verifikuj</button> <button class="btn bsm" data-act="upload" data-id="${o.id}">Priloži</button> <button class="btn bsm bpri" data-act="send" data-id="${o.id}" ${(o.is_paid&&o.final_document_url&&!o.is_final_approved)?'':'disabled'}>Pošalji</button> <button class="btn bsm" data-act="open" data-id="${o.id}">Detalji</button>`}
-],onRow:id=>openDrawer(ORD.find(o=>String(o.id)===String(id)))})};
+function renderOrders(){
+  const rows=fO(el("fTxt").value,el("fSt").value);
+  renderList({wrap:"ordersWrap",rows,cols:[
+    {h:"#",cell:o=>"#"+pad(o.order_number||o.id)},{h:"Ugovor",cell:o=>o.ugovor_type||"—"},{h:"Klijent",cell:o=>o.client_email||"—"},
+    {h:"Iznos",cell:o=>fmtE(+o.total_price||0)},{h:"Uplata",cell:o=>o.is_paid?badge('paid'):badge('unpaid')},{h:"Final",cell:o=>o.is_final_approved?badge('sent'):badge('wait')},
+    {h:"Akcije",cell:o=>`<button class="btn bsm bok" data-act="verify" data-id="${o.id}" ${o.is_paid?'disabled':''}>Verifikuj</button> <button class="btn bsm" data-act="upload" data-id="${o.id}">Priloži</button> <button class="btn bsm bpri" data-act="send" data-id="${o.id}" ${(o.is_paid&&o.final_document_url&&!o.is_final_approved)?'':'disabled'}>Pošalji</button> <button class="btn bsm" data-act="open" data-id="${o.id}">Detalji</button>`}
+  ],onRow:id=>openDrawer(ORD.find(o=>String(o.id)===String(id)))});
+}
+const renderOrdersFull=()=>{const rows=fO(el("oTxt").value,el("oSt").value);
+  renderList({wrap:"ordersFull",rows,cols:[
+    {h:"#",cell:o=>"#"+pad(o.order_number||o.id)},{h:"Ugovor",cell:o=>o.ugovor_type||"—"},{h:"Klijent",cell:o=>o.client_email||"—"},
+    {h:"Iznos",cell:o=>fmtE(+o.total_price||0)},{h:"Uplata",cell:o=>o.is_paid?badge('paid'):badge('unpaid')},{h:"Final",cell:o=>o.is_final_approved?badge('sent'):badge('wait')},
+    {h:"Akcije",cell:o=>`<button class="btn bsm bok" data-act="verify" data-id="${o.id}" ${o.is_paid?'disabled':''}>Verifikuj</button> <button class="btn bsm" data-act="upload" data-id="${o.id}">Priloži</button> <button class="btn bsm bpri" data-act="send" data-id="${o.id}" ${(o.is_paid&&o.final_document_url&&!o.is_final_approved)?'':'disabled'}>Pošalji</button> <button class="btn bsm" data-act="open" data-id="${o.id}">Detalji</button>`}
+  ],onRow:id=>openDrawer(ORD.find(o=>String(o.id)===String(id)))});
+};
 function renderCritical(){const it=ORD.filter(o=>o.is_paid&&!o.is_final_approved); el("crit").innerHTML=it.length?it.map(o=>`<li>#${pad(o.order_number)} • ${o.client_email} • čeka final</li>`).join(""):`<li class="muted">Nema kritičnih stavki.</li>`}
 /* DRAWER + ACTIONS */
-function openDrawer(o){if(!o) return; CUR=o; el("drTit").textContent=`Narudžba #${pad(o.order_number||o.id)}`; el("drCli").textContent=o.client_email||"—"; el("drType").textContent=o.ugovor_type||"—"; el("drAmt").textContent=fmtE(+o.total_price||0);
+function openDrawer(o){
+  if(!o) return; CUR=o; el("drTit").textContent=`Narudžba #${pad(o.order_number||o.id)}`;
+  el("drCli").textContent=o.client_email||"—"; el("drType").textContent=o.ugovor_type||"—"; el("drAmt").textContent=fmtE(+o.total_price||0);
   el("drTl").innerHTML=`<div><span class="dot"></span>Kreirano <span class="muted">${new Date(o.created_at).toLocaleString()}</span></div>
   <div><span class="dot" style="background:${o.is_paid?'#20c997':'#555'}"></span>Uplata ${o.is_paid?'potvrđena':'na čekanju'}</div>
   <div><span class="dot" style="background:${o.final_document_url?'#42a0ff':'#555'}"></span>Finalni fajl ${o.final_document_url?'priložen':'nije priložen'}</div>
   <div><span class="dot" style="background:${o.is_final_approved?'#42a0ff':'#555'}"></span>Final poslat ${o.is_final_approved?'✓':'—'}</div>`;
-  drawer.classList.add("open"); drawer.setAttribute("aria-hidden","false");
+  drawer.classList.add("open"); drawer.setAttribute("aria-hidden","false"); el("drSend").disabled=!(o.is_paid&&o.final_document_url&&!o.is_final_approved);
 }
 function closeDrawer(){drawer.classList.remove("open");drawer.setAttribute("aria-hidden","true");CUR=null;el("drFile").value=""}
 async function token(){const s=await session();return s?.access_token||null}
-async function onAct(a,id){const o=ORD.find(x=>String(x.id)===String(id)); if(!o) return;
-  if(a==="verify"){const tk=await token(); if(!tk) return toast("Sesija istekla"); load(1); const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"verify_payment",order_id:id})}); load(0); r.ok?(toast("Uplata verifikovana"),fetchOrders()):toast("Greška verifikacije")}
+async function onAct(a,id){
+  const o=ORD.find(x=>String(x.id)===String(id)); if(!o) return;
+  if(a==="verify"){
+    if(!confirm("Potvrdi verifikaciju uplate?")) return;
+    const tk=await token(); if(!tk) return toast("Sesija istekla");
+    load(1); const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"verify_payment",order_id:id})}); load(0);
+    r.ok?(toast("Uplata verifikovana"),fetchOrders()):toast("Greška verifikacije");
+  }
   if(a==="upload"){openDrawer(o); el("drFile").click()}
-  if(a==="send"){const tk=await token(); if(!tk) return toast("Sesija istekla"); load(1); const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"send_final",order_id:id})}); load(0); r.ok?(toast("Final poslat"),fetchOrders()):toast("Greška slanja")}
+  if(a==="send"){
+    if(!confirm("Poslati final klijentu?")) return;
+    const tk=await token(); if(!tk) return toast("Sesija istekla");
+    load(1); const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"send_final",order_id:id})}); load(0);
+    r.ok?(toast("Final poslat"),fetchOrders()):toast("Greška slanja");
+  }
   if(a==="open"){openDrawer(o)}
 }
-el("drFile").addEventListener("change",async()=>{if(!CUR||!el("drFile").files[0])return; const f=el("drFile").files[0]; const {data,error}=await sb.storage.from("ugovori").upload(`${CUR.id}/${f.name}`,f,{cacheControl:"3600",upsert:true}); if(error){toast("Greška upload");return}
+el("drFile").addEventListener("change",async()=>{
+  if(!CUR||!el("drFile").files[0])return;
+  const f=el("drFile").files[0]; if(f.size>50*1024*1024){toast("Fajl prevelik (>50MB)"); return;}
+  const {data,error}=await sb.storage.from("ugovori").upload(`${CUR.id}/${f.name}`,f,{cacheControl:"3600",upsert:true});
+  if(error){toast("Greška upload");return}
   const url=`${SUPABASE_URL}/storage/v1/object/public/ugovori/${data.path}`; const tk=await token(); load(1);
   const r=await fetch(API_FINAL,{method:"POST",headers:{'Content-Type':'application/json','Authorization':`Bearer ${tk}`},body:JSON.stringify({action:"upload_file",order_id:CUR.id,fileUrl:url})}); load(0);
-  r.ok?(toast("Fajl priložen"),fetchOrders()):toast("Greška prilaganja")
+  r.ok?(toast("Fajl priložen"),fetchOrders()):toast("Greška prilaganja");
 });
 el("drSend").onclick=()=>CUR&&onAct("send",CUR.id); el("drClose").onclick=closeDrawer;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&drawer.classList.contains("open")) closeDrawer()});
 /* CSV */
-function csv(rows,name){const H=["id","order_number","ugovor_type","client_email","total_price","is_paid","is_final_approved","created_at"];const all=[H,...rows.map(o=>H.map(k=>o[k]))];const s=all.map(r=>r.map(x=>`"${String(x??"").replace(/"/g,'""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([s],{type:"text/csv"}));a.download=name;a.click()}
+function csv(rows,name){
+  const H=["id","order_number","ugovor_type","client_email","total_price","is_paid","is_final_approved","created_at"];
+  const all=[H,...rows.map(o=>H.map(k=>o[k]))];
+  const s=all.map(r=>r.map(x=>`"${String(x??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([s],{type:"text/csv"}));a.download=name;a.click()
+}
 /* OUTBOX */
-async function fetchOutbox(){const {data,error}=await sb.from("email_outbox").select("*").order("created_at",{ascending:false}).limit(200);
-  const st=el("obSt").value,q=(el("obQ").value||"").toLowerCase(); const rows=(data||[]).filter(r=>(!st||r.status===st)&&(!q||(String(r.to||"").toLowerCase().includes(q)||String(r.subject||"").toLowerCase().includes(q))));
+async function fetchOutbox(){
+  const {data,error}=await sb.from("email_outbox").select("*").order("created_at",{ascending:false}).limit(200);
+  const st=el("obSt").value,q=(el("obQ").value||"").toLowerCase();
+  const rows=(data||[]).filter(r=>(!st||r.status===st)&&(!q||(String(r.to||"").toLowerCase().includes(q)||String(r.subject||"").toLowerCase().includes(q))));
   const W=el("outboxWrap"); if(!rows.length){W.innerHTML='<div class="muted">Nema stavki.</div>'; if(error) el("obInfo").innerHTML='Napomena: kreiraj tabelu <code>public.email_outbox</code>.'; return}
-  if(!isMob){W.innerHTML=`<table class="table"><thead><tr><th>Vrijeme</th><th>Kome</th><th>Predmet</th><th>Šablon</th><th>Status</th><th>Provider ID</th></tr></thead><tbody>`+
-    rows.map(r=>`<tr><td>${new Date(r.created_at).toLocaleString()}</td><td>${r.to||"—"}</td><td>${r.subject||"—"}</td><td>${r.template||"—"}</td><td>${r.status||"—"}</td><td>${r.provider_id||"—"}</td></tr>`).join("")+`</tbody></table>`}
-  else{W.innerHTML=rows.map(r=>`<div class="card" style="display:grid;gap:.35rem">
-    <div style="display:flex;justify-content:space-between"><strong>${r.subject||"—"}</strong><span class="bad ${r.status==='sent'?'st-sent':r.status==='delivered'?'st-sent':r.status==='failed'?'st-unpaid':'st-wait'}">${r.status||"—"}</span></div>
-    <div class="muted">${new Date(r.created_at).toLocaleString()}</div>
-    <div style="display:flex;justify-content:space-between"><span>Kome:</span><span>${r.to||"—"}</span></div>
-    <div style="display:flex;justify-content:space-between"><span>Šablon:</span><span>${r.template||"—"}</span></div>
-    <div class="muted">Provider: ${r.provider_id||"—"}</div></div>`).join("")}
+  if(!isMob){
+    W.innerHTML=`<table class="table"><thead><tr><th>Vrijeme</th><th>Kome</th><th>Predmet</th><th>Šablon</th><th>Status</th><th>Provider ID</th></tr></thead><tbody>`+
+      rows.map(r=>`<tr><td>${new Date(r.created_at).toLocaleString()}</td><td>${r.to||"—"}</td><td>${r.subject||"—"}</td><td>${r.template||"—"}</td><td>${r.status||"—"}</td><td>${r.provider_id||"—"}</td></tr>`).join("")+`</tbody></table>`
+  } else {
+    W.innerHTML=rows.map(r=>`<div class="card" style="display:grid;gap:.35rem">
+      <div style="display:flex;justify-content:space-between"><strong>${r.subject||"—"}</strong><span class="bad ${r.status==='sent'?'st-sent':r.status==='delivered'?'st-sent':r.status==='failed'?'st-unpaid':'st-wait'}">${r.status||"—"}</span></div>
+      <div class="muted">${new Date(r.created_at).toLocaleString()}</div>
+      <div style="display:flex;justify-content:space-between"><span>Kome:</span><span>${r.to||"—"}</span></div>
+      <div style="display:flex;justify-content:space-between"><span>Šablon:</span><span>${r.template||"—"}</span></div>
+      <div class="muted">Provider: ${r.provider_id||"—"}</div></div>`).join("")
+  }
 }
 /* DOCS */
-async function listDocs(id){const W=el("docsWrap"); if(!id){W.innerHTML='<div class="muted">Unesi ID narudžbe.</div>';return}
+async function listDocs(id){
+  const W=el("docsWrap"); if(!id){W.innerHTML='<div class="muted">Unesi ID narudžbe.</div>';return}
   const {data,error}=await sb.storage.from("ugovori").list(`${id}`,{limit:100}); if(error){W.innerHTML='<div class="muted">Greška pri listanju.</div>';return}
   if(!data?.length){W.innerHTML='<div class="muted">Nema fajlova.</div>';return}
-  if(!isMob){W.innerHTML=`<table class="table"><thead><tr><th>Fajl</th><th>Veličina</th><th>Modifikovano</th><th></th></tr></thead><tbody>`+
-    data.map(f=>{const p=`${id}/${f.name}`;const url=sb.storage.from("ugovori").getPublicUrl(p).data?.publicUrl||"#";const s=(f?.metadata?.size||f?.size||0);return `<tr><td>${f.name}</td><td>${s?Math.round(s/1024)+" KB":"—"}</td><td>${f?.updated_at?new Date(f.updated_at).toLocaleString():"—"}</td><td><a class="btn bsm" href="${url}" target="_blank" rel="noopener">Preuzmi</a></td></tr>`}).join("")+`</tbody></table>`}
-  else{W.innerHTML=data.map(f=>{const p=`${id}/${f.name}`;const url=sb.storage.from("ugovori").getPublicUrl(p).data?.publicUrl||"#";const s=(f?.metadata?.size||f?.size||0);
-    return `<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:.5rem"><div><div><strong>${f.name}</strong></div><div class="muted">${s?Math.round(s/1024)+" KB":"—"} • ${f?.updated_at?new Date(f.updated_at).toLocaleString():"—"}</div></div><a class="btn bsm" href="${url}" target="_blank" rel="noopener">⬇︎</a></div>`}).join("")}
+  if(!isMob){
+    W.innerHTML=`<table class="table"><thead><tr><th>Fajl</th><th>Veličina</th><th>Modifikovano</th><th></th></tr></thead><tbody>`+
+      data.map(f=>{const p=`${id}/${f.name}`;const url=sb.storage.from("ugovori").getPublicUrl(p).data?.publicUrl||"#";const s=(f?.metadata?.size||f?.size||0);
+        return `<tr><td>${f.name}</td><td>${s?Math.round(s/1024)+" KB":"—"}</td><td>${f?.updated_at?new Date(f.updated_at).toLocaleString():"—"}</td><td><a class="btn bsm" href="${url}" target="_blank" rel="noopener">Preuzmi</a></td></tr>`}).join("")+`</tbody></table>`
+  } else {
+    W.innerHTML=data.map(f=>{const p=`${id}/${f.name}`;const url=sb.storage.from("ugovori").getPublicUrl(p).data?.publicUrl||"#";const s=(f?.metadata?.size||f?.size||0);
+      return `<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:.5rem"><div><div><strong>${f.name}</strong></div><div class="muted">${s?Math.round(s/1024)+" KB":"—"} • ${f?.updated_at?new Date(f.updated_at).toLocaleString():"—"}</div></div><a class="btn bsm" href="${url}" target="_blank" rel="noopener">⬇︎</a></div>`}).join("")
+  }
 }
 /* ANALYTICS */
-function renderAnalytics(){const now=Date.now(),d14=14,byD=new Map(),byT=new Map(); let cnt30=0,rev30=0;
-  for(const o of ORD){const t=new Date(o.created_at).getTime(); if((now-t)/86400000<=30){cnt30++;rev30+=(+o.total_price||0)} const day=new Date(o.created_at).toISOString().slice(0,10); byD.set(day,(byD.get(day)||0)+(+o.total_price||0)); const tp=o.ugovor_type||"—"; const a=byT.get(tp)||{c:0,r:0}; a.c++; a.r+=(+o.total_price||0); byT.set(tp,a)}
+function renderAnalytics(){
+  const now=Date.now(),d14=14,byD=new Map(),byT=new Map(); let cnt30=0,rev30=0;
+  for(const o of ORD){const t=new Date(o.created_at).getTime(); if((now-t)/86400000<=30){cnt30++;rev30+=(+o.total_price||0)}
+    const day=new Date(o.created_at).toISOString().slice(0,10); byD.set(day,(byD.get(day)||0)+(+o.total_price||0));
+    const tp=o.ugovor_type||"—"; const a=byT.get(tp)||{c:0,r:0}; a.c++; a.r+=(+o.total_price||0); byT.set(tp,a)}
   el("anCnt").textContent=cnt30; el("anRev").textContent=fmtE(rev30); el("anAvg").textContent=cnt30?fmtE(rev30/cnt30):"—";
   const top=[...byT.entries()].sort((a,b)=>b[1].c-a[1].c)[0]; el("anTop").textContent=top?`${top[0]} (${top[1].c})`:"—";
   el("anTypes").innerHTML=[...byT.entries()].sort((a,b)=>b[1].c-a[1].c).map(([k,v])=>`<div style="display:flex;justify-content:space-between"><span>${k}</span><span>${v.c} • ${fmtE(v.r)}</span></div>`).join("")||'<div class="muted">Nema pod.</div>';
   const rows=[]; for(let i=d14-1;i>=0;i--){const d=new Date(now-i*86400000).toISOString().slice(0,10); rows.push(`<div style="display:flex;justify-content:space-between"><span>${d}</span><span>${fmtE(byD.get(d)||0)}</span></div>`)} el("anDays").innerHTML=rows.join("");
 }
 /* REALTIME */
-function subRT(){try{sb.channel('orders-ch').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>{toast("Ažuriranje narudžbi");fetchOrders()}).subscribe(s=>{el("sys").textContent=`Realtime: ${s||'online'} • Cron: — • Storage: —`})}catch(e){el("sys").textContent="Realtime: offline • Cron: — • Storage: —"}}
+function subRT(){
+  try{
+    ch=sb.channel('orders-ch').on('postgres_changes',{event:'*',schema:'public',table:'orders'},()=>{toast("Ažuriranje narudžbi");fetchOrders()}).subscribe(s=>{el("sys").textContent=`Realtime: ${s||'online'} • Cron: — • Storage: —`})
+  }catch(e){el("sys").textContent="Realtime: offline • Cron: — • Storage: —"}
+}
+window.addEventListener("beforeunload",()=>{try{ch&&sb.removeChannel(ch)}catch{}})
 /* EVENTS */
 document.addEventListener("DOMContentLoaded",async()=>{
+  // Env badge
+  el("env").textContent=(/localhost|127\.0\.0\.1/.test(location.host))?"Local":"Live";
   matchMedia("(max-width:900px)").addEventListener?.("change",(e)=>{isMob=e.matches; renderOrders(); if(!$.outbox.classList.contains("hidden")) fetchOutbox(); if(!$.docs.classList.contains("hidden")) listDocs(el("dId").value)});
   el("menu").onclick=()=>{el("side").classList.add("open"); el("scrim").classList.add("show")}; el("scrim").onclick=()=>{el("side").classList.remove("open"); el("scrim").classList.remove("show")};
   document.querySelector(".bottom")?.addEventListener("click",e=>{const b=e.target.closest("button[data-v]"); if(b) setView(b.dataset.v)});
   el("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-v]"); if(!b)return; setView(b.dataset.v); el("side").classList.remove("open"); el("scrim").classList.remove("show")});
   el("ref").onclick=fetchOrders; el("logout").onclick=async()=>{await sb?.auth.signOut(); $.app.classList.add("hidden"); $.login.classList.remove("hidden")};
-  el("fTxt").oninput=renderOrders; el("fSt").onchange=renderOrders; el("oTxt").oninput=renderOrdersFull; el("oSt").onchange=renderOrdersFull;
+  // Filters + CSV
+  let tId=null, deb=fn=>{clearTimeout(tId); tId=setTimeout(fn,120)};
+  el("fTxt").oninput=()=>deb(renderOrders); el("fSt").onchange=renderOrders; el("oTxt").oninput=()=>deb(renderOrdersFull); el("oSt").onchange=renderOrdersFull;
   el("bCSV").onclick=()=>csv(fO(el("fTxt").value,el("fSt").value),"orders.csv"); el("oCSV").onclick=()=>csv(fO(el("oTxt").value,el("oSt").value),"orders.csv");
-  el("obRef").onclick=fetchOutbox; el("obSt").onchange=fetchOutbox; el("obQ").oninput=fetchOutbox;
+  // Outbox / Docs
+  el("obRef").onclick=fetchOutbox; el("obSt").onchange=fetchOutbox; el("obQ").oninput=()=>deb(fetchOutbox);
   el("dLoad").onclick=()=>listDocs(el("dId").value);
+  // Global search → dashboard filter
   el("q").addEventListener("keydown",e=>{if(e.key==="Enter"){el("fTxt").value=el("q").value; setView("dash"); renderOrders()}});
+  // Settings
   el("ping").onclick=async()=>{const {error}=await sb.from("orders").select("id").limit(1); el("pingRes").textContent=error?"Greška":"OK"};
   document.querySelector('[data-back="dash"]').onclick=()=>setView("dash");
-  const s=await session(); if(s){$.login.classList.add("hidden");$.app.classList.remove("hidden"); setView("dash"); await fetchOrders(); subRT(); } else { $.login.classList.remove("hidden"); $.app.classList.add("hidden"); }
-  el("doLogin").onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:el("em").value.trim(),password:el("pw").value}); if(error){el("lerr").textContent=error.message||"Greška pri prijavi."}else{$.login.classList.add("hidden");$.app.classList.remove("hidden"); setView("dash"); fetchOrders(); subRT();}};
+  // Auth bootstrap
+  const s=await session();
+  if(s){$.login.classList.add("hidden");$.app.classList.remove("hidden"); setView("dash"); await fetchOrders(); subRT(); }
+  else { $.login.classList.remove("hidden"); $.app.classList.add("hidden"); }
+  el("doLogin").onclick=async()=>{
+    const {error}=await sb.auth.signInWithPassword({email:el("em").value.trim(),password:el("pw").value});
+    if(error){el("lerr").textContent=error.message||"Greška pri prijavi."}
+    else{$.login.classList.add("hidden");$.app.classList.remove("hidden"); setView("dash"); fetchOrders(); subRT();}
+  };
 });
 </script>
 </body></html>
